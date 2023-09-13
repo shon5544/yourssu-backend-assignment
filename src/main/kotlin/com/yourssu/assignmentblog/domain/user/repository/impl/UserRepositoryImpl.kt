@@ -18,4 +18,8 @@ class UserRepositoryImpl(
         return userJpaRepository.findByRefreshToken(refreshToken)
     }
 
+    override fun save(user: User): User {
+        return userJpaRepository.save(user)
+    }
+
 }
