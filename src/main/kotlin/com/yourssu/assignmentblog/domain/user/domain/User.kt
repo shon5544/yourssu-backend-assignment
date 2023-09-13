@@ -9,7 +9,7 @@ import javax.persistence.*
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "user_id")
     val id: Long?,
 
     @Column(nullable = false, name = "created_at")
