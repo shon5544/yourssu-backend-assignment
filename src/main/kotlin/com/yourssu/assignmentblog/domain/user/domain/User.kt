@@ -1,5 +1,6 @@
 package com.yourssu.assignmentblog.domain.user.domain
 
+import com.yourssu.assignmentblog.global.common.enums.Role
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -20,7 +21,9 @@ class User(
     var email: String,
     var password: String,
     var username: String,
-    var refreshToken: String
+    var refreshToken: String,
+
+    var role: Role
 
     // 연관관계 매핑은 나중에
 ) {
