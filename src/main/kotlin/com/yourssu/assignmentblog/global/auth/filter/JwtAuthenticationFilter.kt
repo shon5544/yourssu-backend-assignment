@@ -23,10 +23,8 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class JwtAuthenticationFilter(
-    @Value("\${jwt.access.header}")
     private val accessTokenHeader: String,
 
-    @Value("\${jwt.refresh.header}")
     private val refreshTokenHeader: String,
 
     private val jwtTokenManager: JwtTokenManager,
