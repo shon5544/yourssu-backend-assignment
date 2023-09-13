@@ -34,10 +34,8 @@ class JwtTokenManager(
     만들어야 할 메소드
     - 액세스 토큰 생성
     - 리프레시 토큰 생성
-    - 액세스 토큰 추출
-    - 리프레시 토큰 추출
-    - 액세스 토큰 검증
-    - 리프레시 토큰 검증
+    - 토큰 추출
+    - 토큰 검증
     */
     fun createAccessToken(user: User): String {
         val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
@@ -82,6 +80,21 @@ class JwtTokenManager(
             token.replace(BEARER, "")
         } else {
             throw IllegalArgumentException("액세스 토큰 헤더 추출 실패: 토큰의 형식이 잘못됐습니다.")
+        }
+    }
+
+    fun isTokenValid(token: String): Boolean {
+        val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
+
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 }
