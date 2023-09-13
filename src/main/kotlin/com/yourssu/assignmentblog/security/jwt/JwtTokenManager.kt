@@ -1,7 +1,15 @@
 package com.yourssu.assignmentblog.security.jwt
 
+import com.yourssu.assignmentblog.user.domain.User
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
+import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.nio.charset.StandardCharsets
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.*
 
 @Component
 class JwtTokenManager(
@@ -9,10 +17,10 @@ class JwtTokenManager(
     private val secretKey: String,
 
     @Value("\${jwt.access.expiration}")
-    private val accessTokenExpiration: Int,
+    private val accessTokenExpiration: Long,
 
     @Value("\${jwt.refresh.expiration}")
-    private val refreshTokenExpiration: Int,
+    private val refreshTokenExpiration: Long,
 
     @Value("\${jwt.access.header}")
     private val accessTokenHeader: String,
@@ -37,4 +45,38 @@ class JwtTokenManager(
     - 액세스 토큰 검증
     - 리프레시 토큰 검증
     */
+    fun createAccessToken(user: User): String {
+        val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
+
+        return Jwts.builder()
+            .setSubject(ACCESS_TOKEN_SUBJECT)
+            .claim(EMAIL, user.email)
+            .setExpiration(
+                Date.from(
+                    LocalDateTime.now()
+                        .plusHours(accessTokenExpiration)
+                        .atZone(ZoneId.of("Asia/Seoul"))
+                        .toInstant()
+                )
+            )
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact()!!
+    }
+
+    fun createRefreshToken(): String {
+        val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
+
+        return Jwts.builder()
+            .setSubject(REFRESH_TOKEN_SUBJECT)
+            .setExpiration(
+                Date.from(
+                    LocalDateTime.now()
+                        .plusHours(accessTokenExpiration)
+                        .atZone(ZoneId.of("Asia/Seoul"))
+                        .toInstant()
+                )
+            )
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact()
+    }
 }
