@@ -2,6 +2,7 @@ package com.yourssu.assignmentblog.global.auth.jwt
 
 import com.yourssu.assignmentblog.global.common.localDateTImeHolder.LocalDateTimeHolder
 import com.yourssu.assignmentblog.domain.user.domain.User
+import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.util.*
+import javax.persistence.EntityNotFoundException
 import javax.servlet.http.HttpServletRequest
+import javax.transaction.Transactional
 import kotlin.IllegalArgumentException
 
 @Component
@@ -23,7 +26,9 @@ class JwtTokenManager(
     @Value("\${jwt.refresh.expiration}")
     private val refreshTokenExpiration: Long,
 
-    private val localDateTime: LocalDateTimeHolder
+    private val localDateTime: LocalDateTimeHolder,
+
+    private val userRepository: UserRepository
 ) {
     companion object {
         const val ACCESS_TOKEN_SUBJECT = "AccessToken"
@@ -71,13 +76,15 @@ class JwtTokenManager(
     }
 
 
-    fun extractToken(headerName: String, request: HttpServletRequest): String {
-        val token: String = request.getHeader(headerName)
+    fun extractToken(headerName: String, request: HttpServletRequest): String? {
+        val token: String? = request.getHeader(headerName)
 
-        return if (token.startsWith(BEARER)) {
+        return if (token != null && token.startsWith(BEARER)) {
             token.replace(BEARER, "")
-        } else {
+        } else if (token != null && !token.startsWith(BEARER)) {
             throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 토큰의 형식이 잘못됐습니다.")
+        } else {
+            return null
         }
     }
 
@@ -94,5 +101,19 @@ class JwtTokenManager(
         } catch (e: Exception) {
             false
         }
+    }
+
+    @Transactional
+    fun reIssueTokens(refreshToken: String): ReIssuedTokens {
+        val user = userRepository.findByRefreshToken(refreshToken)
+
+        val newAccessToken: String =
+            if (user != null) createAccessToken(user)
+            else throw EntityNotFoundException("토큰 재발급 실패: 해당 refresh token을 가진 User가 없습니다. 일반적으로 일어나기 힘든 상황입니다.")
+        val newRefreshToken: String = createRefreshToken()
+
+        user.updateRefreshToken(refreshToken)
+
+        return ReIssuedTokens(newAccessToken, newRefreshToken)
     }
 }
