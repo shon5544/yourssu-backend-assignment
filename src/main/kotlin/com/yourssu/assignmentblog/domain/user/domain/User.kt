@@ -10,20 +10,20 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "user_id")
-    val id: Long?,
+    val id: Long? = null,
 
     @Column(nullable = false, name = "created_at")
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime? = null,
 
     @Column(nullable = false, name = "updated_at")
-    var updatedAt: LocalDateTime,
+    var updatedAt: LocalDateTime? = null,
 
-    var email: String,
-    var password: String,
-    var username: String,
-    var refreshToken: String,
+    var email: String = "",
+    var password: String = "",
+    var username: String = "",
+    var refreshToken: String = "",
 
-    var role: Role
+    var role: Role? = null
 
     // 연관관계 매핑은 나중에
 ) {
