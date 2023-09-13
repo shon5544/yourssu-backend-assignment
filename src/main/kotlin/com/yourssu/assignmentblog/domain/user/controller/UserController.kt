@@ -19,8 +19,6 @@ class UserController(
     @PostMapping("/signup")
     fun signup(
         @RequestBody @Valid signupRequestDto: SignupRequestDto): SignupResponseDto {
-        val signupUser = userService.signup(signupRequestDto, RequestURI.USER + "/signup")
-
-        return SignupResponseDto(signupUser)
+        return userService.signup(signupRequestDto, RequestURI.USER + "/signup")
     }
 }

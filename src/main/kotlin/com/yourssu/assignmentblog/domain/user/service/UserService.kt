@@ -2,6 +2,7 @@ package com.yourssu.assignmentblog.domain.user.service
 
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
+import com.yourssu.assignmentblog.domain.user.dto.response.SignupResponseDto
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.global.common.exception.CustomException
 import org.springframework.http.HttpStatus
@@ -16,7 +17,7 @@ class UserService(
 ) {
 
     @Transactional
-    fun signup(requestDto: SignupRequestDto, currentURI: String): User {
+    fun signup(requestDto: SignupRequestDto, currentURI: String): SignupResponseDto {
         requestDto.password = passwordEncoder.encode(requestDto.password)
 
         if (userRepository.findByEmail(requestDto.email) != null)
@@ -28,6 +29,6 @@ class UserService(
 
         val user = User(requestDto)
 
-        return userRepository.save(user)
+        return SignupResponseDto(userRepository.save(user))
     }
 }
