@@ -14,6 +14,6 @@ class Comment(
     var content: String? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    val user: User
+    @JoinColumn(nullable = false, name = "user_id")
+    val user: User? = null
 ) : BaseCreateAndUpdateTimeEntity()
