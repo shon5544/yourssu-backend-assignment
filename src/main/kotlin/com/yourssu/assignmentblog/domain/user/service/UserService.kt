@@ -4,7 +4,6 @@ import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.global.common.exception.CustomException
-import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
