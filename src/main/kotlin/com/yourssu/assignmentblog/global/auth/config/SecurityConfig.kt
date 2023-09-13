@@ -31,13 +31,16 @@ class SecurityConfig(
     @Value("\${jwt.refresh.header}")
     private val refreshTokenHeader: String,
 
-    private val objectMapper: ObjectMapper = ObjectMapper(),
     private val customUserDetailsService: CustomUserDetailsService,
     private val loginSuccessHandler: LoginSuccessHandler,
     private val loginFailureHandler: LoginFailureHandler,
     private val jwtTokenManager: JwtTokenManager,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
+
+    companion object {
+        val objectMapper = ObjectMapper()
+    }
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -100,7 +103,7 @@ class SecurityConfig(
             accessTokenHeader = this.accessTokenHeader,
             refreshTokenHeader = this.refreshTokenHeader,
             jwtTokenManager = this.jwtTokenManager,
-            objectMapper = this.objectMapper,
+            objectMapper = objectMapper,
             userRepository = this.userRepository
         )
     }
