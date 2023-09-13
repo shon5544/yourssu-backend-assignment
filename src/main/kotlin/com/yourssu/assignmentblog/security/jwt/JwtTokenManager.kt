@@ -71,7 +71,7 @@ class JwtTokenManager(
             .setExpiration(
                 Date.from(
                     LocalDateTime.now()
-                        .plusHours(accessTokenExpiration)
+                        .plusHours(refreshTokenExpiration)
                         .atZone(ZoneId.of("Asia/Seoul"))
                         .toInstant()
                 )
