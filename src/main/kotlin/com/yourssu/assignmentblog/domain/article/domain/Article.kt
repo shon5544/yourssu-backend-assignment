@@ -1,5 +1,6 @@
 package com.yourssu.assignmentblog.domain.article.domain
 
+import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.domain.common.BaseCreateAndUpdateTimeEntity
 import com.yourssu.assignmentblog.domain.user.domain.User
 import javax.persistence.*
@@ -19,6 +20,8 @@ class Article(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")
-    val user: User? = null
+    val user: User? = null,
 
+    @OneToMany(mappedBy = "article", cascade = [CascadeType.REMOVE])
+    val articleList: List<Comment> = ArrayList()
 ) : BaseCreateAndUpdateTimeEntity()

@@ -1,5 +1,6 @@
 package com.yourssu.assignmentblog.domain.user.domain
 
+import com.yourssu.assignmentblog.domain.article.domain.Article
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.domain.common.BaseCreateAndUpdateTimeEntity
 import com.yourssu.assignmentblog.global.common.enums.Role
@@ -21,7 +22,10 @@ class User(
     var role: Role? = null,
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
-    val commentList: List<Comment> = ArrayList()
+    val commentList: List<Comment> = ArrayList(),
+
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
+    val articleList: List<Article> = ArrayList()
 ) : BaseCreateAndUpdateTimeEntity() {
     fun updateRefreshToken(refreshToken: String) {
         this.refreshToken = refreshToken
