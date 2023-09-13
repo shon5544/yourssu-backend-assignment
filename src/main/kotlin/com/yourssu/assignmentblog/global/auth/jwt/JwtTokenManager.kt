@@ -116,4 +116,19 @@ class JwtTokenManager(
 
         return ReIssuedTokens(newAccessToken, newRefreshToken)
     }
+
+    fun extractEmailFromToken(accessToken: String): String? {
+        val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
+
+        return try {
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(accessToken)
+                .body[EMAIL]
+                .toString()
+        } catch (e: Exception) {
+            null
+        }
+    }
 }
