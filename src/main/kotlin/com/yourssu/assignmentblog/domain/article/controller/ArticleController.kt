@@ -3,10 +3,10 @@ package com.yourssu.assignmentblog.domain.article.controller
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleWriteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
 import com.yourssu.assignmentblog.domain.article.service.ArticleService
-//import com.yourssu.assignmentblog.global.auth.service.CustomUserDetails
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
-//import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -26,5 +26,16 @@ class ArticleController(
         // @AuthenticationPrincipal customUserDetails: CustomUserDetails
     ): ArticleWriteResponseDto {
         return articleService.write(requestDto, RequestURI.ARTICLE + "/write")
+    }
+
+    @PutMapping("/edit")
+    fun edit(
+        @RequestBody @Valid articleWriteRequestDto: ArticleWriteRequestDto,
+        @PathVariable articleId: Long
+    ): ArticleWriteResponseDto {
+        return articleService.edit(
+            articleId = articleId,
+            currentURI = RequestURI.ARTICLE + "edit",
+            requestDto = articleWriteRequestDto)
     }
 }
