@@ -4,14 +4,14 @@ server:
 jwt:
   secretKey: ${jwt-secret-key}
 
-  # ?? ??? ??? ???? ???
-  # ?? ?? ??? ??? ?? ??? ?? ??? ????? ?????.
+  # 평가 방식이 어떻게 되는지 모르기 때문에
+  # 혹시 모르는 상황에 대비해 토큰 수명과 헤더를 기재합니다.
   access:
-    expiration: 86400000 # ??
+    expiration: 24
     header: Authorization
 
   refresh:
-    expiration: 1209600000 # ???? 2?
+    expiration: 336
     header: Authorization-refresh
 
 spring:
@@ -23,10 +23,10 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop # ??? ??? ?? ??
+      ddl-auto: create-drop # 필요에 맞게 수정
     properties:
       hibernate:
-        default_batch_fetch_size: 100 # ???? ???? ?? ??
+        default_batch_fetch_size: 100 # 지연로딩 최적화를 위한 옵션
         format_sql: true
 
   output:
@@ -35,7 +35,7 @@ spring:
 
 logging:
   file:
-    name: ${user.dir}/log/server_log.log # slf4j? ??? ? ??? ?? ?? ??
+    name: ${user.dir}/log/server_log.log # slf4j를 사용할 때 생기는 로그 파일 경로
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
