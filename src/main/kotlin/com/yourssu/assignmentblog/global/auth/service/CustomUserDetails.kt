@@ -15,10 +15,6 @@ class CustomUserDetails(
         return collection
     }
 
-    fun getUser(): User {
-        return user
-    }
-
     override fun getPassword(): String {
         return user.password
     }
