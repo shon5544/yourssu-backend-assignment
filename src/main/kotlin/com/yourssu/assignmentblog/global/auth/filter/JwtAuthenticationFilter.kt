@@ -40,8 +40,8 @@ class JwtAuthenticationFilter(
 
     companion object {
         private val NO_CHECK_URIS: List<String> = arrayListOf(
-            RequestURI.SIGNUP,
-            RequestURI.LOGIN
+            RequestURI.USER + "/signup",
+            RequestURI.USER + "/login"
         )
     }
 
