@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
+import javax.servlet.http.HttpServletRequest
 
 @Component
 class JwtTokenManager(
@@ -21,12 +22,6 @@ class JwtTokenManager(
 
     @Value("\${jwt.refresh.expiration}")
     private val refreshTokenExpiration: Long,
-
-    @Value("\${jwt.access.header}")
-    private val accessTokenHeader: String,
-
-    @Value("\${jwt.refresh.header}")
-    private val refreshTokenHeader: String
 ) {
     companion object {
         const val ACCESS_TOKEN_SUBJECT = "AccessToken"
@@ -78,5 +73,16 @@ class JwtTokenManager(
             )
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
+    }
+
+
+    fun extractToken(headerName: String, request: HttpServletRequest): String {
+        val token: String = request.getHeader(headerName)
+
+        return if (token.startsWith(BEARER)) {
+            token.replace(BEARER, "")
+        } else {
+            throw IllegalArgumentException("액세스 토큰 헤더 추출 실패: 토큰의 형식이 잘못됐습니다.")
+        }
     }
 }
