@@ -8,8 +8,6 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 
