@@ -1,4 +1,4 @@
-package com.yourssu.assignmentblog.security.jwt
+package com.yourssu.assignmentblog.global.auth.jwt
 
 import com.yourssu.assignmentblog.global.common.stub.TestLocalDateTime
 import com.yourssu.assignmentblog.domain.user.domain.User
