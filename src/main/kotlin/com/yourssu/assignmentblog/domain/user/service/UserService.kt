@@ -26,6 +26,8 @@ class UserService(
                 requestURI = currentURI
             )
 
-        return User(requestDto)
+        val user = User(requestDto)
+
+        return userRepository.save(user)
     }
 }
