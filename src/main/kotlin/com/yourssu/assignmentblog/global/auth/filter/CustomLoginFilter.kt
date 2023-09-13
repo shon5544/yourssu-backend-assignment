@@ -3,6 +3,7 @@ package com.yourssu.assignmentblog.global.auth.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.assignmentblog.global.auth.dto.LoginRequestDto
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationServiceException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse
 
 class CustomLoginFilter(
     private val objectMapper: ObjectMapper,
+    private val authenticationManager: AuthenticationManager,
     private val contentTypes: List<String> = arrayListOf(
         "application/json",
         "application/json; charset=UTF-8",
