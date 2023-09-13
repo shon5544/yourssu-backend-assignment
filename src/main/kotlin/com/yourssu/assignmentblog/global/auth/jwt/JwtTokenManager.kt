@@ -77,7 +77,7 @@ class JwtTokenManager(
         return if (token.startsWith(BEARER)) {
             token.replace(BEARER, "")
         } else {
-            throw IllegalArgumentException("액세스 토큰 헤더 추출 실패: 토큰의 형식이 잘못됐습니다.")
+            throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 토큰의 형식이 잘못됐습니다.")
         }
     }
 
