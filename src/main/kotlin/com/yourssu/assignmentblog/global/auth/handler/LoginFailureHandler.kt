@@ -1,7 +1,7 @@
 package com.yourssu.assignmentblog.global.auth.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.yourssu.assignmentblog.global.auth.dto.AuthenticationFailDto
+import com.yourssu.assignmentblog.global.auth.dto.response.AuthenticationFailDto
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
 import org.springframework.stereotype.Component

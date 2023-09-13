@@ -3,13 +3,12 @@ package com.yourssu.assignmentblog.global.auth.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.auth.dto.AuthResponseDto
-import com.yourssu.assignmentblog.global.auth.dto.AuthenticationFailDto
+import com.yourssu.assignmentblog.global.auth.dto.request.AuthResponseDto
+import com.yourssu.assignmentblog.global.auth.dto.response.AuthenticationFailDto
 import com.yourssu.assignmentblog.global.auth.jwt.JwtTokenManager
 import com.yourssu.assignmentblog.global.auth.jwt.ReIssuedTokens
 import com.yourssu.assignmentblog.global.auth.service.CustomUserDetails
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper

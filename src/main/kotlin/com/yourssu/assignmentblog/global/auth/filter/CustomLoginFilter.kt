@@ -1,7 +1,7 @@
 package com.yourssu.assignmentblog.global.auth.filter
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.yourssu.assignmentblog.global.auth.dto.LoginRequestDto
+import com.yourssu.assignmentblog.global.auth.dto.response.LoginRequestDto
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationServiceException
