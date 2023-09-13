@@ -1,5 +1,6 @@
 package com.yourssu.assignmentblog.domain.user.domain
 
+import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.global.common.enums.Role
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -23,9 +24,10 @@ class User(
     var username: String = "",
     var refreshToken: String = "",
 
-    var role: Role? = null
+    var role: Role? = null,
 
-    // 연관관계 매핑은 나중에
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
+    val commentList: List<Comment> = ArrayList()
 ) {
     fun updateRefreshToken(refreshToken: String) {
         this.refreshToken = refreshToken
