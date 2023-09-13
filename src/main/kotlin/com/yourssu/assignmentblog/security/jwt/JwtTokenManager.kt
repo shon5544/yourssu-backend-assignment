@@ -1,5 +1,6 @@
 package com.yourssu.assignmentblog.security.jwt
 
+import com.yourssu.assignmentblog.localDateTImeHolder.LocalDateTimeHolder
 import com.yourssu.assignmentblog.user.domain.User
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -22,6 +23,8 @@ class JwtTokenManager(
 
     @Value("\${jwt.refresh.expiration}")
     private val refreshTokenExpiration: Long,
+
+    private val localDateTime: LocalDateTimeHolder
 ) {
     companion object {
         const val ACCESS_TOKEN_SUBJECT = "AccessToken"
@@ -45,10 +48,8 @@ class JwtTokenManager(
             .claim(EMAIL, user.email)
             .setExpiration(
                 Date.from(
-                    LocalDateTime.now()
-                        .plusHours(accessTokenExpiration)
-                        .atZone(ZoneId.of("Asia/Seoul"))
-                        .toInstant()
+                    localDateTime
+                        .plusHour(accessTokenExpiration)
                 )
             )
             .signWith(key, SignatureAlgorithm.HS256)
@@ -62,10 +63,8 @@ class JwtTokenManager(
             .setSubject(REFRESH_TOKEN_SUBJECT)
             .setExpiration(
                 Date.from(
-                    LocalDateTime.now()
-                        .plusHours(refreshTokenExpiration)
-                        .atZone(ZoneId.of("Asia/Seoul"))
-                        .toInstant()
+                    localDateTime
+                        .plusHour(refreshTokenExpiration)
                 )
             )
             .signWith(key, SignatureAlgorithm.HS256)
