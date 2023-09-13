@@ -15,11 +15,16 @@ class User(
     val createdAt: LocalDateTime,
 
     @Column(nullable = false, name = "updated_at")
-    val updatedAt: LocalDateTime,
+    var updatedAt: LocalDateTime,
 
-    val email: String,
-    val password: String,
-    val username: String,
+    var email: String,
+    var password: String,
+    var username: String,
+    var refreshToken: String
 
     // 연관관계 매핑은 나중에
-)
+) {
+    fun updateRefreshToken(refreshToken: String) {
+        this.refreshToken = refreshToken
+    }
+}
