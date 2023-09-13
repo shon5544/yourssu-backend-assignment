@@ -1,7 +1,7 @@
-package com.yourssu.assignmentblog.security.jwt
+package com.yourssu.assignmentblog.global.auth.jwt
 
-import com.yourssu.assignmentblog.localDateTImeHolder.LocalDateTimeHolder
-import com.yourssu.assignmentblog.user.domain.User
+import com.yourssu.assignmentblog.global.common.localDateTImeHolder.LocalDateTimeHolder
+import com.yourssu.assignmentblog.domain.user.domain.User
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys

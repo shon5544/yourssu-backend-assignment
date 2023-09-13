@@ -1,4 +1,4 @@
-package com.yourssu.assignmentblog.user.domain
+package com.yourssu.assignmentblog.domain.user.domain
 
 import java.time.LocalDateTime
 import javax.persistence.*

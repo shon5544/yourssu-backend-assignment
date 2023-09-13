@@ -1,4 +1,4 @@
-package com.yourssu.assignmentblog.security.config
+package com.yourssu.assignmentblog.global.auth.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
