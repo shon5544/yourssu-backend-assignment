@@ -28,7 +28,6 @@ class JwtTokenManager(
         const val REFRESH_TOKEN_SUBJECT = "RefreshToken"
         const val EMAIL = "email"
         const val BEARER = "bearer "
-        const val AUTHORITES_KEY = "auth"
     }
 
     /*
