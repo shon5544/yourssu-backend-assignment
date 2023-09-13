@@ -5,14 +5,14 @@ import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.global.common.exception.CustomException
 import org.springframework.http.HttpStatus
-import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: BCryptPasswordEncoder
 ) {
 
     @Transactional
