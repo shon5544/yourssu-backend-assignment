@@ -1,6 +1,7 @@
 package com.yourssu.assignmentblog.domain.article.service
 
 import com.yourssu.assignmentblog.domain.article.domain.Article
+import com.yourssu.assignmentblog.domain.article.dto.request.ArticleDeleteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleWriteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
@@ -74,8 +75,8 @@ class ArticleService(
                 requestURI = currentURI
             )
 
-        if (!article.user?.equals(user)!!)
-            throw throw CustomException(
+        if (article.user!! != user)
+            throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
                 message = "게시글 수정 실패: 해당 게시글은 해당 유저의 소유가 아닙니다.",
                 requestURI = currentURI
@@ -86,5 +87,42 @@ class ArticleService(
 
         return ArticleWriteResponseDto(
             article, article.user.email)
+    }
+
+    @Transactional
+    fun delete(
+        articleId: Long,
+        requestDto: ArticleDeleteRequestDto,
+        currentURI: String) {
+        val user = (userRepository.findByEmail(requestDto.email)
+            ?: throw CustomException(
+                status = HttpStatus.BAD_REQUEST,
+                message = "게시글 삭제 실패: 해당 email에 해당하는 유저가 없습니다.",
+                requestURI = currentURI
+            ))
+
+        if (!passwordEncoder.matches(requestDto.password, user.password)) {
+            throw CustomException(
+                status = HttpStatus.BAD_REQUEST,
+                message = "게시글 삭제 실패: 비밀번호가 일치하지 않습니다.",
+                requestURI = currentURI
+            )
+        }
+
+        val article = articleRepository.findById(articleId)
+            ?: throw CustomException(
+                status = HttpStatus.BAD_REQUEST,
+                message = "게시글 삭제 실패: 해당 Id를 가진 게시글이 없습니다.",
+                requestURI = currentURI
+            )
+
+        if (article.user!! != user)
+            throw CustomException(
+                status = HttpStatus.BAD_REQUEST,
+                message = "게시글 삭제 실패: 해당 게시글은 해당 유저의 소유가 아닙니다.",
+                requestURI = currentURI
+            )
+
+        articleRepository.delete(article)
     }
 }
