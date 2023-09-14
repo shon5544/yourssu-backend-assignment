@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 @Component
-class ProductionLocalDateTime: LocalDateTimeHolder {
+class CustomLocalDateTime: ICustomLocalDateTime {
     override fun plusHour(hour: Long): Instant {
         return LocalDateTime.now()
             .plusHours(hour)
