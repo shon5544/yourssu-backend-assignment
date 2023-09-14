@@ -28,7 +28,7 @@ class ArticleController(
         return articleService.write(requestDto, RequestURI.ARTICLE + "/write")
     }
 
-    @PutMapping("/edit")
+    @PutMapping("/edit/{articleId}")
     fun edit(
         @RequestBody @Valid articleWriteRequestDto: ArticleWriteRequestDto,
         @PathVariable articleId: Long
