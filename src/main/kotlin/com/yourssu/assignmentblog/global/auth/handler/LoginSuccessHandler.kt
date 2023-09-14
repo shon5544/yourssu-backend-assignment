@@ -39,6 +39,8 @@ class LoginSuccessHandler(
         val accessToken = jwtTokenManager.createAccessToken(user)
         val refreshToken = jwtTokenManager.createRefreshToken()
 
+        user.updateRefreshToken(refreshToken)
+
         val responseDto = AuthResponseDto(true, "로그인 성공.", accessToken, refreshToken)
 
         val result = objectMapper.writeValueAsString(responseDto)
