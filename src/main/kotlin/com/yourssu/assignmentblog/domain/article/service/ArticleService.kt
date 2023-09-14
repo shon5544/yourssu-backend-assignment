@@ -18,6 +18,7 @@ class ArticleService(
     private val passwordEncoder: BCryptPasswordEncoder
 ) {
 
+    @Transactional
     fun write(requestDto: ArticleWriteRequestDto, currentURI: String): ArticleWriteResponseDto {
         val user = (userRepository.findByEmail(requestDto.email)
             ?: throw CustomException(
