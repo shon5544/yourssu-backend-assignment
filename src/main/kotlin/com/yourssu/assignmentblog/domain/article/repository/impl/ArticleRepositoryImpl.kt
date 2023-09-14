@@ -17,4 +17,8 @@ class ArticleRepositoryImpl(
     override fun findById(id: Long): Article? {
         return articleJpaRepository.findByIdOrNull(id)
     }
+
+    override fun delete(article: Article) {
+        return articleJpaRepository.delete(article)
+    }
 }
