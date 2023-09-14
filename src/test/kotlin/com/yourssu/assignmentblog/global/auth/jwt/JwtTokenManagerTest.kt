@@ -1,6 +1,6 @@
 package com.yourssu.assignmentblog.global.auth.jwt
 
-import com.yourssu.assignmentblog.global.common.stub.TestICustomLocalDateTime
+import com.yourssu.assignmentblog.global.common.stub.TestCustomLocalDateTime
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.domain.user.repository.impl.TestUserRepository
@@ -30,7 +30,7 @@ internal class JwtTokenManagerTest {
                 secretKey = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
                 accessTokenExpiration = 24,
                 refreshTokenExpiration = 336,
-                localDateTime = TestICustomLocalDateTime(),
+                localDateTime = TestCustomLocalDateTime(),
                 userRepository = userRepository
             )
         }
