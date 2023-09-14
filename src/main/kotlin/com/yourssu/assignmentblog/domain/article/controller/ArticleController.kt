@@ -1,9 +1,12 @@
 package com.yourssu.assignmentblog.domain.article.controller
 
+import com.yourssu.assignmentblog.domain.article.dto.request.ArticleDeleteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleWriteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
 import com.yourssu.assignmentblog.domain.article.service.ArticleService
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -35,7 +38,17 @@ class ArticleController(
     ): ArticleWriteResponseDto {
         return articleService.edit(
             articleId = articleId,
-            currentURI = RequestURI.ARTICLE + "edit",
+            currentURI = RequestURI.ARTICLE + "/edit/$articleId",
             requestDto = articleWriteRequestDto)
+    }
+
+    @DeleteMapping("/delete/{articleId}")
+    fun delete(
+        @RequestBody @Valid articleDeleteRequestDto: ArticleDeleteRequestDto,
+        @PathVariable articleId: Long
+    ): ResponseEntity<Void> {
+        articleService.delete(articleId, articleDeleteRequestDto, RequestURI.ARTICLE + "/delete/$articleId")
+
+        return ResponseEntity.ok().build()
     }
 }
