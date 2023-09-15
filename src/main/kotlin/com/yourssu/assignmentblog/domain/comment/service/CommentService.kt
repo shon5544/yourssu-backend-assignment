@@ -105,14 +105,14 @@ class CommentService(
         val user = (userRepository.findByEmail(requestDto.email)
             ?: throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
-                message = "게시글 삭제 실패: 해당 email에 해당하는 유저가 없습니다.",
+                message = "댓글 삭제 실패: 해당 email에 해당하는 유저가 없습니다.",
                 requestURI = currentURI
             ))
 
         if (!passwordEncoder.matches(requestDto.password, user.password)) {
             throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
-                message = "게시글 삭제 실패: 비밀번호가 일치하지 않습니다.",
+                message = "댓글 삭제 실패: 비밀번호가 일치하지 않습니다.",
                 requestURI = currentURI
             )
         }
@@ -120,14 +120,14 @@ class CommentService(
         val comment = commentRepository.findById(commentId)
             ?: throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
-                message = "게시글 삭제 실패: 해당 Id를 가진 게시글이 없습니다.",
+                message = "댓글 삭제 실패: 해당 Id를 가진 게시글이 없습니다.",
                 requestURI = currentURI
             )
 
         if (comment.user!! != user)
             throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
-                message = "게시글 삭제 실패: 해당 게시글은 해당 유저의 소유가 아닙니다.",
+                message = "댓글 삭제 실패: 해당 게시글은 해당 유저의 소유가 아닙니다.",
                 requestURI = currentURI
             )
 
