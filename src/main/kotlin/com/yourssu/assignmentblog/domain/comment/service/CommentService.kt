@@ -58,4 +58,41 @@ class CommentService(
             email = user.email
         )
     }
+
+    @Transactional
+    fun edit(
+        articleId: Long,
+        commentId: Long,
+        currentURI: String,
+        requestDto: CommentWriteRequestDto
+    ): CommentWriteResponseDto {
+        val user = (userRepository.findByEmail(requestDto.email)
+            ?: throw CustomException(
+                status = HttpStatus.BAD_REQUEST,
+                message = "댓글 수정 실패: 해당 email에 해당하는 유저가 없습니다.",
+                requestURI = currentURI
+            ))
+
+        if (!passwordEncoder.matches(requestDto.password, user.password)) {
+            throw CustomException(
+                status = HttpStatus.BAD_REQUEST,
+                message = "댓글 수정 실패: 비밀번호가 일치하지 않습니다.",
+                requestURI = currentURI
+            )
+        }
+
+        val comment = commentRepository.findById(commentId)
+            ?: throw CustomException(
+                status = HttpStatus.BAD_REQUEST,
+                message = "댓글 수정 실패: 존재하지 않는 게시물입니다.",
+                requestURI = currentURI
+            )
+
+        comment.content = requestDto.content
+
+        return CommentWriteResponseDto(
+            comment = comment,
+            email = user.email
+        )
+    }
 }
