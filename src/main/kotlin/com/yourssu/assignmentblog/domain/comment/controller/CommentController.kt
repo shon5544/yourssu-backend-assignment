@@ -1,9 +1,12 @@
 package com.yourssu.assignmentblog.domain.comment.controller
 
+import com.yourssu.assignmentblog.domain.comment.dto.request.CommentDeleteRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentWriteRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.response.CommentWriteResponseDto
 import com.yourssu.assignmentblog.domain.comment.service.CommentService
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -42,5 +45,20 @@ class CommentController(
             currentURI = RequestURI.COMMENT + "/edit?article=${articleId}&comment=${commentId}",
             requestDto = commentWriteRequestDto
         )
+    }
+
+    @DeleteMapping("/delete/{commentId}")
+    fun delete(
+        @RequestBody @Valid commentDeleteRequestDto: CommentDeleteRequestDto,
+        @PathVariable commentId: Long
+    ): ResponseEntity<Void> {
+
+        commentService.delete(
+            commentId = commentId,
+            currentURI = RequestURI.COMMENT,
+            requestDto = commentDeleteRequestDto
+        )
+
+        return ResponseEntity.ok().build()
     }
 }
