@@ -6,4 +6,5 @@ interface UserRepository {
     fun findByEmail(email: String): User?
     fun findByRefreshToken(refreshToken: String): User?
     fun save(user: User): User
+    fun delete(user: User)
 }

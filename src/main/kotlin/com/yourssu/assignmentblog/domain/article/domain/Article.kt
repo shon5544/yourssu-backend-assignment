@@ -10,13 +10,13 @@ class Article(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "article_id")
-    private val id: Long? = null,
+    val id: Long? = null,
 
     @Column(nullable = false)
-    var content: String? = null,
+    var content: String = "",
 
     @Column(nullable = false)
-    var title: String? = null,
+    var title: String = "",
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")

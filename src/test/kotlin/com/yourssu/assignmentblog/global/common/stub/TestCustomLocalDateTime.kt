@@ -1,11 +1,11 @@
 package com.yourssu.assignmentblog.global.common.stub
 
-import com.yourssu.assignmentblog.global.common.localDateTImeHolder.LocalDateTimeHolder
+import com.yourssu.assignmentblog.global.common.localDateTImeHolder.ICustomLocalDateTime
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-class TestLocalDateTime: LocalDateTimeHolder {
+class TestCustomLocalDateTime: ICustomLocalDateTime {
     override fun plusHour(hour: Long): Instant {
         return LocalDateTime.of(
             2023,

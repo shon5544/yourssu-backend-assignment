@@ -22,4 +22,8 @@ class UserRepositoryImpl(
         return userJpaRepository.save(user)
     }
 
+    override fun delete(user: User) {
+        userJpaRepository.delete(user)
+    }
+
 }

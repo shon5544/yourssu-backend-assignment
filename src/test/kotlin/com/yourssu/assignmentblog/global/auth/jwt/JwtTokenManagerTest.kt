@@ -1,26 +1,27 @@
 package com.yourssu.assignmentblog.global.auth.jwt
 
-import com.yourssu.assignmentblog.global.common.stub.TestLocalDateTime
+import com.yourssu.assignmentblog.global.common.stub.TestCustomLocalDateTime
 import com.yourssu.assignmentblog.domain.user.domain.User
-import com.yourssu.assignmentblog.global.auth.jwt.JwtTokenManager
-import com.yourssu.assignmentblog.global.common.localDateTImeHolder.ProductionLocalDateTime
+import com.yourssu.assignmentblog.domain.user.repository.UserRepository
+import com.yourssu.assignmentblog.domain.user.repository.impl.TestUserRepository
+import com.yourssu.assignmentblog.global.common.localDateTImeHolder.CustomLocalDateTime
 import com.yourssu.assignmentblog.global.common.stub.StubHttpServletRequest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
 
 @DisplayName("JwtTokenManager 클래스")
 internal class JwtTokenManagerTest {
 
     companion object {
         lateinit var jwtTokenManager: JwtTokenManager
+        private val userRepository: UserRepository = TestUserRepository()
 
         // 모두 임의의 날짜를 넣어서 만든 임의의 토큰들입니다.
         const val expectedAccessToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImVtYWlsIjoieW91cnNzdUBnbWFpbC5jb20iLCJleHAiOjE2OTQ2MDY3MDB9.V0zUCY1c89tT68yWiDNW6GDRwFGzA1nxLP2P30b8kPk"
-        const val expectedRefershToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSZWZyZXNoVG9rZW4iLCJleHAiOjE2OTQ2MDY3MDB9._bMFe2936dVTmFMvw0hOlpXtq7SCpOArCx6TMNCLtrE"
+        const val expectedRefreshToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSZWZyZXNoVG9rZW4iLCJleHAiOjE2OTQ2MDY3MDB9._bMFe2936dVTmFMvw0hOlpXtq7SCpOArCx6TMNCLtrE"
 
         @BeforeAll
         @JvmStatic
@@ -29,7 +30,8 @@ internal class JwtTokenManagerTest {
                 secretKey = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
                 accessTokenExpiration = 24,
                 refreshTokenExpiration = 336,
-                localDateTime = TestLocalDateTime()
+                localDateTime = TestCustomLocalDateTime(),
+                userRepository = userRepository
             )
         }
     }
@@ -43,22 +45,6 @@ internal class JwtTokenManagerTest {
         init {
             user = User(
                 id = 1,
-                createdAt = LocalDateTime.of(
-                    2023,
-                    9,
-                    13,
-                    21,
-                    5,
-                    0,
-                    0),
-                updatedAt = LocalDateTime.of(
-                    2023,
-                    9,
-                    13,
-                    21,
-                    5,
-                    0,
-                    0),
                 email = "yourssu@gmail.com",
                 password = "asdj",
                 username = "beomsu son"
@@ -87,7 +73,7 @@ internal class JwtTokenManagerTest {
         fun it_returns_refreshToken() {
             val refreshToken = jwtTokenManager.createRefreshToken()
 
-            assertEquals(expectedRefershToken, refreshToken)
+            assertEquals(expectedRefreshToken, refreshToken)
         }
     }
 
@@ -140,7 +126,7 @@ internal class JwtTokenManagerTest {
                     val extractedToken =
                         jwtTokenManager.extractToken("Authorization-refresh", StubHttpServletRequest())
 
-                    assertEquals(expectedRefershToken, extractedToken)
+                    assertEquals(expectedRefreshToken, extractedToken)
                 }
             }
 
@@ -170,7 +156,8 @@ internal class JwtTokenManagerTest {
             secretKey = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
             accessTokenExpiration = 24,
             refreshTokenExpiration = 336,
-            localDateTime = ProductionLocalDateTime()
+            localDateTime = CustomLocalDateTime(),
+            userRepository = userRepository
         )
 
         @Nested

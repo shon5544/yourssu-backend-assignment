@@ -1,9 +1,12 @@
 package com.yourssu.assignmentblog.domain.user.controller
 
 import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
+import com.yourssu.assignmentblog.domain.user.dto.request.WithdrawRequestDto
 import com.yourssu.assignmentblog.domain.user.dto.response.SignupResponseDto
 import com.yourssu.assignmentblog.domain.user.service.UserService
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,8 +22,19 @@ class UserController(
     @PostMapping("/signup")
     fun signup(
         @RequestBody @Valid signupRequestDto: SignupRequestDto): SignupResponseDto {
-        val signupUser = userService.signup(signupRequestDto, RequestURI.USER + "/signup")
+        return userService.signup(signupRequestDto, RequestURI.USER + "/signup")
+    }
 
-        return SignupResponseDto(signupUser)
+    @DeleteMapping("/withdraw")
+    fun withdraw(
+        @RequestBody @Valid withDrawRequestDto: WithdrawRequestDto,
+    ): ResponseEntity<Void> {
+
+        userService.withdraw(
+            requestDto = withDrawRequestDto,
+            currentURI = RequestURI.USER + "/withdraw"
+        )
+
+        return ResponseEntity.ok().build()
     }
 }

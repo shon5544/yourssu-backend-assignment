@@ -1,6 +1,6 @@
 package com.yourssu.assignmentblog.global.auth.jwt
 
-import com.yourssu.assignmentblog.global.common.localDateTImeHolder.LocalDateTimeHolder
+import com.yourssu.assignmentblog.global.common.localDateTImeHolder.ICustomLocalDateTime
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import io.jsonwebtoken.Jwts
@@ -26,7 +26,7 @@ class JwtTokenManager(
     @Value("\${jwt.refresh.expiration}")
     private val refreshTokenExpiration: Long,
 
-    private val localDateTime: LocalDateTimeHolder,
+    private val localDateTime: ICustomLocalDateTime,
 
     private val userRepository: UserRepository
 ) {
@@ -34,7 +34,7 @@ class JwtTokenManager(
         const val ACCESS_TOKEN_SUBJECT = "AccessToken"
         const val REFRESH_TOKEN_SUBJECT = "RefreshToken"
         const val EMAIL = "email"
-        const val BEARER = "bearer "
+        const val BEARER = "Bearer "
     }
 
     /*

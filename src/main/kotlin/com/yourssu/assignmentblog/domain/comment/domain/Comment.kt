@@ -10,9 +10,9 @@ class Comment(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, name = "comment_id")
-    private val id: Long? = null,
+    val id: Long? = null,
 
-    var content: String? = null,
+    var content: String = "",
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")
