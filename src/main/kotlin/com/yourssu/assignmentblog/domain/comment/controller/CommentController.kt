@@ -6,6 +6,7 @@ import com.yourssu.assignmentblog.domain.comment.service.CommentService
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -29,7 +30,7 @@ class CommentController(
             requestDto = commentWriteRequestDto)
     }
 
-    @PostMapping("/edit")
+    @PutMapping("/edit")
     fun edit(
         @RequestBody @Valid commentWriteRequestDto: CommentWriteRequestDto,
         @RequestParam(name = "article") articleId: Long,
