@@ -31,4 +31,8 @@ class TestUserRepository: UserRepository {
         return user
     }
 
+    override fun delete(user: User) {
+        return
+    }
+
 }
