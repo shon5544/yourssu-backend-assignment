@@ -17,4 +17,8 @@ class CommentRepositoryImpl(
     override fun save(comment: Comment): Comment {
         return commentJpaRepository.save(comment)
     }
+
+    override fun delete(comment: Comment) {
+        commentJpaRepository.delete(comment)
+    }
 }

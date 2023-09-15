@@ -6,4 +6,5 @@ interface CommentRepository {
     fun findById(id: Long): Comment?
 
     fun save(comment: Comment): Comment
+    fun delete(comment: Comment)
 }
