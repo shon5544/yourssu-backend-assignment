@@ -42,8 +42,9 @@ request form
 ```
 
 response form
-```json
+
 // success
+```json
 {
     "success": true,
     "message": "로그인 성공.",
@@ -51,14 +52,17 @@ response form
     "refreshToken": "refreshToken"
 }
 ```
-```json
+
 // failure: 회원 가입되지 않은 유저가 로그인 하려할 때
+```json
 {
     "success": false,
     "message": "로그인 실패: 인증 객체 생성 실패: 해당 email을 가진 유저가 없습니다."
 }
+```
 
 // failure: 비밀번호가 틀렸을 때
+```json
 {
     "success": false,
     "message": "로그인 실패: 자격 증명에 실패하였습니다."
