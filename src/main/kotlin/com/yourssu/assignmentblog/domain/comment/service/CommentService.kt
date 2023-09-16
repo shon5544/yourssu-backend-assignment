@@ -1,24 +1,22 @@
 package com.yourssu.assignmentblog.domain.comment.service
 
-import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentDeleteRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentWriteRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.response.CommentWriteResponseDto
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
-import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.error.exception.CustomException
-import org.springframework.http.HttpStatus
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
+import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
+import com.yourssu.assignmentblog.global.common.enums.FailedMethod
+import com.yourssu.assignmentblog.global.common.enums.FailedTargetType
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
 @Service
 class CommentService(
     private val commentRepository: CommentRepository,
-    private val userRepository: UserRepository,
-    private val articleRepository: ArticleRepository,
-    private val passwordEncoder: BCryptPasswordEncoder
+    private val existenceChecker: ExistenceChecker,
+    private val ownershipChecker: OwnershipChecker
 ) {
 
     @Transactional
@@ -26,27 +24,21 @@ class CommentService(
         articleId: Long,
         currentURI: String,
         requestDto: CommentWriteRequestDto): CommentWriteResponseDto {
-        val user = (userRepository.findByEmail(requestDto.email)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 작성 실패: 해당 email에 해당하는 유저가 없습니다.",
-                requestURI = currentURI
-            ))
 
-        if (!passwordEncoder.matches(requestDto.password, user.password)) {
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 작성 실패: 비밀번호가 일치하지 않습니다.",
-                requestURI = currentURI
-            )
-        }
+        val failedTarget = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}"
 
-        val article = (articleRepository.findById(articleId)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 작성 실패: 존재하지 않는 게시물입니다.",
-                requestURI = currentURI
-            ))
+        val user = existenceChecker.checkUser(
+            currentURI = currentURI,
+            email = requestDto.email,
+            password = requestDto.password,
+            failedTarget = failedTarget
+        )
+
+        val article = existenceChecker.checkArticle(
+            articleId = articleId,
+            currentURI = currentURI,
+            failedTarget = failedTarget
+        )
 
         val comment = Comment(
             content = requestDto.content,
@@ -67,27 +59,21 @@ class CommentService(
         currentURI: String,
         requestDto: CommentWriteRequestDto
     ): CommentWriteResponseDto {
-        val user = (userRepository.findByEmail(requestDto.email)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 수정 실패: 해당 email에 해당하는 유저가 없습니다.",
-                requestURI = currentURI
-            ))
 
-        if (!passwordEncoder.matches(requestDto.password, user.password)) {
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 수정 실패: 비밀번호가 일치하지 않습니다.",
-                requestURI = currentURI
-            )
-        }
+        val failedTarget = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}"
 
-        val comment = commentRepository.findById(commentId)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 수정 실패: 존재하지 않는 게시물입니다.",
-                requestURI = currentURI
-            )
+        val user = existenceChecker.checkUser(
+            currentURI = currentURI,
+            email = requestDto.email,
+            password = requestDto.password,
+            failedTarget = failedTarget
+        )
+
+        val comment = existenceChecker.checkComment(
+            commentId = commentId,
+            failedTarget = failedTarget,
+            currentURI = currentURI
+        )
 
         comment.content = requestDto.content
 
@@ -102,34 +88,28 @@ class CommentService(
         commentId: Long,
         currentURI: String,
         requestDto: CommentDeleteRequestDto) {
-        val user = (userRepository.findByEmail(requestDto.email)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 삭제 실패: 해당 email에 해당하는 유저가 없습니다.",
-                requestURI = currentURI
-            ))
 
-        if (!passwordEncoder.matches(requestDto.password, user.password)) {
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 삭제 실패: 비밀번호가 일치하지 않습니다.",
-                requestURI = currentURI
-            )
-        }
+        val failedTarget = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
 
-        val comment = commentRepository.findById(commentId)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 삭제 실패: 해당 Id를 가진 게시글이 없습니다.",
-                requestURI = currentURI
-            )
+        val user = existenceChecker.checkUser(
+            currentURI = currentURI,
+            email = requestDto.email,
+            password = requestDto.password,
+            failedTarget = failedTarget
+        )
 
-        if (comment.user!! != user)
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "댓글 삭제 실패: 해당 게시글은 해당 유저의 소유가 아닙니다.",
-                requestURI = currentURI
-            )
+        val comment = existenceChecker.checkComment(
+            commentId =  commentId,
+            failedTarget = failedTarget,
+            currentURI = currentURI
+        )
+
+        ownershipChecker.check(
+            target = comment,
+            currentURI = currentURI,
+            user = user,
+            failedTarget = failedTarget
+        )
 
         commentRepository.delete(comment)
     }
