@@ -61,7 +61,7 @@ class ArticleService(
         val article = existenceChecker.checkArticle(
             articleId = articleId,
             currentURI = currentURI,
-            failedTarget = failedTargetText
+            failedTargetText = failedTargetText
         )
 
         ownershipChecker.check(

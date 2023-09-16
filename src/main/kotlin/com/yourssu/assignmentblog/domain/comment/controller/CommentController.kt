@@ -47,13 +47,15 @@ class CommentController(
         )
     }
 
-    @DeleteMapping("/delete/{commentId}")
+    @DeleteMapping("/delete")
     fun delete(
         @RequestBody @Valid deleteRequestDto: DeleteRequestDto,
-        @PathVariable commentId: Long
+        @RequestParam(name = "article") articleId: Long,
+        @RequestParam(name = "comment") commentId: Long
     ): ResponseEntity<Void> {
 
         commentService.delete(
+            articleId = articleId,
             commentId = commentId,
             currentURI = RequestURI.COMMENT,
             requestDto = deleteRequestDto

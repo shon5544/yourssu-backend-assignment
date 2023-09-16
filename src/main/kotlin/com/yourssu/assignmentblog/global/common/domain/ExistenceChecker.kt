@@ -83,13 +83,13 @@ class ExistenceChecker(
 
     fun checkArticle(
         articleId: Long,
-        failedTarget: String,
+        failedTargetText: String,
         currentURI: String
     ): Article {
         return (articleRepository.findById(articleId)
             ?: throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
-                message = "$failedTarget 실패: 존재하지 않는 ${failedTarget.split(" ")[0]}입니다.",
+                message = "$failedTargetText 실패: 존재하지 않는 ${failedTargetText.split(" ")[0]}입니다.",
                 requestURI = currentURI
             ))
     }
