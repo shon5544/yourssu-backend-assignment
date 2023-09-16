@@ -1,7 +1,7 @@
 package com.yourssu.assignmentblog.domain.comment.controller
 
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentDeleteRequestDto
-import com.yourssu.assignmentblog.domain.comment.dto.request.CommentWriteRequestDto
+import com.yourssu.assignmentblog.domain.comment.dto.request.CommentRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.response.CommentWriteResponseDto
 import com.yourssu.assignmentblog.domain.comment.service.CommentService
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
@@ -24,18 +24,18 @@ class CommentController(
 
     @PostMapping("/write/{articleId}")
     fun write(
-        @RequestBody @Valid commentWriteRequestDto: CommentWriteRequestDto,
+        @RequestBody @Valid commentRequestDto: CommentRequestDto,
         @PathVariable articleId: Long
     ): CommentWriteResponseDto {
         return commentService.write(
             articleId = articleId,
             currentURI = RequestURI.COMMENT + "/write",
-            requestDto = commentWriteRequestDto)
+            requestDto = commentRequestDto)
     }
 
     @PutMapping("/edit")
     fun edit(
-        @RequestBody @Valid commentWriteRequestDto: CommentWriteRequestDto,
+        @RequestBody @Valid commentRequestDto: CommentRequestDto,
         @RequestParam(name = "article") articleId: Long,
         @RequestParam(name = "comment") commentId: Long
     ): CommentWriteResponseDto {
@@ -43,7 +43,7 @@ class CommentController(
             articleId = articleId,
             commentId = commentId,
             currentURI = RequestURI.COMMENT + "/edit?article=${articleId}&comment=${commentId}",
-            requestDto = commentWriteRequestDto
+            requestDto = commentRequestDto
         )
     }
 
