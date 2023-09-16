@@ -2,7 +2,7 @@ package com.yourssu.assignmentblog.domain.user.domain
 
 import com.yourssu.assignmentblog.domain.article.domain.Article
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
-import com.yourssu.assignmentblog.domain.common.BaseCreateAndUpdateTimeEntity
+import com.yourssu.assignmentblog.global.common.entity.BaseCreateAndUpdateTimeEntity
 import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
 import com.yourssu.assignmentblog.global.common.enums.Role
 import javax.persistence.*

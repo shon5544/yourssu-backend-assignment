@@ -1,7 +1,7 @@
 package com.yourssu.assignmentblog.domain.article.domain
 
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
-import com.yourssu.assignmentblog.domain.common.BaseCreateAndUpdateTimeEntity
+import com.yourssu.assignmentblog.global.common.entity.BaseCreateAndUpdateTimeEntity
 import com.yourssu.assignmentblog.domain.user.domain.User
 import javax.persistence.*
 

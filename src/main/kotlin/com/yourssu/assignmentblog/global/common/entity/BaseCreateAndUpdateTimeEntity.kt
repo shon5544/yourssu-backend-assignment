@@ -1,4 +1,4 @@
-package com.yourssu.assignmentblog.domain.common
+package com.yourssu.assignmentblog.global.common.entity
 
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
