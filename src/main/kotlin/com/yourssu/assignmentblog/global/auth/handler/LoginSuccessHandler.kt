@@ -2,7 +2,7 @@ package com.yourssu.assignmentblog.global.auth.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.auth.dto.request.AuthResponseDto
+import com.yourssu.assignmentblog.global.auth.dto.response.AuthResponseDto
 import com.yourssu.assignmentblog.global.auth.jwt.JwtTokenManager
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UserDetails

@@ -3,7 +3,7 @@ package com.yourssu.assignmentblog.global.auth.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.auth.dto.request.AuthResponseDto
+import com.yourssu.assignmentblog.global.auth.dto.response.AuthResponseDto
 import com.yourssu.assignmentblog.global.auth.dto.response.AuthenticationFailDto
 import com.yourssu.assignmentblog.global.auth.jwt.JwtTokenManager
 import com.yourssu.assignmentblog.global.auth.jwt.ReIssuedTokens
