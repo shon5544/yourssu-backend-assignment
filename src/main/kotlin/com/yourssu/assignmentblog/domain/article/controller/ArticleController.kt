@@ -1,6 +1,6 @@
 package com.yourssu.assignmentblog.domain.article.controller
 
-import com.yourssu.assignmentblog.domain.article.dto.request.ArticleDeleteRequestDto
+import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
 import com.yourssu.assignmentblog.domain.article.service.ArticleService
@@ -44,10 +44,10 @@ class ArticleController(
 
     @DeleteMapping("/delete/{articleId}")
     fun delete(
-        @RequestBody @Valid articleDeleteRequestDto: ArticleDeleteRequestDto,
+        @RequestBody @Valid deleteRequestDto: DeleteRequestDto,
         @PathVariable articleId: Long
     ): ResponseEntity<Void> {
-        articleService.delete(articleId, articleDeleteRequestDto, RequestURI.ARTICLE + "/delete/$articleId")
+        articleService.delete(articleId, deleteRequestDto, RequestURI.ARTICLE + "/delete/$articleId")
 
         return ResponseEntity.ok().build()
     }

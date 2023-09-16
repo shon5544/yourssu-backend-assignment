@@ -1,7 +1,7 @@
 package com.yourssu.assignmentblog.domain.comment.service
 
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
-import com.yourssu.assignmentblog.domain.comment.dto.request.CommentDeleteRequestDto
+import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.response.CommentWriteResponseDto
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
@@ -94,7 +94,8 @@ class CommentService(
     fun delete(
         commentId: Long,
         currentURI: String,
-        requestDto: CommentDeleteRequestDto) {
+        requestDto: DeleteRequestDto
+    ) {
 
         val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
 

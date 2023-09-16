@@ -1,7 +1,7 @@
 package com.yourssu.assignmentblog.domain.user.controller
 
 import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
-import com.yourssu.assignmentblog.domain.user.dto.request.WithdrawRequestDto
+import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.user.dto.response.SignupResponseDto
 import com.yourssu.assignmentblog.domain.user.service.UserService
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
@@ -27,7 +27,7 @@ class UserController(
 
     @DeleteMapping("/withdraw")
     fun withdraw(
-        @RequestBody @Valid withDrawRequestDto: WithdrawRequestDto,
+        @RequestBody @Valid withDrawRequestDto: DeleteRequestDto,
     ): ResponseEntity<Void> {
 
         userService.withdraw(

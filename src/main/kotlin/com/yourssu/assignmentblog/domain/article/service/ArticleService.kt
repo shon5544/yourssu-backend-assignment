@@ -1,7 +1,7 @@
 package com.yourssu.assignmentblog.domain.article.service
 
 import com.yourssu.assignmentblog.domain.article.domain.Article
-import com.yourssu.assignmentblog.domain.article.dto.request.ArticleDeleteRequestDto
+import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
@@ -80,7 +80,7 @@ class ArticleService(
     @Transactional
     fun delete(
         articleId: Long,
-        requestDto: ArticleDeleteRequestDto,
+        requestDto: DeleteRequestDto,
         currentURI: String) {
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"

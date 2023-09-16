@@ -1,6 +1,6 @@
 package com.yourssu.assignmentblog.domain.comment.controller
 
-import com.yourssu.assignmentblog.domain.comment.dto.request.CommentDeleteRequestDto
+import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.response.CommentWriteResponseDto
 import com.yourssu.assignmentblog.domain.comment.service.CommentService
@@ -49,14 +49,14 @@ class CommentController(
 
     @DeleteMapping("/delete/{commentId}")
     fun delete(
-        @RequestBody @Valid commentDeleteRequestDto: CommentDeleteRequestDto,
+        @RequestBody @Valid deleteRequestDto: DeleteRequestDto,
         @PathVariable commentId: Long
     ): ResponseEntity<Void> {
 
         commentService.delete(
             commentId = commentId,
             currentURI = RequestURI.COMMENT,
-            requestDto = commentDeleteRequestDto
+            requestDto = deleteRequestDto
         )
 
         return ResponseEntity.ok().build()

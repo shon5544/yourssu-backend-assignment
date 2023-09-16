@@ -2,7 +2,7 @@ package com.yourssu.assignmentblog.domain.user.service
 
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
-import com.yourssu.assignmentblog.domain.user.dto.request.WithdrawRequestDto
+import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.user.dto.response.SignupResponseDto
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
@@ -32,7 +32,7 @@ class UserService(
 
     @Transactional
     fun withdraw(
-        requestDto: WithdrawRequestDto,
+        requestDto: DeleteRequestDto,
         currentURI: String
     ) {
         val failedTargetText = "${FailedTargetType.USER} ${FailedMethod.WITHDRAW}"
