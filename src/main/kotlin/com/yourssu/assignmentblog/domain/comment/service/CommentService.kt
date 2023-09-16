@@ -3,7 +3,7 @@ package com.yourssu.assignmentblog.domain.comment.service
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentRequestDto
-import com.yourssu.assignmentblog.domain.comment.dto.response.CommentWriteResponseDto
+import com.yourssu.assignmentblog.domain.comment.dto.response.CommentResponseDto
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
@@ -23,7 +23,7 @@ class CommentService(
     fun write(
         articleId: Long,
         currentURI: String,
-        requestDto: CommentRequestDto): CommentWriteResponseDto {
+        requestDto: CommentRequestDto): CommentResponseDto {
 
         val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}"
 
@@ -46,7 +46,7 @@ class CommentService(
             article = article
         )
 
-        return CommentWriteResponseDto(
+        return CommentResponseDto(
             comment = commentRepository.save(comment),
             email = user.email
         )
@@ -58,7 +58,7 @@ class CommentService(
         commentId: Long,
         currentURI: String,
         requestDto: CommentRequestDto
-    ): CommentWriteResponseDto {
+    ): CommentResponseDto {
 
         val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}"
 
@@ -84,7 +84,7 @@ class CommentService(
 
         comment.content = requestDto.content
 
-        return CommentWriteResponseDto(
+        return CommentResponseDto(
             comment = comment,
             email = user.email
         )

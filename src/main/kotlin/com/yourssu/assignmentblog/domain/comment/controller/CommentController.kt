@@ -2,7 +2,7 @@ package com.yourssu.assignmentblog.domain.comment.controller
 
 import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentRequestDto
-import com.yourssu.assignmentblog.domain.comment.dto.response.CommentWriteResponseDto
+import com.yourssu.assignmentblog.domain.comment.dto.response.CommentResponseDto
 import com.yourssu.assignmentblog.domain.comment.service.CommentService
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import org.springframework.http.ResponseEntity
@@ -26,7 +26,7 @@ class CommentController(
     fun write(
         @RequestBody @Valid commentRequestDto: CommentRequestDto,
         @PathVariable articleId: Long
-    ): CommentWriteResponseDto {
+    ): CommentResponseDto {
         return commentService.write(
             articleId = articleId,
             currentURI = RequestURI.COMMENT + "/write",
@@ -38,7 +38,7 @@ class CommentController(
         @RequestBody @Valid commentRequestDto: CommentRequestDto,
         @RequestParam(name = "article") articleId: Long,
         @RequestParam(name = "comment") commentId: Long
-    ): CommentWriteResponseDto {
+    ): CommentResponseDto {
         return commentService.edit(
             articleId = articleId,
             commentId = commentId,
