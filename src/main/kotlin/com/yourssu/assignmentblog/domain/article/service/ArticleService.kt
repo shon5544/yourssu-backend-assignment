@@ -22,11 +22,13 @@ class ArticleService(
     @Transactional
     fun write(requestDto: ArticleWriteRequestDto, currentURI: String): ArticleWriteResponseDto {
 
+        val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}"
+
         val user = existenceChecker.checkUser(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
-            failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}",
+            failedTargetText = failedTargetText,
         )
 
         val article = Article(
@@ -47,26 +49,26 @@ class ArticleService(
         requestDto: ArticleWriteRequestDto
         ): ArticleWriteResponseDto {
 
-        val failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
+        val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
 
         val user = existenceChecker.checkUser(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
-            failedTarget = failedTarget,
+            failedTargetText = failedTargetText,
         )
 
         val article = existenceChecker.checkArticle(
             articleId = articleId,
             currentURI = currentURI,
-            failedTarget = failedTarget
+            failedTarget = failedTargetText
         )
 
         ownershipChecker.check(
             target = article,
             currentURI = currentURI,
             user = user,
-            failedTarget = failedTarget)
+            failedTarget = failedTargetText)
 
         article.title = requestDto.title
         article.content = requestDto.content
@@ -81,24 +83,24 @@ class ArticleService(
         requestDto: ArticleDeleteRequestDto,
         currentURI: String) {
 
-        val failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"
+        val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"
 
         val user = existenceChecker.checkUser(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
-            failedTarget = failedTarget,
+            failedTargetText = failedTargetText,
         )
 
         val article = existenceChecker.checkArticle(
-            articleId, failedTarget, currentURI
+            articleId, failedTargetText, currentURI
         )
 
         ownershipChecker.check(
             target = article,
             currentURI = currentURI,
             user = user,
-            failedTarget = failedTarget)
+            failedTarget = failedTargetText)
 
         articleRepository.delete(article)
     }

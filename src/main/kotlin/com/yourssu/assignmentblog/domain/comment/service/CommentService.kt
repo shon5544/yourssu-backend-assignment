@@ -25,19 +25,19 @@ class CommentService(
         currentURI: String,
         requestDto: CommentWriteRequestDto): CommentWriteResponseDto {
 
-        val failedTarget = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}"
+        val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}"
 
         val user = existenceChecker.checkUser(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
-            failedTarget = failedTarget
+            failedTargetText = failedTargetText
         )
 
         val article = existenceChecker.checkArticle(
             articleId = articleId,
             currentURI = currentURI,
-            failedTarget = failedTarget
+            failedTarget = failedTargetText
         )
 
         val comment = Comment(
@@ -60,18 +60,18 @@ class CommentService(
         requestDto: CommentWriteRequestDto
     ): CommentWriteResponseDto {
 
-        val failedTarget = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}"
+        val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}"
 
         val user = existenceChecker.checkUser(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
-            failedTarget = failedTarget
+            failedTargetText = failedTargetText
         )
 
         val comment = existenceChecker.checkComment(
             commentId = commentId,
-            failedTarget = failedTarget,
+            failedTarget = failedTargetText,
             currentURI = currentURI
         )
 
@@ -89,18 +89,18 @@ class CommentService(
         currentURI: String,
         requestDto: CommentDeleteRequestDto) {
 
-        val failedTarget = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
+        val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
 
         val user = existenceChecker.checkUser(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
-            failedTarget = failedTarget
+            failedTargetText = failedTargetText
         )
 
         val comment = existenceChecker.checkComment(
             commentId =  commentId,
-            failedTarget = failedTarget,
+            failedTarget = failedTargetText,
             currentURI = currentURI
         )
 
@@ -108,7 +108,7 @@ class CommentService(
             target = comment,
             currentURI = currentURI,
             user = user,
-            failedTarget = failedTarget
+            failedTarget = failedTargetText
         )
 
         commentRepository.delete(comment)
