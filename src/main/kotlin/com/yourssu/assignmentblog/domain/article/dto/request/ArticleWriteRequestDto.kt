@@ -1,18 +1,18 @@
 package com.yourssu.assignmentblog.domain.article.dto.request
 
 import javax.validation.constraints.Email
-import javax.validation.constraints.NotNull
+import javax.validation.constraints.NotBlank
 
 data class ArticleWriteRequestDto(
-    @field:Email
+    @field: Email
     val email: String = "",
 
-    @field:NotNull
+    @field: NotBlank
     val password: String = "",
 
-    @field:NotNull
+    @field: NotBlank
     val title: String = "",
 
-    @field:NotNull
+    @field: NotBlank
     val content: String = ""
 )
