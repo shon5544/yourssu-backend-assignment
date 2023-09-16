@@ -7,7 +7,7 @@ import com.yourssu.assignmentblog.domain.comment.dto.request.CommentWriteRequest
 import com.yourssu.assignmentblog.domain.comment.dto.response.CommentWriteResponseDto
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.common.exception.CustomException
+import com.yourssu.assignmentblog.global.error.exception.CustomException
 import org.springframework.http.HttpStatus
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service

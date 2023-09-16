@@ -1,4 +1,4 @@
-package com.yourssu.assignmentblog.global.common.exception
+package com.yourssu.assignmentblog.global.error.exception
 
 import org.springframework.http.HttpStatus
 
