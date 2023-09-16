@@ -37,7 +37,7 @@ class CommentService(
         val article = existenceChecker.checkArticle(
             articleId = articleId,
             currentURI = currentURI,
-            failedTarget = failedTargetText
+            failedTargetText = failedTargetText
         )
 
         val comment = Comment(
@@ -69,6 +69,12 @@ class CommentService(
             failedTargetText = failedTargetText
         )
 
+        existenceChecker.checkArticle(
+            articleId = articleId,
+            failedTargetText = failedTargetText,
+            currentURI = currentURI
+        )
+
         val comment = existenceChecker.checkComment(
             commentId = commentId,
             failedTarget = failedTargetText,
@@ -92,6 +98,7 @@ class CommentService(
 
     @Transactional
     fun delete(
+        articleId: Long,
         commentId: Long,
         currentURI: String,
         requestDto: DeleteRequestDto
@@ -104,6 +111,12 @@ class CommentService(
             email = requestDto.email,
             password = requestDto.password,
             failedTargetText = failedTargetText
+        )
+
+        existenceChecker.checkArticle(
+            articleId = articleId,
+            failedTargetText = failedTargetText,
+            currentURI = currentURI
         )
 
         val comment = existenceChecker.checkComment(
