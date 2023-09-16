@@ -6,7 +6,7 @@ import com.yourssu.assignmentblog.domain.article.dto.request.ArticleWriteRequest
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
-import com.yourssu.assignmentblog.global.common.domain.UserChecker
+import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.enums.FailedMethod
 import com.yourssu.assignmentblog.global.common.enums.FailedTargetType
 import org.springframework.stereotype.Service
@@ -15,14 +15,14 @@ import javax.transaction.Transactional
 @Service
 class ArticleService(
     private val articleRepository: ArticleRepository,
-    private val userChecker: UserChecker,
+    private val existenceChecker: ExistenceChecker,
     private val ownershipChecker: OwnershipChecker
 ) {
 
     @Transactional
     fun write(requestDto: ArticleWriteRequestDto, currentURI: String): ArticleWriteResponseDto {
 
-        val user = userChecker.check(
+        val user = existenceChecker.checkUser(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
@@ -47,19 +47,26 @@ class ArticleService(
         requestDto: ArticleWriteRequestDto
         ): ArticleWriteResponseDto {
 
-        val user = userChecker.check(
+        val failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
+
+        val user = existenceChecker.checkUser(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
-            failedTarget = FailedTargetType.ARTICLE,
+            failedTarget = failedTarget,
         )
 
-        val article = ownershipChecker.check(
-            id = articleId,
+        val article = existenceChecker.checkArticle(
+            articleId = articleId,
+            currentURI = currentURI,
+            failedTarget = failedTarget
+        )
+
+        ownershipChecker.check(
+            target = article,
             currentURI = currentURI,
             user = user,
-            failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
-        ) as Article
+            failedTarget = failedTarget)
 
         article.title = requestDto.title
         article.content = requestDto.content
@@ -74,19 +81,24 @@ class ArticleService(
         requestDto: ArticleDeleteRequestDto,
         currentURI: String) {
 
-        val user = userChecker.check(
+        val failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"
+
+        val user = existenceChecker.checkUser(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
-            failedTarget = FailedTargetType.ARTICLE,
+            failedTarget = failedTarget,
         )
 
-        val article = ownershipChecker.check(
-            id = articleId,
+        val article = existenceChecker.checkArticle(
+            articleId, failedTarget, currentURI
+        )
+
+        ownershipChecker.check(
+            target = article,
             currentURI = currentURI,
             user = user,
-            failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"
-        ) as Article
+            failedTarget = failedTarget)
 
         articleRepository.delete(article)
     }
