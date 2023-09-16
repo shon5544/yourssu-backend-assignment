@@ -2,7 +2,7 @@ package com.yourssu.assignmentblog.domain.article.service
 
 import com.yourssu.assignmentblog.domain.article.domain.Article
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleDeleteRequestDto
-import com.yourssu.assignmentblog.domain.article.dto.request.ArticleWriteRequestDto
+import com.yourssu.assignmentblog.domain.article.dto.request.ArticleRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
@@ -20,7 +20,7 @@ class ArticleService(
 ) {
 
     @Transactional
-    fun write(requestDto: ArticleWriteRequestDto, currentURI: String): ArticleWriteResponseDto {
+    fun write(requestDto: ArticleRequestDto, currentURI: String): ArticleWriteResponseDto {
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}"
 
@@ -46,7 +46,7 @@ class ArticleService(
     fun edit(
         articleId: Long,
         currentURI: String,
-        requestDto: ArticleWriteRequestDto
+        requestDto: ArticleRequestDto
         ): ArticleWriteResponseDto {
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"

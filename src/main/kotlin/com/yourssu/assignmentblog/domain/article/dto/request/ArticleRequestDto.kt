@@ -3,7 +3,7 @@ package com.yourssu.assignmentblog.domain.article.dto.request
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
-data class ArticleWriteRequestDto(
+data class ArticleRequestDto(
     @field: Email(message = "Email은 누락되면 안 됩니다.")
     val email: String = "",
 
