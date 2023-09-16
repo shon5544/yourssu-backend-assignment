@@ -22,19 +22,19 @@ class ExistenceChecker(
         currentURI: String,
         email: String,
         password: String,
-        failedTarget: String,
+        failedTargetText: String,
     ): User {
         val user = (userRepository.findByEmail(email)
             ?: throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
-                message = "$failedTarget 실패: 전달받은 email에 해당하는 유저가 없습니다.",
+                message = "$failedTargetText 실패: 전달받은 email에 해당하는 유저가 없습니다.",
                 requestURI = currentURI
             ))
 
         if (!passwordEncoder.matches(password, user.password)) {
             throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
-                message = "$failedTarget 실패: 비밀번호가 일치하지 않습니다.",
+                message = "$failedTargetText 실패: 비밀번호가 일치하지 않습니다.",
                 requestURI = currentURI
             )
         }
