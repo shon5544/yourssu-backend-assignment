@@ -75,6 +75,13 @@ class CommentService(
             currentURI = currentURI
         )
 
+        ownershipChecker.check(
+            target = comment,
+            currentURI = currentURI,
+            user = user,
+            failedTargetText = failedTargetText
+        )
+
         comment.content = requestDto.content
 
         return CommentWriteResponseDto(
@@ -108,7 +115,7 @@ class CommentService(
             target = comment,
             currentURI = currentURI,
             user = user,
-            failedTarget = failedTargetText
+            failedTargetText = failedTargetText
         )
 
         commentRepository.delete(comment)

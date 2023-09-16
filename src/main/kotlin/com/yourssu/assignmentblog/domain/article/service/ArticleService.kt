@@ -68,7 +68,7 @@ class ArticleService(
             target = article,
             currentURI = currentURI,
             user = user,
-            failedTarget = failedTargetText)
+            failedTargetText = failedTargetText)
 
         article.title = requestDto.title
         article.content = requestDto.content
@@ -100,7 +100,7 @@ class ArticleService(
             target = article,
             currentURI = currentURI,
             user = user,
-            failedTarget = failedTargetText)
+            failedTargetText = failedTargetText)
 
         articleRepository.delete(article)
     }
