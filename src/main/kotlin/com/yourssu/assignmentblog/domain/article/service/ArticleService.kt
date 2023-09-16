@@ -5,36 +5,29 @@ import com.yourssu.assignmentblog.domain.article.dto.request.ArticleDeleteReques
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleWriteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
-import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.error.exception.CustomException
-import org.springframework.http.HttpStatus
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
+import com.yourssu.assignmentblog.global.common.domain.UserChecker
+import com.yourssu.assignmentblog.global.common.enums.FailedMethod
+import com.yourssu.assignmentblog.global.common.enums.FailedTargetType
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
 @Service
 class ArticleService(
-    private val userRepository: UserRepository,
     private val articleRepository: ArticleRepository,
-    private val passwordEncoder: BCryptPasswordEncoder
+    private val userChecker: UserChecker,
+    private val ownershipChecker: OwnershipChecker
 ) {
 
     @Transactional
     fun write(requestDto: ArticleWriteRequestDto, currentURI: String): ArticleWriteResponseDto {
-        val user = (userRepository.findByEmail(requestDto.email)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 작성 실패: 해당 email에 해당하는 유저가 없습니다.",
-                requestURI = currentURI
-            ))
 
-        if (!passwordEncoder.matches(requestDto.password, user.password)) {
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 작성 실패: 비밀번호가 일치하지 않습니다.",
-                requestURI = currentURI
-            )
-        }
+        val user = userChecker.check(
+            currentURI = currentURI,
+            email = requestDto.email,
+            password = requestDto.password,
+            failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}",
+        )
 
         val article = Article(
             content = requestDto.content,
@@ -53,40 +46,26 @@ class ArticleService(
         currentURI: String,
         requestDto: ArticleWriteRequestDto
         ): ArticleWriteResponseDto {
-        val user = (userRepository.findByEmail(requestDto.email)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 수정 실패: 해당 email에 해당하는 유저가 없습니다.",
-                requestURI = currentURI
-            ))
 
-        if (!passwordEncoder.matches(requestDto.password, user.password)) {
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 수정 실패: 비밀번호가 일치하지 않습니다.",
-                requestURI = currentURI
-            )
-        }
+        val user = userChecker.check(
+            currentURI = currentURI,
+            email = requestDto.email,
+            password = requestDto.password,
+            failedTarget = FailedTargetType.ARTICLE,
+        )
 
-        val article = articleRepository.findById(articleId)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 수정 실패: 해당 Id를 가진 게시글이 없습니다.",
-                requestURI = currentURI
-            )
-
-        if (article.user!! != user)
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 수정 실패: 해당 게시글은 해당 유저의 소유가 아닙니다.",
-                requestURI = currentURI
-            )
+        val article = ownershipChecker.check(
+            id = articleId,
+            currentURI = currentURI,
+            user = user,
+            failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
+        ) as Article
 
         article.title = requestDto.title
         article.content = requestDto.content
 
         return ArticleWriteResponseDto(
-            article, article.user.email)
+            article, article.user!!.email)
     }
 
     @Transactional
@@ -94,34 +73,20 @@ class ArticleService(
         articleId: Long,
         requestDto: ArticleDeleteRequestDto,
         currentURI: String) {
-        val user = (userRepository.findByEmail(requestDto.email)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 삭제 실패: 해당 email에 해당하는 유저가 없습니다.",
-                requestURI = currentURI
-            ))
 
-        if (!passwordEncoder.matches(requestDto.password, user.password)) {
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 삭제 실패: 비밀번호가 일치하지 않습니다.",
-                requestURI = currentURI
-            )
-        }
+        val user = userChecker.check(
+            currentURI = currentURI,
+            email = requestDto.email,
+            password = requestDto.password,
+            failedTarget = FailedTargetType.ARTICLE,
+        )
 
-        val article = articleRepository.findById(articleId)
-            ?: throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 삭제 실패: 해당 Id를 가진 게시글이 없습니다.",
-                requestURI = currentURI
-            )
-
-        if (article.user!! != user)
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "게시글 삭제 실패: 해당 게시글은 해당 유저의 소유가 아닙니다.",
-                requestURI = currentURI
-            )
+        val article = ownershipChecker.check(
+            id = articleId,
+            currentURI = currentURI,
+            user = user,
+            failedTarget = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"
+        ) as Article
 
         articleRepository.delete(article)
     }
