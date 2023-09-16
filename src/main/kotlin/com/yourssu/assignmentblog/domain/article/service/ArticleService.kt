@@ -3,7 +3,7 @@ package com.yourssu.assignmentblog.domain.article.service
 import com.yourssu.assignmentblog.domain.article.domain.Article
 import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleRequestDto
-import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
+import com.yourssu.assignmentblog.domain.article.dto.response.ArticleResponseDto
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
@@ -20,7 +20,7 @@ class ArticleService(
 ) {
 
     @Transactional
-    fun write(requestDto: ArticleRequestDto, currentURI: String): ArticleWriteResponseDto {
+    fun write(requestDto: ArticleRequestDto, currentURI: String): ArticleResponseDto {
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}"
 
@@ -37,7 +37,7 @@ class ArticleService(
             user = user
         )
 
-        return ArticleWriteResponseDto(
+        return ArticleResponseDto(
             articleRepository.save(article),
             user.email)
     }
@@ -47,7 +47,7 @@ class ArticleService(
         articleId: Long,
         currentURI: String,
         requestDto: ArticleRequestDto
-        ): ArticleWriteResponseDto {
+        ): ArticleResponseDto {
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
 
@@ -73,7 +73,7 @@ class ArticleService(
         article.title = requestDto.title
         article.content = requestDto.content
 
-        return ArticleWriteResponseDto(
+        return ArticleResponseDto(
             article, article.user!!.email)
     }
 

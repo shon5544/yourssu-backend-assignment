@@ -2,7 +2,7 @@ package com.yourssu.assignmentblog.domain.article.controller
 
 import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleRequestDto
-import com.yourssu.assignmentblog.domain.article.dto.response.ArticleWriteResponseDto
+import com.yourssu.assignmentblog.domain.article.dto.response.ArticleResponseDto
 import com.yourssu.assignmentblog.domain.article.service.ArticleService
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import org.springframework.http.ResponseEntity
@@ -27,7 +27,7 @@ class ArticleController(
 
         // 현재 명세에서는 jwt가 필요없겠다
         // @AuthenticationPrincipal customUserDetails: CustomUserDetails
-    ): ArticleWriteResponseDto {
+    ): ArticleResponseDto {
         return articleService.write(requestDto, RequestURI.ARTICLE + "/write")
     }
 
@@ -35,7 +35,7 @@ class ArticleController(
     fun edit(
         @RequestBody @Valid articleRequestDto: ArticleRequestDto,
         @PathVariable articleId: Long
-    ): ArticleWriteResponseDto {
+    ): ArticleResponseDto {
         return articleService.edit(
             articleId = articleId,
             currentURI = RequestURI.ARTICLE + "/edit/$articleId",

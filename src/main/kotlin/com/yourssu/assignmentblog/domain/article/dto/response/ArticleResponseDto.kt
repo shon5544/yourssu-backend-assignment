@@ -2,7 +2,7 @@ package com.yourssu.assignmentblog.domain.article.dto.response
 
 import com.yourssu.assignmentblog.domain.article.domain.Article
 
-data class ArticleWriteResponseDto(
+data class ArticleResponseDto(
     var articleId: Long? = null,
     var email: String = "",
     var title: String = "",
