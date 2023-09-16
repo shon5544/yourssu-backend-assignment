@@ -23,13 +23,7 @@ class UserService(
     fun signup(requestDto: SignupRequestDto, currentURI: String): SignupResponseDto {
         requestDto.password = passwordEncoder.encode(requestDto.password)
 
-        val failedTargetText = "${FailedTargetType.USER} ${FailedMethod.SIGNUP}"
-
-        existenceChecker.checkUserEmail(
-            email = requestDto.email,
-            failedTargetText = failedTargetText,
-            currentURI = currentURI
-        )
+        existenceChecker.checkUserEmailNotExist(requestDto.email, currentURI)
 
         val user = User(requestDto)
 
