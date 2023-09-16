@@ -24,7 +24,7 @@ class ExistenceChecker(
         password: String,
         failedTargetText: String,
     ): User {
-        val user = checkUserEmail(
+        val user = checkUserEmailExist(
             email = email,
             failedTargetText = failedTargetText,
             currentURI = currentURI
@@ -40,7 +40,7 @@ class ExistenceChecker(
         return user
     }
 
-    fun checkUserEmail(
+    fun checkUserEmailExist(
         email: String,
         failedTargetText: String,
         currentURI: String
@@ -66,6 +66,19 @@ class ExistenceChecker(
                 requestURI = currentURI
             )
         }
+    }
+
+    fun checkUserEmailNotExist(
+        email: String,
+        currentURI: String
+    ) {
+        if(userRepository.findByEmail(email) != null)
+            throw CustomException(
+                status = HttpStatus.BAD_REQUEST,
+                // 유저가 존재할 때 Exception을 날리는 상황은 회원가입 말고는 없음.
+                message = "회원 가입 실패: 이미 존재하는 유저입니다.",
+                requestURI = currentURI
+            )
     }
 
     fun checkArticle(
