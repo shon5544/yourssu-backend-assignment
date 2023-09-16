@@ -18,19 +18,47 @@ class ExistenceChecker(
     private val passwordEncoder: BCryptPasswordEncoder,
     private val commentRepository: CommentRepository
 ) {
-    fun checkUser(
+    fun checkUserAccount(
         currentURI: String,
         email: String,
         password: String,
         failedTargetText: String,
     ): User {
-        val user = (userRepository.findByEmail(email)
+        val user = checkUserEmail(
+            email = email,
+            failedTargetText = failedTargetText,
+            currentURI = currentURI
+        )
+
+        checkUserPassword(
+            password = password,
+            user = user,
+            failedTargetText = failedTargetText,
+            currentURI = currentURI
+        )
+
+        return user
+    }
+
+    fun checkUserEmail(
+        email: String,
+        failedTargetText: String,
+        currentURI: String
+    ): User {
+        return (userRepository.findByEmail(email)
             ?: throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
                 message = "$failedTargetText 실패: 전달받은 email에 해당하는 유저가 없습니다.",
                 requestURI = currentURI
             ))
+    }
 
+    fun checkUserPassword(
+        password: String,
+        user: User,
+        failedTargetText: String,
+        currentURI: String
+    ) {
         if (!passwordEncoder.matches(password, user.password)) {
             throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
@@ -38,8 +66,6 @@ class ExistenceChecker(
                 requestURI = currentURI
             )
         }
-
-        return user
     }
 
     fun checkArticle(
