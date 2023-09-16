@@ -24,7 +24,7 @@ class ArticleService(
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}"
 
-        val user = existenceChecker.checkUser(
+        val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
@@ -51,7 +51,7 @@ class ArticleService(
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
 
-        val user = existenceChecker.checkUser(
+        val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
@@ -85,7 +85,7 @@ class ArticleService(
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"
 
-        val user = existenceChecker.checkUser(
+        val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,

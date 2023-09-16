@@ -27,7 +27,7 @@ class CommentService(
 
         val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}"
 
-        val user = existenceChecker.checkUser(
+        val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
@@ -62,7 +62,7 @@ class CommentService(
 
         val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}"
 
-        val user = existenceChecker.checkUser(
+        val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
@@ -91,7 +91,7 @@ class CommentService(
 
         val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
 
-        val user = existenceChecker.checkUser(
+        val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
             email = requestDto.email,
             password = requestDto.password,
