@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.util.StreamUtils
 import java.nio.charset.StandardCharsets
 import javax.servlet.http.HttpServletRequest
@@ -19,8 +20,11 @@ class CustomLoginFilter(
     private val contentTypes: List<String> = arrayListOf(
         "application/json",
         "application/json; charset=UTF-8",
-        "application/json;charset=UTF-8")
-): AbstractAuthenticationProcessingFilter(RequestURI.USER + "/login") {
+        "application/json;charset=UTF-8"),
+
+    DEFAULT_LOGIN_PATH_REQUEST_MATCHER: AntPathRequestMatcher =
+        AntPathRequestMatcher(RequestURI.USER + "/login", "POST")
+): AbstractAuthenticationProcessingFilter(DEFAULT_LOGIN_PATH_REQUEST_MATCHER) {
 
     override fun attemptAuthentication(
         request: HttpServletRequest,
