@@ -35,8 +35,4 @@ class User(
         this.username = signupRequestDto.username
         this.role = Role.ROLE_USER
     }
-
-    fun updateRefreshToken(refreshToken: String) {
-        this.refreshToken = refreshToken
-    }
 }

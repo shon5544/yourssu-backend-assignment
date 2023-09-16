@@ -112,7 +112,7 @@ class JwtTokenManager(
             else throw EntityNotFoundException("토큰 재발급 실패: 해당 refresh token을 가진 User가 없습니다. 일반적으로 일어나기 힘든 상황입니다.")
         val newRefreshToken: String = createRefreshToken()
 
-        user.updateRefreshToken(refreshToken)
+        user.refreshToken = refreshToken
 
         return ReIssuedTokens(newAccessToken, newRefreshToken)
     }
