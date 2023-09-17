@@ -24,5 +24,5 @@ class Article(
     override val user: User? = null,
 
     @OneToMany(mappedBy = "article", cascade = [CascadeType.REMOVE])
-    val articleList: List<Comment> = ArrayList()
+    val commentList: List<Comment> = ArrayList()
 ) : BaseCreateAndUpdateTimeEntity(), EntityWithOwnership

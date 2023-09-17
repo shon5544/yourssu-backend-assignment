@@ -3,7 +3,7 @@ package com.yourssu.assignmentblog.global.auth.jwt
 import com.yourssu.assignmentblog.global.common.stub.TestCustomLocalDateTime
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.domain.user.repository.impl.TestUserRepository
+import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
 import com.yourssu.assignmentblog.global.common.localDateTImeHolder.CustomLocalDateTime
 import com.yourssu.assignmentblog.global.common.stub.StubHttpServletRequest
 import org.junit.jupiter.api.Assertions.*
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-@DisplayName("JwtTokenManager 클래스")
+@DisplayName("JwtTokenManager 테스트")
 internal class JwtTokenManagerTest {
 
     companion object {
