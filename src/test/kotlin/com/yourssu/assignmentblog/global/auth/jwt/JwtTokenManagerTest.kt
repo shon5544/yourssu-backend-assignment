@@ -3,7 +3,7 @@ package com.yourssu.assignmentblog.global.auth.jwt
 import com.yourssu.assignmentblog.global.common.stub.TestCustomLocalDateTime
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.domain.user.repository.stub.TestUserRepository
+import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
 import com.yourssu.assignmentblog.global.common.localDateTImeHolder.CustomLocalDateTime
 import com.yourssu.assignmentblog.global.common.stub.StubHttpServletRequest
 import org.junit.jupiter.api.Assertions.*

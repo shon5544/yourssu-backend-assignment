@@ -7,9 +7,9 @@ import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.domain.user.repository.stub.TestArticleRepository
-import com.yourssu.assignmentblog.domain.user.repository.stub.TestCommentRepository
-import com.yourssu.assignmentblog.domain.user.repository.stub.TestUserRepository
+import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
+import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
+import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
 import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto

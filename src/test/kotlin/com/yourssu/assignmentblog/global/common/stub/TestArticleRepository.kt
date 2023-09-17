@@ -1,4 +1,4 @@
-package com.yourssu.assignmentblog.domain.user.repository.stub
+package com.yourssu.assignmentblog.global.common.stub
 
 import com.yourssu.assignmentblog.domain.article.domain.Article
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
