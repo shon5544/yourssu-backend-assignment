@@ -50,7 +50,7 @@ internal class ArticleServiceTest {
 
         private lateinit var existenceChecker: ExistenceChecker
 
-        lateinit var articleService: ArticleService
+        private lateinit var articleService: ArticleService
 
         const val WRITE = "${RequestURI.ARTICLE}/write"
         const val EDIT = "${RequestURI.ARTICLE}/edit"
