@@ -1,4 +1,4 @@
-package com.yourssu.assignmentblog.global.auth.dto.request
+package com.yourssu.assignmentblog.global.auth.dto.response
 
 data class AuthResponseDto(
     val success: Boolean = false,
