@@ -4,15 +4,19 @@ import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
 
 class TestCommentRepository: CommentRepository {
+
+    private var comment: Comment? = null
+
     override fun findById(id: Long): Comment? {
-        TODO("Not yet implemented")
+        return comment
     }
 
     override fun save(comment: Comment): Comment {
-        TODO("Not yet implemented")
+        this.comment = comment
+        return comment
     }
 
     override fun delete(comment: Comment) {
-        TODO("Not yet implemented")
+        return
     }
 }
