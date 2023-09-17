@@ -306,7 +306,7 @@ internal class ArticleServiceTest {
 
                     @Test
                     @DisplayName("CustomException이 발생된다")
-                    fun it_return_articleResponseDto() {
+                    fun it_throw_customException() {
 
                         articleRepository.save(articleForOwnershipCheck)
 
@@ -447,7 +447,7 @@ internal class ArticleServiceTest {
 
                         @Test
                         @DisplayName("CustomException이 발생된다")
-                        fun it_return_articleResponseDto() {
+                        fun it_throw_customException() {
 
                             articleRepository.save(articleForOwnershipCheck)
 
@@ -474,7 +474,7 @@ internal class ArticleServiceTest {
 
                         @Test
                         @DisplayName("어떠한 exception 없이 성공적으로 함수가 실행된다.")
-                        fun it_return_articleResponseDto() {
+                        fun it_works_well() {
 
                             // given
                             val requestDto = DeleteRequestDto(
