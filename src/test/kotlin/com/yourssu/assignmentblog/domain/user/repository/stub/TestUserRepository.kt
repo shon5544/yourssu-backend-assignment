@@ -5,14 +5,9 @@ import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 
 class TestUserRepository: UserRepository {
 
-    private val user: User = User(
-        id = 1,
-        email = "yourssu@gmail.com",
-        password = "asdj",
-        username = "beomsu son"
-    )
+    private var user: User? = null
 
-    override fun findByEmail(email: String): User {
+    override fun findByEmail(email: String): User? {
         return user
     }
 
@@ -28,6 +23,7 @@ class TestUserRepository: UserRepository {
     }
 
     override fun save(user: User): User {
+        this.user = user
         return user
     }
 
