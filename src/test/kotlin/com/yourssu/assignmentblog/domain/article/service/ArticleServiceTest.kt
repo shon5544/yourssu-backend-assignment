@@ -117,6 +117,8 @@ internal class ArticleServiceTest {
                 @Test
                 @DisplayName("CustomException이 발생된다.")
                 fun it_throw_CustomException() {
+
+                    // given
                     val requestDto = ArticleRequestDto(
                         email = "beomsu@urssu.kr",
                         password = "asdf",
@@ -124,6 +126,8 @@ internal class ArticleServiceTest {
                         content = "content"
                     )
 
+
+                    // when-then
                     assertThrows(CustomException::class.java) {
                         articleService.write(
                             requestDto = requestDto,
@@ -140,6 +144,8 @@ internal class ArticleServiceTest {
                 @Test
                 @DisplayName("CustomException이 발생된다.")
                 fun it_throw_CustomException() {
+
+                    // given
                     val requestDto = ArticleRequestDto(
                         email = "yourssu@gmail.com",
                         password = "ffffff",
@@ -147,6 +153,7 @@ internal class ArticleServiceTest {
                         content = "content"
                     )
 
+                    // when-then
                     assertThrows(CustomException::class.java) {
                         articleService.write(
                             requestDto = requestDto,
@@ -176,6 +183,7 @@ internal class ArticleServiceTest {
             @DisplayName("ArticleResponseDto를 성공적으로 만들어서 준다.")
             fun it_return_articleResponseDto() {
 
+                // given
                 val requestDto = ArticleRequestDto(
                     email = "yourssu@gmail.com",
                     password = "asdj",
@@ -183,11 +191,13 @@ internal class ArticleServiceTest {
                     content = "content"
                 )
 
+                // when
                 val result = articleService.write(
                     requestDto = requestDto,
                     currentURI = WRITE
                 )
 
+                // then
                 assertEquals(expectedResult, result)
             }
         }
@@ -208,6 +218,8 @@ internal class ArticleServiceTest {
                 @Test
                 @DisplayName("CustomException이 발생된다")
                 fun it_throw_CustomException() {
+
+                    // given
                     val requestDto = ArticleRequestDto(
                         email = "beomsu@urssu.kr",
                         password = "asdf",
@@ -215,6 +227,7 @@ internal class ArticleServiceTest {
                         content = "content"
                     )
 
+                    // when-then
                     assertThrows(CustomException::class.java) {
                         articleService.edit(
                             articleId = 1,
@@ -232,6 +245,8 @@ internal class ArticleServiceTest {
                 @Test
                 @DisplayName("CustomException이 발생된다.")
                 fun it_throw_CustomException() {
+
+                    // given
                     val requestDto = ArticleRequestDto(
                         email = "yourssu@gmail.com",
                         password = "ffffff",
@@ -239,6 +254,7 @@ internal class ArticleServiceTest {
                         content = "content"
                     )
 
+                    // when-then
                     assertThrows(CustomException::class.java) {
                         articleService.edit(
                             articleId = 1,
@@ -294,6 +310,7 @@ internal class ArticleServiceTest {
 
                         articleRepository.save(articleForOwnershipCheck)
 
+                        // given
                         val requestDto = ArticleRequestDto(
                             email = "yourssu@gmail.com",
                             password = "asdj",
@@ -301,6 +318,7 @@ internal class ArticleServiceTest {
                             content = "content"
                         )
 
+                        // when-then
                         assertThrows(CustomException::class.java) {
                             articleService.edit(
                                 articleId = 1,
@@ -319,6 +337,7 @@ internal class ArticleServiceTest {
                     @DisplayName("ArticleResponseDto를 성공적으로 만들어서 준다.")
                     fun it_return_articleResponseDto() {
 
+                        // given
                         val requestDto = ArticleRequestDto(
                             email = "yourssu@gmail.com",
                             password = "asdj",
@@ -326,12 +345,14 @@ internal class ArticleServiceTest {
                             content = "content"
                         )
 
+                        // when
                         val result = articleService.edit(
                             articleId = 1,
                             requestDto = requestDto,
                             currentURI = EDIT
                         )
 
+                        // then
                         assertEquals(expectedResult, result)
                     }
                 }
@@ -353,11 +374,15 @@ internal class ArticleServiceTest {
                     @Test
                     @DisplayName("CustomException이 발생한다")
                     fun it_throw_CustomException() {
+
+                        // given
                         val requestDto = DeleteRequestDto(
                             email = "beomsu@urssu.kr",
                             password = "asdf"
                         )
 
+
+                        // when-then
                         assertThrows(CustomException::class.java) {
                             articleService.delete(
                                 articleId = 1,
@@ -375,11 +400,14 @@ internal class ArticleServiceTest {
                     @Test
                     @DisplayName("CustomException이 발생한다")
                     fun it_throw_CustomException() {
+
+                        // given
                         val requestDto = DeleteRequestDto(
                             email = "yourssu@gmail.com",
                             password = "ffffff"
                         )
 
+                        // when-then
                         assertThrows(CustomException::class.java) {
                             articleService.delete(
                                 articleId = 1,
@@ -423,11 +451,13 @@ internal class ArticleServiceTest {
 
                             articleRepository.save(articleForOwnershipCheck)
 
+                            // given
                             val requestDto = DeleteRequestDto(
                                 email = "yourssu@gmail.com",
                                 password = "asdj",
                             )
 
+                            // when-then
                             assertThrows(CustomException::class.java) {
                                 articleService.delete(
                                     articleId = 1,
@@ -446,11 +476,13 @@ internal class ArticleServiceTest {
                         @DisplayName("어떠한 exception 없이 성공적으로 함수가 실행된다.")
                         fun it_return_articleResponseDto() {
 
+                            // given
                             val requestDto = DeleteRequestDto(
                                 email = "yourssu@gmail.com",
                                 password = "asdj",
                             )
 
+                            // when-then
                             articleService.delete(
                                 articleId = 1,
                                 requestDto = requestDto,
