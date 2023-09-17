@@ -172,11 +172,11 @@ class StubHttpServletRequest: HttpServletRequest {
 
     override fun getHeader(name: String?): String {
         return if(name.equals("Authorization"))
-            "bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImVtYWlsIjoieW91cnNzdUBnbWFpbC5jb20iLCJleHAiOjE2OTQ2MDY3MDB9.V0zUCY1c89tT68yWiDNW6GDRwFGzA1nxLP2P30b8kPk"
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImVtYWlsIjoieW91cnNzdUBnbWFpbC5jb20iLCJleHAiOjE2OTQ2MDY3MDB9.V0zUCY1c89tT68yWiDNW6GDRwFGzA1nxLP2P30b8kPk"
         else if(name.equals("Authorization-no-bearer"))
             "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImVtYWlsIjoieW91cnNzdUBnbWFpbC5jb20iLCJleHAiOjE2OTQ2MDY3MDB9.V0zUCY1c89tT68yWiDNW6GDRwFGzA1nxLP2P30b8kPk"
         else if(name.equals("Authorization-refresh"))
-            "bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSZWZyZXNoVG9rZW4iLCJleHAiOjE2OTQ2MDY3MDB9._bMFe2936dVTmFMvw0hOlpXtq7SCpOArCx6TMNCLtrE"
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSZWZyZXNoVG9rZW4iLCJleHAiOjE2OTQ2MDY3MDB9._bMFe2936dVTmFMvw0hOlpXtq7SCpOArCx6TMNCLtrE"
         else
             "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSZWZyZXNoVG9rZW4iLCJleHAiOjE2OTQ2MDY3MDB9._bMFe2936dVTmFMvw0hOlpXtq7SCpOArCx6TMNCLtrE"
     }
