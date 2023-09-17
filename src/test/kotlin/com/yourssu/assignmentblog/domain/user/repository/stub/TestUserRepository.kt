@@ -1,4 +1,4 @@
-package com.yourssu.assignmentblog.domain.user.repository.impl
+package com.yourssu.assignmentblog.domain.user.repository.stub
 
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
