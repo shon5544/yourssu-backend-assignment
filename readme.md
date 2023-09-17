@@ -5,6 +5,7 @@
 
 ## apis
 > 인수 테스트 통과
+
 > domain 관련 테스트 작성 완료(Repository 제외)
 
 ### 회원 가입
