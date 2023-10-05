@@ -20,6 +20,7 @@ class User(
     var username: String = "",
     var refreshToken: String = "",
 
+    @Enumerated(EnumType.STRING)
     var role: Role? = null,
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
