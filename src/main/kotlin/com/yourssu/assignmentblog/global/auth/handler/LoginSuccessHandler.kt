@@ -41,7 +41,12 @@ class LoginSuccessHandler(
 
         user.refreshToken = refreshToken
 
-        val responseDto = AuthResponseDto(true, "로그인 성공.", accessToken, refreshToken)
+        val responseDto = AuthResponseDto(
+            email = user.email,
+            username = user.username,
+            role = user.role.toString(),
+            accessToken = accessToken,
+            refreshToken = refreshToken)
 
         val result = objectMapper.writeValueAsString(responseDto)
 
