@@ -3,8 +3,8 @@ package com.yourssu.assignmentblog.global.auth.filter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.auth.dto.response.LoginResponseDto
 import com.yourssu.assignmentblog.global.auth.dto.response.AuthenticationFailDto
+import com.yourssu.assignmentblog.global.auth.dto.response.TokenReIssueResponseDto
 import com.yourssu.assignmentblog.global.auth.jwt.JwtTokenManager
 import com.yourssu.assignmentblog.global.auth.jwt.ReIssuedTokens
 import com.yourssu.assignmentblog.global.auth.service.CustomUserDetails
@@ -127,7 +127,7 @@ class JwtAuthenticationFilter(
         accessToken: String,
         refreshToken: String) {
 
-        val responseDto = LoginResponseDto(true, "토큰 재발급 성공.", accessToken, refreshToken)
+        val responseDto = TokenReIssueResponseDto(true, "토큰 재발급 성공.", accessToken, refreshToken)
         val result = objectMapper.writeValueAsString(responseDto)
 
         response.status = HttpServletResponse.SC_BAD_REQUEST
