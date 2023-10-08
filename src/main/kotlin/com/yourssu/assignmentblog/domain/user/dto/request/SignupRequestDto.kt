@@ -11,5 +11,8 @@ data class SignupRequestDto(
     var password: String = "",
 
     @field:NotBlank(message = "username은 누락되면 안 됩니다.")
-    val username: String = ""
+    val username: String = "",
+
+    @field:NotBlank(message = "user의 role은 누락되면 안 됩니다.")
+    val role: String = ""
 )

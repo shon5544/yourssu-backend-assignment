@@ -34,6 +34,6 @@ class User(
         this.email = signupRequestDto.email
         this.password = signupRequestDto.password
         this.username = signupRequestDto.username
-        this.role = Role.ROLE_USER
+        this.role = Role.valueOf(signupRequestDto.role)
     }
 }
