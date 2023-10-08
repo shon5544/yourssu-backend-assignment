@@ -1,6 +1,6 @@
 package com.yourssu.assignmentblog.global.auth.dto.response
 
-data class AuthResponseDto(
+data class LoginResponseDto(
     val email: String = "",
     val username: String = "",
     val role: String = "",
