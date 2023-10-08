@@ -12,7 +12,6 @@ import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
 import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
-import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
@@ -95,7 +94,8 @@ internal class UserControllerTest {
         val requestDto = SignupRequestDto(
             email = "yourssu@gmail.com",
             password = "asdj",
-            username = "beomsu son"
+            username = "beomsu son",
+            role = "USER"
         )
 
         // when

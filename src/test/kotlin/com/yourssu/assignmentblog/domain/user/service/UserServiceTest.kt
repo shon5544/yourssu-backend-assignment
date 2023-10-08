@@ -151,7 +151,8 @@ internal class UserServiceTest {
                 val requestDto = SignupRequestDto(
                     email = "yourssu@gmail.com",
                     password = "asdj",
-                    username = "beomsu son"
+                    username = "beomsu son",
+                    role = "USER"
                 )
 
                 // when
