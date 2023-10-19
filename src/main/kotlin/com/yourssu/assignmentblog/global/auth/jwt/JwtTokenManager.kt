@@ -85,11 +85,7 @@ class JwtTokenManager(
             return if (isTokenValid(token)) token else throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 유효한 토큰이 아닙니다.")
         }
 
-        if (!token.startsWith(BEARER)) {
-            throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 토큰의 형식이 잘못됐습니다.")
-        }
-
-        throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 토큰이 헤더에 포함되어 있지 않습니다.")
+        throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 토큰의 형식이 잘못됐습니다.")
     }
 
     fun isTokenValid(token: String): Boolean {
