@@ -117,7 +117,7 @@ class JwtTokenManager(
         return ReIssuedTokens(newAccessToken, newRefreshToken)
     }
 
-    fun extractEmailFromToken(accessToken: String): String? {
+    fun extractEmailFromToken(accessToken: String): String {
         val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
 
         return try {
@@ -128,7 +128,7 @@ class JwtTokenManager(
                 .body[EMAIL]
                 .toString()
         } catch (e: Exception) {
-            null
+            throw IllegalArgumentException(e.message)
         }
     }
 }
