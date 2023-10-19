@@ -2,6 +2,7 @@ package com.yourssu.assignmentblog.global.util.resolver
 
 import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
 import com.yourssu.assignmentblog.global.auth.jwt.JwtTokenManager
+import com.yourssu.assignmentblog.global.util.annotation.Auth
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.MethodParameter
 import org.springframework.stereotype.Component
@@ -19,7 +20,8 @@ class UserAuthArgumentResolver(
     private val tokenManager: JwtTokenManager
 ): HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean {
-        return parameter.parameterType == AuthInfo::class.java
+        return parameter.parameterType == AuthInfo::class.java &&
+                parameter.hasParameterAnnotation(Auth::class.java)
     }
 
     override fun resolveArgument(
