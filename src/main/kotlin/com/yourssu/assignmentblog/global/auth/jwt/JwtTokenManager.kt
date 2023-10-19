@@ -77,11 +77,11 @@ class JwtTokenManager(
 
 
     fun extractToken(headerName: String, request: HttpServletRequest): String {
-        val token: String? = request.getHeader(headerName)
+        val token: String = request.getHeader(headerName)
 
-        return if (token != null && token.startsWith(BEARER)) {
+        return if (token.startsWith(BEARER)) {
             token.replace(BEARER, "")
-        } else if (token != null && !token.startsWith(BEARER)) {
+        } else if (!token.startsWith(BEARER)) {
             throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 토큰의 형식이 잘못됐습니다.")
         } else {
             throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 토큰이 헤더에 포함되어 있지 않습니다.")
