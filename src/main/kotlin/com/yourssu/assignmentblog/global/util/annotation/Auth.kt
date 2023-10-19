@@ -1,4 +1,4 @@
-package com.yourssu.assignmentblog.global.common.annotation
+package com.yourssu.assignmentblog.global.util.annotation
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
