@@ -6,6 +6,7 @@ import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
 import com.yourssu.assignmentblog.global.common.localDateTImeHolder.CustomLocalDateTime
 import com.yourssu.assignmentblog.global.common.stub.StubHttpServletRequest
+import com.yourssu.assignmentblog.global.common.stub.StubHttpServletResponse
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.DisplayName
@@ -91,7 +92,11 @@ internal class JwtTokenManagerTest {
                 @DisplayName("Access Token이 제대로 추출된다.")
                 fun it_returns_access_token() {
                     val extractedToken =
-                        jwtTokenManager.extractToken("Authorization", StubHttpServletRequest())
+                        jwtTokenManager.extractToken(
+                            "Authorization",
+                            StubHttpServletRequest(),
+                            StubHttpServletResponse()
+                        )
 
                     assertEquals(expectedAccessToken, extractedToken)
                 }
@@ -108,7 +113,11 @@ internal class JwtTokenManagerTest {
                         // 지금 테스트 해보려는건 getHeader 메소드가 아닌,
                         // extractToken이 Bearer 여부를 잘 감지하는 가? 에 관한 것이기 때문에
                         // 헤더는 임의의 테스트 전용 헤더로 넣었습니다.
-                        jwtTokenManager.extractToken("Authorization-no-bearer", StubHttpServletRequest())
+                        jwtTokenManager.extractToken(
+                            "Authorization-no-bearer",
+                            StubHttpServletRequest(),
+                            StubHttpServletResponse()
+                        )
                     }
                 }
             }
@@ -124,7 +133,11 @@ internal class JwtTokenManagerTest {
                 @DisplayName("Refresh Token이 제대로 추출된다.")
                 fun it_returns_refresh_token() {
                     val extractedToken =
-                        jwtTokenManager.extractToken("Authorization-refresh", StubHttpServletRequest())
+                        jwtTokenManager.extractToken(
+                            "Authorization-refresh",
+                            StubHttpServletRequest(),
+                            StubHttpServletResponse()
+                        )
 
                     assertEquals(expectedRefreshToken, extractedToken)
                 }
@@ -141,7 +154,11 @@ internal class JwtTokenManagerTest {
                         // 지금 테스트 해보려는건 getHeader 메소드가 아닌,
                         // extractToken이 Bearer 여부를 잘 감지하는 가? 에 관한 것이기 때문에
                         // 헤더는 임의의 테스트 전용 헤더로 넣었습니다.
-                        jwtTokenManager.extractToken("Authorization-refresh-no-bearer", StubHttpServletRequest())
+                        jwtTokenManager.extractToken(
+                            "Authorization-refresh-no-bearer",
+                            StubHttpServletRequest(),
+                            StubHttpServletResponse()
+                        )
                     }
                 }
             }

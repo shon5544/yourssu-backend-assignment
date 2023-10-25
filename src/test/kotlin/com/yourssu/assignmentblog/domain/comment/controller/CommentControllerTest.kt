@@ -9,9 +9,9 @@ import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
 import com.yourssu.assignmentblog.domain.comment.service.CommentService
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
+import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
-import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
 import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
@@ -69,7 +69,6 @@ internal class CommentControllerTest {
             existenceChecker = ExistenceChecker(
                 userRepository = userRepository,
                 articleRepository = articleRepository,
-                passwordEncoder = passwordEncoder,
                 commentRepository = commentRepository
             )
 
@@ -117,7 +116,6 @@ internal class CommentControllerTest {
         existenceChecker = ExistenceChecker(
             userRepository = userRepository,
             articleRepository = articleRepository,
-            passwordEncoder = passwordEncoder,
             commentRepository = commentRepository
         )
         commentService = CommentService(
@@ -134,15 +132,14 @@ internal class CommentControllerTest {
     fun write() {
         // given
         val requestDto = CommentRequestDto(
-            email = "yourssu@gmail.com",
-            password = "asdj",
             content = "content"
         )
 
         // when
         val result = commentController.write(
             commentRequestDto = requestDto,
-            articleId = 1
+            articleId = 1,
+            authInfo = AuthInfo("yourssu@gmail.com")
         )
 
 
@@ -159,8 +156,6 @@ internal class CommentControllerTest {
     fun edit() {
         // given
         val requestDto = CommentRequestDto(
-            email = "yourssu@gmail.com",
-            password = "asdj",
             content = "content"
         )
 
@@ -168,7 +163,8 @@ internal class CommentControllerTest {
         val result = commentController.edit(
             commentRequestDto = requestDto,
             articleId = 1,
-            commentId = 1
+            commentId = 1,
+            authInfo = AuthInfo("yourssu@gmail.com")
         )
 
         // then
@@ -184,16 +180,12 @@ internal class CommentControllerTest {
     @DisplayName("delete 테스트")
     fun delete() {
         // given
-        val requestDto = DeleteRequestDto(
-            email = "yourssu@gmail.com",
-            password = "asdj"
-        )
 
         // when-then
         commentController.delete(
-            deleteRequestDto = requestDto,
             articleId = 1,
-            commentId = 1
+            commentId = 1,
+            authInfo = AuthInfo("yourssu@gmail.com")
         )
     }
 }

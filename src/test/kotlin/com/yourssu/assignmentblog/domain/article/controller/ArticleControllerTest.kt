@@ -8,9 +8,9 @@ import com.yourssu.assignmentblog.domain.article.service.ArticleService
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
+import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
-import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
 import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
@@ -68,7 +68,6 @@ internal class ArticleControllerTest {
             existenceChecker = ExistenceChecker(
                 userRepository = userRepository,
                 articleRepository = articleRepository,
-                passwordEncoder = passwordEncoder,
                 commentRepository = commentRepository
             )
 
@@ -110,14 +109,12 @@ internal class ArticleControllerTest {
     fun write() {
         // given
         val requestDto = ArticleRequestDto(
-            email = "yourssu@gmail.com",
-            password = "asdj",
             title = "title",
             content = "content"
         )
 
         // when
-        val result = articleController.write(requestDto)
+        val result = articleController.write(requestDto, AuthInfo("yourssu@gmail.com"))
 
         // then
         val expectedResult = ArticleResponseDto(
@@ -132,8 +129,6 @@ internal class ArticleControllerTest {
     fun edit() {
         // given
         val requestDto = ArticleRequestDto(
-            email = "yourssu@gmail.com",
-            password = "asdj",
             title = "title",
             content = "content"
         )
@@ -141,7 +136,8 @@ internal class ArticleControllerTest {
         // when
         val result = articleController.edit(
             articleRequestDto = requestDto,
-            articleId = 1
+            articleId = 1,
+            authInfo = AuthInfo("yourssu@gmail.com")
         )
 
         // then
@@ -156,15 +152,12 @@ internal class ArticleControllerTest {
     @DisplayName("delete 테스트")
     fun delete() {
         // given
-        val requestDto = DeleteRequestDto(
-            email = "yourssu@gmail.com",
-            password = "asdj"
-        )
+
 
         // when-then
         articleController.delete(
-            deleteRequestDto = requestDto,
-            articleId = 1
+            articleId = 1,
+            authInfo = AuthInfo("yourssu@gmail.com")
         )
     }
 

@@ -12,7 +12,6 @@ import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
-import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import com.yourssu.assignmentblog.global.error.exception.CustomException
 import org.junit.jupiter.api.Assertions.*
@@ -67,7 +66,6 @@ internal class ArticleServiceTest {
             existenceChecker = ExistenceChecker(
                 userRepository = userRepository,
                 articleRepository = articleRepository,
-                passwordEncoder = passwordEncoder,
                 commentRepository = commentRepository
             )
 
@@ -120,18 +118,16 @@ internal class ArticleServiceTest {
 
                     // given
                     val requestDto = ArticleRequestDto(
-                        email = "beomsu@urssu.kr",
-                        password = "asdf",
                         title = "title",
                         content = "content"
                     )
-
 
                     // when-then
                     assertThrows(CustomException::class.java) {
                         articleService.write(
                             requestDto = requestDto,
-                            currentURI = WRITE
+                            currentURI = WRITE,
+                            email = "beomsu@urssu.kr"
                         )
                     }
                 }
@@ -147,8 +143,6 @@ internal class ArticleServiceTest {
 
                     // given
                     val requestDto = ArticleRequestDto(
-                        email = "yourssu@gmail.com",
-                        password = "ffffff",
                         title = "title",
                         content = "content"
                     )
@@ -157,7 +151,8 @@ internal class ArticleServiceTest {
                     assertThrows(CustomException::class.java) {
                         articleService.write(
                             requestDto = requestDto,
-                            currentURI = WRITE
+                            currentURI = WRITE,
+                            email = "yourssu@gmail.com"
                         )
                     }
                 }
@@ -185,8 +180,6 @@ internal class ArticleServiceTest {
 
                 // given
                 val requestDto = ArticleRequestDto(
-                    email = "yourssu@gmail.com",
-                    password = "asdj",
                     title = "title",
                     content = "content"
                 )
@@ -194,7 +187,8 @@ internal class ArticleServiceTest {
                 // when
                 val result = articleService.write(
                     requestDto = requestDto,
-                    currentURI = WRITE
+                    currentURI = WRITE,
+                    email = "yourssu@gmail.com"
                 )
 
                 // then
@@ -221,8 +215,6 @@ internal class ArticleServiceTest {
 
                     // given
                     val requestDto = ArticleRequestDto(
-                        email = "beomsu@urssu.kr",
-                        password = "asdf",
                         title = "title",
                         content = "content"
                     )
@@ -232,7 +224,8 @@ internal class ArticleServiceTest {
                         articleService.edit(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = EDIT
+                            currentURI = EDIT,
+                            email = "beomsu@urssu.kr"
                         )
                     }
                 }
@@ -248,8 +241,6 @@ internal class ArticleServiceTest {
 
                     // given
                     val requestDto = ArticleRequestDto(
-                        email = "yourssu@gmail.com",
-                        password = "ffffff",
                         title = "title",
                         content = "content"
                     )
@@ -259,7 +250,8 @@ internal class ArticleServiceTest {
                         articleService.edit(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = EDIT
+                            currentURI = EDIT,
+                            email = "yourssu@gmail.com"
                         )
                     }
                 }
@@ -312,8 +304,6 @@ internal class ArticleServiceTest {
 
                         // given
                         val requestDto = ArticleRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "asdj",
                             title = "title",
                             content = "content"
                         )
@@ -323,7 +313,8 @@ internal class ArticleServiceTest {
                             articleService.edit(
                                 articleId = 1,
                                 requestDto = requestDto,
-                                currentURI = EDIT
+                                currentURI = EDIT,
+                                email = "yourssu@gmail.com"
                             )
                         }
                     }
@@ -339,8 +330,6 @@ internal class ArticleServiceTest {
 
                         // given
                         val requestDto = ArticleRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "asdj",
                             title = "title",
                             content = "content"
                         )
@@ -349,7 +338,8 @@ internal class ArticleServiceTest {
                         val result = articleService.edit(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = EDIT
+                            currentURI = EDIT,
+                            email = "yourssu@gmail.com"
                         )
 
                         // then
@@ -376,18 +366,14 @@ internal class ArticleServiceTest {
                     fun it_throw_CustomException() {
 
                         // given
-                        val requestDto = DeleteRequestDto(
-                            email = "beomsu@urssu.kr",
-                            password = "asdf"
-                        )
 
 
                         // when-then
                         assertThrows(CustomException::class.java) {
                             articleService.delete(
                                 articleId = 1,
-                                requestDto = requestDto,
-                                currentURI = DELETE
+                                currentURI = DELETE,
+                                email = "beomsu@urssu.kr"
                             )
                         }
                     }
@@ -402,17 +388,13 @@ internal class ArticleServiceTest {
                     fun it_throw_CustomException() {
 
                         // given
-                        val requestDto = DeleteRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "ffffff"
-                        )
 
                         // when-then
                         assertThrows(CustomException::class.java) {
                             articleService.delete(
                                 articleId = 1,
-                                requestDto = requestDto,
-                                currentURI = DELETE
+                                currentURI = DELETE,
+                                email = "beomsu@urssu.kr"
                             )
                         }
                     }
@@ -452,17 +434,13 @@ internal class ArticleServiceTest {
                             articleRepository.save(articleForOwnershipCheck)
 
                             // given
-                            val requestDto = DeleteRequestDto(
-                                email = "yourssu@gmail.com",
-                                password = "asdj",
-                            )
 
                             // when-then
                             assertThrows(CustomException::class.java) {
                                 articleService.delete(
                                     articleId = 1,
-                                    requestDto = requestDto,
-                                    currentURI = EDIT
+                                    currentURI = EDIT,
+                                    email = "beomsu@urssu.kr"
                                 )
                             }
                         }
@@ -477,16 +455,12 @@ internal class ArticleServiceTest {
                         fun it_works_well() {
 
                             // given
-                            val requestDto = DeleteRequestDto(
-                                email = "yourssu@gmail.com",
-                                password = "asdj",
-                            )
 
                             // when-then
                             articleService.delete(
                                 articleId = 1,
-                                requestDto = requestDto,
-                                currentURI = DELETE
+                                currentURI = DELETE,
+                                email = "beomsu@urssu.kr"
                             )
                         }
                     }

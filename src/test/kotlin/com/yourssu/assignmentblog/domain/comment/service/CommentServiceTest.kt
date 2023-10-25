@@ -11,7 +11,6 @@ import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
-import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
 import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
@@ -65,7 +64,6 @@ internal class CommentServiceTest {
             existenceChecker = ExistenceChecker(
                 userRepository = userRepository,
                 articleRepository = articleRepository,
-                passwordEncoder = passwordEncoder,
                 commentRepository = commentRepository
             )
 
@@ -111,7 +109,6 @@ internal class CommentServiceTest {
         existenceChecker = ExistenceChecker(
             userRepository = userRepository,
             articleRepository = articleRepository,
-            passwordEncoder = passwordEncoder,
             commentRepository = commentRepository
         )
         commentService = CommentService(
@@ -138,9 +135,9 @@ internal class CommentServiceTest {
                 fun it_throw_CustomException() {
 
                     // given
+                    val email = "beomsu@urssu.kr"
+
                     val requestDto = CommentRequestDto(
-                        email = "beomsu@urssu.kr",
-                        password = "asdf",
                         content = "content"
                     )
 
@@ -149,7 +146,8 @@ internal class CommentServiceTest {
                         commentService.write(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = ArticleServiceTest.WRITE
+                            currentURI = ArticleServiceTest.WRITE,
+                            email = email
                         )
                     }
                 }
@@ -164,9 +162,9 @@ internal class CommentServiceTest {
                 fun it_throw_CustomException() {
 
                     // given
+                    val email = "yourssu@gmail.com"
+
                     val requestDto = CommentRequestDto(
-                        email = "yourssu@gmail.com",
-                        password = "ffffff",
                         content = "content"
                     )
 
@@ -175,7 +173,8 @@ internal class CommentServiceTest {
                         commentService.write(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = ArticleServiceTest.WRITE
+                            currentURI = ArticleServiceTest.WRITE,
+                            email = email
                         )
                     }
                 }
@@ -213,7 +212,6 @@ internal class CommentServiceTest {
                         existenceChecker = ExistenceChecker(
                             userRepository = userRepository,
                             articleRepository = articleRepositoryForNotExistTest,
-                            passwordEncoder = passwordEncoder,
                             commentRepository = commentRepository
                         )
                         commentService = CommentService(
@@ -223,9 +221,8 @@ internal class CommentServiceTest {
                         )
 
                         // given
+                        val email = "yourssu@gmail.com"
                         val requestDto = CommentRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "asdj",
                             content = "content"
                         )
 
@@ -234,7 +231,8 @@ internal class CommentServiceTest {
                             commentService.write(
                                 articleId = 1,
                                 requestDto = requestDto,
-                                currentURI = WRITE
+                                currentURI = WRITE,
+                                email = email
                             )
                         }
                     }
@@ -249,9 +247,8 @@ internal class CommentServiceTest {
                     fun it_return_commentResponseDto() {
 
                         // given
+                        val email = "yourssu@gmail.com"
                         val requestDto = CommentRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "asdj",
                             content = "content"
                         )
 
@@ -259,7 +256,8 @@ internal class CommentServiceTest {
                         val result = commentService.write(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = WRITE
+                            currentURI = WRITE,
+                            email = email
                         )
 
                         // then
@@ -286,9 +284,8 @@ internal class CommentServiceTest {
                 fun it_throw_CustomException() {
 
                     // given
+                    val email = "beomsu@urssu.kr"
                     val requestDto = CommentRequestDto(
-                        email = "beomsu@urssu.kr",
-                        password = "asdf",
                         content = "content"
                     )
 
@@ -298,7 +295,8 @@ internal class CommentServiceTest {
                             articleId = 1,
                             commentId = 1,
                             requestDto = requestDto,
-                            currentURI = ArticleServiceTest.EDIT
+                            currentURI = ArticleServiceTest.EDIT,
+                            email = email
                         )
                     }
                 }
@@ -313,9 +311,9 @@ internal class CommentServiceTest {
                 fun it_throw_CustomException() {
 
                     // given
+                    val email = "yourssu@gmail.com"
+
                     val requestDto = CommentRequestDto(
-                        email = "yourssu@gmail.com",
-                        password = "ffffff",
                         content = "content"
                     )
 
@@ -325,7 +323,8 @@ internal class CommentServiceTest {
                             articleId = 1,
                             commentId = 1,
                             requestDto = requestDto,
-                            currentURI = ArticleServiceTest.EDIT
+                            currentURI = ArticleServiceTest.EDIT,
+                            email = email
                         )
                     }
                 }
@@ -363,7 +362,6 @@ internal class CommentServiceTest {
                         existenceChecker = ExistenceChecker(
                             userRepository = userRepository,
                             articleRepository = articleRepositoryForNotExistTest,
-                            passwordEncoder = passwordEncoder,
                             commentRepository = commentRepository
                         )
                         commentService = CommentService(
@@ -373,9 +371,9 @@ internal class CommentServiceTest {
                         )
 
                         // given
+                        val email = "yourssu@gmail.com"
+
                         val requestDto = CommentRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "asdj",
                             content = "content"
                         )
 
@@ -385,7 +383,8 @@ internal class CommentServiceTest {
                                 articleId = 1,
                                 commentId = 1,
                                 requestDto = requestDto,
-                                currentURI = EDIT
+                                currentURI = EDIT,
+                                email = email
                             )
                         }
                     }
@@ -411,7 +410,6 @@ internal class CommentServiceTest {
                                 existenceChecker = ExistenceChecker(
                                     userRepository = userRepository,
                                     articleRepository = articleRepository,
-                                    passwordEncoder = passwordEncoder,
                                     commentRepository = commentRepositoryForExistTest
                                 )
                                 commentService = CommentService(
@@ -421,9 +419,9 @@ internal class CommentServiceTest {
                                 )
 
                                 // given
+                                val email = "yourssu@gmail.com"
+
                                 val requestDto = CommentRequestDto(
-                                    email = "yourssu@gmail.com",
-                                    password = "asdj",
                                     content = "content"
                                 )
 
@@ -433,7 +431,8 @@ internal class CommentServiceTest {
                                         articleId = 1,
                                         commentId = 1,
                                         requestDto = requestDto,
-                                        currentURI = EDIT
+                                        currentURI = EDIT,
+                                        email = email
                                     )
                                 }
                             }
@@ -471,9 +470,9 @@ internal class CommentServiceTest {
                                         commentRepository.save(commentForOwnershipCheck)
 
                                         // given
+                                        val email = "yourssu@gmail.com"
+
                                         val requestDto = CommentRequestDto(
-                                            email = "yourssu@gmail.com",
-                                            password = "asdj",
                                             content = "content"
                                         )
 
@@ -483,7 +482,8 @@ internal class CommentServiceTest {
                                                 articleId = 1,
                                                 commentId = 1,
                                                 requestDto = requestDto,
-                                                currentURI = EDIT
+                                                currentURI = EDIT,
+                                                email = email
                                             )
                                         }
                                     }
@@ -498,9 +498,9 @@ internal class CommentServiceTest {
                                     fun it_return_commentResponseDto() {
 
                                         // given
+                                        val email = "yourssu@gmail.com"
+
                                         val requestDto = CommentRequestDto(
-                                            email = "yourssu@gmail.com",
-                                            password = "asdj",
                                             content = "content"
                                         )
 
@@ -508,7 +508,8 @@ internal class CommentServiceTest {
                                         val result = commentService.write(
                                             articleId = 1,
                                             requestDto = requestDto,
-                                            currentURI = EDIT
+                                            currentURI = EDIT,
+                                            email = email
                                         )
 
                                         // then
@@ -539,18 +540,15 @@ internal class CommentServiceTest {
                 fun it_throw_CustomException() {
 
                     // given
-                    val requestDto = DeleteRequestDto(
-                        email = "beomsu@urssu.kr",
-                        password = "asdf"
-                    )
+                    val email = "beomsu@urssu.kr"
 
                     // when-then
                     assertThrows(CustomException::class.java) {
                         commentService.delete(
                             articleId = 1,
                             commentId = 1,
-                            requestDto = requestDto,
-                            currentURI = ArticleServiceTest.DELETE
+                            currentURI = ArticleServiceTest.DELETE,
+                            email = email
                         )
                     }
                 }
@@ -565,18 +563,15 @@ internal class CommentServiceTest {
                 fun it_throw_CustomException() {
 
                     // given
-                    val requestDto = DeleteRequestDto(
-                        email = "yourssu@gmail.com",
-                        password = "ffffff"
-                    )
+                    val email = "yourssu@gmail.com"
 
                     // when-then
                     assertThrows(CustomException::class.java) {
                         commentService.delete(
                             articleId = 1,
                             commentId = 1,
-                            requestDto = requestDto,
-                            currentURI = ArticleServiceTest.DELETE
+                            currentURI = ArticleServiceTest.DELETE,
+                            email = email
                         )
                     }
                 }
@@ -603,7 +598,6 @@ internal class CommentServiceTest {
                         existenceChecker = ExistenceChecker(
                             userRepository = userRepository,
                             articleRepository = articleRepositoryForNotExistTest,
-                            passwordEncoder = passwordEncoder,
                             commentRepository = commentRepository
                         )
                         commentService = CommentService(
@@ -613,18 +607,15 @@ internal class CommentServiceTest {
                         )
 
                         // given
-                        val requestDto = DeleteRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "asdj"
-                        )
+                        val email = "yourssu@gmail.com"
 
                         // when-then
                         assertThrows(CustomException::class.java) {
                             commentService.delete(
                                 articleId = 1,
                                 commentId = 1,
-                                requestDto = requestDto,
-                                currentURI = DELETE
+                                currentURI = DELETE,
+                                email = email
                             )
                         }
                     }
@@ -650,7 +641,6 @@ internal class CommentServiceTest {
                                 existenceChecker = ExistenceChecker(
                                     userRepository = userRepository,
                                     articleRepository = articleRepository,
-                                    passwordEncoder = passwordEncoder,
                                     commentRepository = commentRepositoryForExistTest
                                 )
                                 commentService = CommentService(
@@ -660,18 +650,15 @@ internal class CommentServiceTest {
                                 )
 
                                 // given
-                                val requestDto = DeleteRequestDto(
-                                    email = "yourssu@gmail.com",
-                                    password = "asdj"
-                                )
+                                val email = "yourssu@gmail.com"
 
                                 // when-then
                                 assertThrows(CustomException::class.java) {
                                     commentService.delete(
                                         articleId = 1,
                                         commentId = 1,
-                                        requestDto = requestDto,
-                                        currentURI = DELETE
+                                        currentURI = DELETE,
+                                        email = email
                                     )
                                 }
                             }
@@ -709,18 +696,15 @@ internal class CommentServiceTest {
                                         commentRepository.save(commentForOwnershipCheck)
 
                                         // given
-                                        val requestDto = DeleteRequestDto(
-                                            email = "yourssu@gmail.com",
-                                            password = "asdj"
-                                        )
+                                        val email = "yourssu@gmail.com"
 
                                         // when-then
                                         assertThrows(CustomException::class.java) {
                                             commentService.delete(
                                                 articleId = 1,
                                                 commentId = 1,
-                                                requestDto = requestDto,
-                                                currentURI = DELETE
+                                                currentURI = DELETE,
+                                                email = email
                                             )
                                         }
                                     }
@@ -735,17 +719,14 @@ internal class CommentServiceTest {
                                     fun it_works_well() {
 
                                         // given
-                                        val requestDto = DeleteRequestDto(
-                                            email = "yourssu@gmail.com",
-                                            password = "asdj"
-                                        )
+                                        val email = "yourssu@gmail.com"
 
                                         // when-then
                                         commentService.delete(
                                             articleId = 1,
                                             commentId = 1,
-                                            requestDto = requestDto,
-                                            currentURI = DELETE
+                                            currentURI = DELETE,
+                                            email = email
                                         )
                                     }
                                 }

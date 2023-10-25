@@ -7,8 +7,8 @@ import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
 import com.yourssu.assignmentblog.domain.user.dto.response.SignupResponseDto
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.domain.user.service.UserService
+import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
-import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
 import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
@@ -52,7 +52,6 @@ internal class UserControllerTest {
             existenceChecker = ExistenceChecker(
                 userRepository = userRepository,
                 articleRepository = articleRepository,
-                passwordEncoder = passwordEncoder,
                 commentRepository = commentRepository
             )
 
@@ -74,7 +73,6 @@ internal class UserControllerTest {
         existenceChecker = ExistenceChecker(
             userRepository = userRepository,
             articleRepository = articleRepository,
-            passwordEncoder = passwordEncoder,
             commentRepository = commentRepository
         )
 
@@ -113,12 +111,9 @@ internal class UserControllerTest {
         userRepository.save(user)
 
         // given
-        val requestDto = DeleteRequestDto(
-            email = "yourssu@gmail.com",
-            password = "asdj",
-        )
+        val email = "yourssu@gmail.com"
 
         // when-then
-        userController.withdraw(requestDto)
+        userController.withdraw(authInfo = AuthInfo(email))
     }
 }

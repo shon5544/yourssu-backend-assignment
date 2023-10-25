@@ -55,7 +55,6 @@ internal class UserServiceTest {
             existenceChecker = ExistenceChecker(
                 userRepository = userRepository,
                 articleRepository = articleRepository,
-                passwordEncoder = passwordEncoder,
                 commentRepository = commentRepository
             )
 
@@ -84,7 +83,6 @@ internal class UserServiceTest {
         existenceChecker = ExistenceChecker(
             userRepository = userRepository,
             articleRepository = articleRepository,
-            passwordEncoder = passwordEncoder,
             commentRepository = commentRepository
         )
 
@@ -137,7 +135,6 @@ internal class UserServiceTest {
                 existenceChecker = ExistenceChecker(
                     userRepository = userRepositoryForDuplicateTest,
                     articleRepository = articleRepository,
-                    passwordEncoder = passwordEncoder,
                     commentRepository = commentRepository
                 )
 
@@ -190,7 +187,6 @@ internal class UserServiceTest {
                     existenceChecker = ExistenceChecker(
                         userRepository = userRepositoryForDuplicateTest,
                         articleRepository = articleRepository,
-                        passwordEncoder = passwordEncoder,
                         commentRepository = commentRepository
                     )
 
@@ -209,7 +205,7 @@ internal class UserServiceTest {
                     // when-then
                     assertThrows(CustomException::class.java) {
                         userService.withdraw(
-                            requestDto = requestDto,
+                            email = requestDto.email,
                             currentURI = WITHDRAW
                         )
                     }
@@ -236,7 +232,7 @@ internal class UserServiceTest {
                         // when-then
                         assertThrows(CustomException::class.java) {
                             userService.withdraw(
-                                requestDto = requestDto,
+                                email = requestDto.email,
                                 currentURI = WITHDRAW
                             )
                         }
@@ -258,7 +254,7 @@ internal class UserServiceTest {
 
                         // when-then
                         userService.withdraw(
-                            requestDto = requestDto,
+                            email = requestDto.email,
                             currentURI = WITHDRAW
                         )
                     }
