@@ -30,10 +30,10 @@ class TokenChecker(
         fun removeBearer(token: String?, response: HttpServletResponse): String? {
             if (token != null) {
                 if (token.startsWith(BEARER)) {
-                    token.replace(BEARER, "")
+                    val result = token.replace(BEARER, "")
 
-                    return if (isTokenValid(token)) {
-                        token
+                    return if (isTokenValid(result)) {
+                        result
                     } else {
                         ResponseSender.setBadRequestResponse(response, "인증 실패: 유효한 refresh 토큰이 아닙니다. " +
                                 "로그인을 통해 토큰을 재발급 받으세요.")
