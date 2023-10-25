@@ -1,7 +1,6 @@
 package com.yourssu.assignmentblog.domain.article.service
 
 import com.yourssu.assignmentblog.domain.article.domain.Article
-import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.request.ArticleRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleResponseDto
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
@@ -20,15 +19,18 @@ class ArticleService(
 ) {
 
     @Transactional
-    fun write(requestDto: ArticleRequestDto, currentURI: String): ArticleResponseDto {
+    fun write(
+        requestDto: ArticleRequestDto,
+        currentURI: String,
+        email: String
+    ): ArticleResponseDto {
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}"
 
         val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
-            email = requestDto.email,
-            password = requestDto.password,
-            failedTargetText = failedTargetText,
+            email = email,
+            failedTargetText = failedTargetText
         )
 
         val article = Article(
@@ -46,16 +48,16 @@ class ArticleService(
     fun edit(
         articleId: Long,
         currentURI: String,
-        requestDto: ArticleRequestDto
+        requestDto: ArticleRequestDto,
+        email: String
         ): ArticleResponseDto {
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
 
         val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
-            email = requestDto.email,
-            password = requestDto.password,
-            failedTargetText = failedTargetText,
+            email = email,
+            failedTargetText = failedTargetText
         )
 
         val article = existenceChecker.checkArticle(
@@ -80,15 +82,15 @@ class ArticleService(
     @Transactional
     fun delete(
         articleId: Long,
-        requestDto: DeleteRequestDto,
-        currentURI: String) {
+        currentURI: String,
+        email: String,
+    ) {
 
         val failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"
 
         val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
-            email = requestDto.email,
-            password = requestDto.password,
+            email = email,
             failedTargetText = failedTargetText,
         )
 
