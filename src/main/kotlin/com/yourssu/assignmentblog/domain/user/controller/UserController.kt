@@ -1,10 +1,11 @@
 package com.yourssu.assignmentblog.domain.user.controller
 
 import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
-import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.user.dto.response.SignupResponseDto
 import com.yourssu.assignmentblog.domain.user.service.UserService
+import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
+import com.yourssu.assignmentblog.global.util.annotation.Auth
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,11 +28,12 @@ class UserController(
 
     @DeleteMapping("/withdraw")
     fun withdraw(
-        @RequestBody @Valid withDrawRequestDto: DeleteRequestDto,
+//        @RequestBody @Valid withDrawRequestDto: DeleteRequestDto,
+        @Auth authInfo: AuthInfo
     ): ResponseEntity<Void> {
 
         userService.withdraw(
-            requestDto = withDrawRequestDto,
+            email = authInfo.email,
             currentURI = RequestURI.USER + "/withdraw"
         )
 
