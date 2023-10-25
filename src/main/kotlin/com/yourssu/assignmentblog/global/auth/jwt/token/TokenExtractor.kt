@@ -28,9 +28,10 @@ class TokenExtractor(
             request: HttpServletRequest,
             response: HttpServletResponse
         ): String? {
-            val token: String = request.getHeader(headerName)
+            val token: String? = request.getHeader(headerName)
 
-            return TokenChecker.removeBearer(token, response)
+            return if(token != null) TokenChecker.removeBearer(token, response) else null
+
         }
 
         fun extractEmailFromToken(accessToken: String, response: HttpServletResponse): String {
