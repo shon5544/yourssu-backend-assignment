@@ -1,7 +1,6 @@
 package com.yourssu.assignmentblog.domain.comment.service
 
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
-import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.response.CommentResponseDto
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
@@ -23,14 +22,15 @@ class CommentService(
     fun write(
         articleId: Long,
         currentURI: String,
-        requestDto: CommentRequestDto): CommentResponseDto {
+        requestDto: CommentRequestDto,
+        email: String
+    ): CommentResponseDto {
 
         val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}"
 
         val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
-            email = requestDto.email,
-            password = requestDto.password,
+            email = email,
             failedTargetText = failedTargetText
         )
 
@@ -57,15 +57,15 @@ class CommentService(
         articleId: Long,
         commentId: Long,
         currentURI: String,
-        requestDto: CommentRequestDto
+        requestDto: CommentRequestDto,
+        email: String
     ): CommentResponseDto {
 
         val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}"
 
         val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
-            email = requestDto.email,
-            password = requestDto.password,
+            email = email,
             failedTargetText = failedTargetText
         )
 
@@ -101,15 +101,14 @@ class CommentService(
         articleId: Long,
         commentId: Long,
         currentURI: String,
-        requestDto: DeleteRequestDto
+        email: String
     ) {
 
         val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
 
         val user = existenceChecker.checkUserAccount(
             currentURI = currentURI,
-            email = requestDto.email,
-            password = requestDto.password,
+            email = email,
             failedTargetText = failedTargetText
         )
 
