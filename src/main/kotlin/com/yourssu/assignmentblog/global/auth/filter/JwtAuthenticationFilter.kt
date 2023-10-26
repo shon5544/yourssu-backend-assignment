@@ -35,7 +35,9 @@ class JwtAuthenticationFilter(
     companion object {
         private val NO_CHECK_URIS: List<String> = arrayListOf(
             RequestURI.USER + "/signup",
-            RequestURI.USER + "/login"
+            RequestURI.USER + "/login",
+            "/swagger-ui/index.html",
+            "/favicon.ico"
         )
     }
 
@@ -44,7 +46,10 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        if (NO_CHECK_URIS.contains(request.requestURI)) {
+        if (NO_CHECK_URIS.contains(request.requestURI)
+            || request.requestURI.contains("/swagger-ui")
+            || request.requestURI.contains("/v3")
+        ) {
             filterChain.doFilter(request, response)
             return
         }
