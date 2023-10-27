@@ -21,7 +21,7 @@ class TokenExtractor(
     }
 
     companion object {
-        private lateinit var secretKey: String
+        lateinit var secretKey: String
 
         fun extractToken(
             headerName: String,
