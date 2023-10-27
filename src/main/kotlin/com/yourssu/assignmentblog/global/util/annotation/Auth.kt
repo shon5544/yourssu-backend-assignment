@@ -1,8 +1,8 @@
 package com.yourssu.assignmentblog.global.util.annotation
 
-import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.Hidden
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-@Schema(accessMode = Schema.AccessMode.READ_ONLY)
+@Hidden
 annotation class Auth
