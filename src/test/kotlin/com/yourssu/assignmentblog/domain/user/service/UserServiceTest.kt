@@ -217,29 +217,6 @@ internal class UserServiceTest {
             inner class ContextExist {
 
                 @Nested
-                @DisplayName("만약 비밀번호가 틀렸다면")
-                inner class ContextWrongPassword {
-
-                    @Test
-                    @DisplayName("CustomException이 발생된다.")
-                    fun it_throws_customException() {
-                        // given
-                        val requestDto = DeleteRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "fffffff"
-                        )
-
-                        // when-then
-                        assertThrows(CustomException::class.java) {
-                            userService.withdraw(
-                                email = requestDto.email,
-                                currentURI = WITHDRAW
-                            )
-                        }
-                    }
-                }
-
-                @Nested
                 @DisplayName("만약 비밀번호가 맞았다면")
                 inner class ContextCorrectPassword {
 

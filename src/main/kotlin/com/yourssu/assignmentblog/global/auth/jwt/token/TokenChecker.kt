@@ -54,7 +54,7 @@ class TokenChecker(
             return user != null
         }
 
-        private fun isTokenValid(token: String): Boolean {
+        fun isTokenValid(token: String): Boolean {
             val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
 
             return try {

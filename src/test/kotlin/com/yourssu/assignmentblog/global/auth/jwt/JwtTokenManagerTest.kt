@@ -3,6 +3,9 @@ package com.yourssu.assignmentblog.global.auth.jwt
 import com.yourssu.assignmentblog.global.common.stub.TestCustomLocalDateTime
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
+import com.yourssu.assignmentblog.global.auth.jwt.token.TokenChecker
+import com.yourssu.assignmentblog.global.auth.jwt.token.TokenExtractor
+import com.yourssu.assignmentblog.global.auth.jwt.token.TokenProvider
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
 import com.yourssu.assignmentblog.global.common.localDateTImeHolder.CustomLocalDateTime
 import com.yourssu.assignmentblog.global.common.stub.StubHttpServletRequest
@@ -17,7 +20,10 @@ import org.junit.jupiter.api.Test
 internal class JwtTokenManagerTest {
 
     companion object {
-        lateinit var jwtTokenManager: JwtTokenManager
+        lateinit var tokenProvider: TokenProvider
+        val tokenExtractor = TokenExtractor(
+            _secretKey = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest"
+        )
         private val userRepository: UserRepository = TestUserRepository()
 
         // 모두 임의의 날짜를 넣어서 만든 임의의 토큰들입니다.
@@ -27,7 +33,15 @@ internal class JwtTokenManagerTest {
         @BeforeAll
         @JvmStatic
         fun initialize() {
-            jwtTokenManager = JwtTokenManager(
+//            tokenExtractor = JwtTokenManager(
+//
+//                accessTokenExpiration = 24,
+//                refreshTokenExpiration = 336,
+//                localDateTime = TestCustomLocalDateTime(),
+//                userRepository = userRepository
+//            )
+
+            tokenProvider = TokenProvider(
                 secretKey = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
                 accessTokenExpiration = 24,
                 refreshTokenExpiration = 336,
@@ -58,7 +72,7 @@ internal class JwtTokenManagerTest {
             @Test
             @DisplayName("Access Token을 발행해준다")
             fun it_returns_access_token() {
-                val accessToken = jwtTokenManager.createAccessToken(user)
+                val accessToken = tokenProvider.createAccessToken(user)
 
                 assertEquals(expectedAccessToken, accessToken)
             }
@@ -72,7 +86,7 @@ internal class JwtTokenManagerTest {
         @Test
         @DisplayName("매개변수 없이 Refresh Token을 발행한다.")
         fun it_returns_refreshToken() {
-            val refreshToken = jwtTokenManager.createRefreshToken()
+            val refreshToken = tokenProvider.createRefreshToken()
 
             assertEquals(expectedRefreshToken, refreshToken)
         }
@@ -92,7 +106,7 @@ internal class JwtTokenManagerTest {
                 @DisplayName("Access Token이 제대로 추출된다.")
                 fun it_returns_access_token() {
                     val extractedToken =
-                        jwtTokenManager.extractToken(
+                        TokenExtractor.extractToken(
                             "Authorization",
                             StubHttpServletRequest(),
                             StubHttpServletResponse()
@@ -113,7 +127,7 @@ internal class JwtTokenManagerTest {
                         // 지금 테스트 해보려는건 getHeader 메소드가 아닌,
                         // extractToken이 Bearer 여부를 잘 감지하는 가? 에 관한 것이기 때문에
                         // 헤더는 임의의 테스트 전용 헤더로 넣었습니다.
-                        jwtTokenManager.extractToken(
+                        TokenExtractor.extractToken(
                             "Authorization-no-bearer",
                             StubHttpServletRequest(),
                             StubHttpServletResponse()
@@ -133,7 +147,7 @@ internal class JwtTokenManagerTest {
                 @DisplayName("Refresh Token이 제대로 추출된다.")
                 fun it_returns_refresh_token() {
                     val extractedToken =
-                        jwtTokenManager.extractToken(
+                        TokenExtractor.extractToken(
                             "Authorization-refresh",
                             StubHttpServletRequest(),
                             StubHttpServletResponse()
@@ -154,7 +168,7 @@ internal class JwtTokenManagerTest {
                         // 지금 테스트 해보려는건 getHeader 메소드가 아닌,
                         // extractToken이 Bearer 여부를 잘 감지하는 가? 에 관한 것이기 때문에
                         // 헤더는 임의의 테스트 전용 헤더로 넣었습니다.
-                        jwtTokenManager.extractToken(
+                        TokenExtractor.extractToken(
                             "Authorization-refresh-no-bearer",
                             StubHttpServletRequest(),
                             StubHttpServletResponse()
@@ -197,7 +211,7 @@ internal class JwtTokenManagerTest {
         @DisplayName("유효 기간이 지난 토큰을 넣어준다면")
         inner class ContextPutExpiredToken {
             private val token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSZWZyZXNoVG9rZW4iLCJleHAiOjE2OTM2MDY3MDB9.cFxYbLRDIHouLkRqY3e5ehqsgYHiS7jV-QwRX4FwWds"
-            private val tokenValid = jwtTokenManager.isTokenValid(token)
+            private val tokenValid = TokenChecker.isTokenValid(token)
 
             @Test
             @DisplayName("false를 반환한다")

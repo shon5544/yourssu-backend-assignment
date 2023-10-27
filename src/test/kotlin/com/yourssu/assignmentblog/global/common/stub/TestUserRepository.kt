@@ -8,7 +8,10 @@ class TestUserRepository: UserRepository {
     private var user: User? = null
 
     override fun findByEmail(email: String): User? {
-        return user
+        if(email == "yourssu@gmail.com")
+            return user
+
+        return null
     }
 
     override fun findByRefreshToken(refreshToken: String): User {

@@ -153,32 +153,6 @@ internal class CommentServiceTest {
                 }
             }
 
-            @Nested
-            @DisplayName("만약 이메일은 존재했지만, 비밀번호를 잘못 기재했다면")
-            inner class ContextPasswordIsNotEquals {
-
-                @Test
-                @DisplayName("CustomException이 발생된다.")
-                fun it_throw_CustomException() {
-
-                    // given
-                    val email = "yourssu@gmail.com"
-
-                    val requestDto = CommentRequestDto(
-                        content = "content"
-                    )
-
-                    // when-then
-                    assertThrows(CustomException::class.java) {
-                        commentService.write(
-                            articleId = 1,
-                            requestDto = requestDto,
-                            currentURI = ArticleServiceTest.WRITE,
-                            email = email
-                        )
-                    }
-                }
-            }
         }
 
         @Nested
@@ -302,33 +276,6 @@ internal class CommentServiceTest {
                 }
             }
 
-            @Nested
-            @DisplayName("만약 이메일은 존재했지만, 비밀번호를 잘못 기재했다면")
-            inner class ContextPasswordIsNotEquals {
-
-                @Test
-                @DisplayName("CustomException이 발생된다.")
-                fun it_throw_CustomException() {
-
-                    // given
-                    val email = "yourssu@gmail.com"
-
-                    val requestDto = CommentRequestDto(
-                        content = "content"
-                    )
-
-                    // when-then
-                    assertThrows(CustomException::class.java) {
-                        commentService.edit(
-                            articleId = 1,
-                            commentId = 1,
-                            requestDto = requestDto,
-                            currentURI = ArticleServiceTest.EDIT,
-                            email = email
-                        )
-                    }
-                }
-            }
         }
 
         @Nested
@@ -554,28 +501,6 @@ internal class CommentServiceTest {
                 }
             }
 
-            @Nested
-            @DisplayName("만약 이메일은 존재했지만, 비밀번호를 잘못 기재했다면")
-            inner class ContextPasswordIsNotEquals {
-
-                @Test
-                @DisplayName("CustomException이 발생된다.")
-                fun it_throw_CustomException() {
-
-                    // given
-                    val email = "yourssu@gmail.com"
-
-                    // when-then
-                    assertThrows(CustomException::class.java) {
-                        commentService.delete(
-                            articleId = 1,
-                            commentId = 1,
-                            currentURI = ArticleServiceTest.DELETE,
-                            email = email
-                        )
-                    }
-                }
-            }
         }
 
         @Nested
