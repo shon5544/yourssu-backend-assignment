@@ -25,21 +25,21 @@ class CommentController(
 
     @PostMapping("/write/{articleId}")
     fun write(
-        @RequestBody @Valid commentRequestDto: CommentRequestDto,
+        @RequestBody @Valid requestDto: CommentRequestDto,
         @PathVariable articleId: Long,
         @Auth authInfo: AuthInfo
     ): CommentResponseDto {
         return commentService.write(
             articleId = articleId,
             currentURI = RequestURI.COMMENT + "/write",
-            requestDto = commentRequestDto,
+            requestDto = requestDto,
             email = authInfo.email
         )
     }
 
     @PutMapping("/edit")
     fun edit(
-        @RequestBody @Valid commentRequestDto: CommentRequestDto,
+        @RequestBody @Valid requestDto: CommentRequestDto,
         @RequestParam(name = "article") articleId: Long,
         @RequestParam(name = "comment") commentId: Long,
         @Auth authInfo: AuthInfo
@@ -48,7 +48,7 @@ class CommentController(
             articleId = articleId,
             commentId = commentId,
             currentURI = RequestURI.COMMENT + "/edit?article=${articleId}&comment=${commentId}",
-            requestDto = commentRequestDto,
+            requestDto = requestDto,
             email = authInfo.email
         )
     }

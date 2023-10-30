@@ -137,7 +137,7 @@ internal class CommentControllerTest {
 
         // when
         val result = commentController.write(
-            commentRequestDto = requestDto,
+            requestDto = requestDto,
             articleId = 1,
             authInfo = AuthInfo("yourssu@gmail.com")
         )
@@ -161,7 +161,7 @@ internal class CommentControllerTest {
 
         // when
         val result = commentController.edit(
-            commentRequestDto = requestDto,
+            requestDto = requestDto,
             articleId = 1,
             commentId = 1,
             authInfo = AuthInfo("yourssu@gmail.com")
