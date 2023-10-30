@@ -73,8 +73,7 @@ internal class ArticleControllerTest {
 
             articleService = ArticleService(
                 articleRepository = articleRepository,
-                existenceChecker = existenceChecker,
-                ownershipChecker = ownershipChecker
+                userRepository = userRepository
             )
 
             userRepository.save(user)
@@ -135,7 +134,7 @@ internal class ArticleControllerTest {
 
         // when
         val result = articleController.edit(
-            articleRequestDto = requestDto,
+            requestDto = requestDto,
             articleId = 1,
             authInfo = AuthInfo("yourssu@gmail.com")
         )

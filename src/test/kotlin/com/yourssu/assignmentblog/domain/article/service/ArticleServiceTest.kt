@@ -71,8 +71,7 @@ internal class ArticleServiceTest {
 
             articleService = ArticleService(
                 articleRepository = articleRepository,
-                existenceChecker = existenceChecker,
-                ownershipChecker = ownershipChecker
+                userRepository = userRepository
             )
 
             userRepository.save(user)
@@ -126,7 +125,6 @@ internal class ArticleServiceTest {
                     assertThrows(CustomException::class.java) {
                         val write = articleService.write(
                             requestDto = requestDto,
-                            currentURI = WRITE,
                             email = "beomsu@urssu.kr"
                         )
 
@@ -165,7 +163,6 @@ internal class ArticleServiceTest {
                 // when
                 val result = articleService.write(
                     requestDto = requestDto,
-                    currentURI = WRITE,
                     email = "yourssu@gmail.com"
                 )
 
@@ -202,7 +199,6 @@ internal class ArticleServiceTest {
                         articleService.edit(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = EDIT,
                             email = "beomsu@urssu.kr"
                         )
                     }
@@ -266,7 +262,6 @@ internal class ArticleServiceTest {
                             articleService.edit(
                                 articleId = 1,
                                 requestDto = requestDto,
-                                currentURI = EDIT,
                                 email = "yourssu@gmail.com"
                             )
                         }
@@ -291,7 +286,6 @@ internal class ArticleServiceTest {
                         val result = articleService.edit(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = EDIT,
                             email = "yourssu@gmail.com"
                         )
 
