@@ -4,6 +4,8 @@ import com.yourssu.assignmentblog.domain.comment.dto.request.CommentRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.response.CommentResponseDto
 import com.yourssu.assignmentblog.domain.comment.service.CommentService
 import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
+import com.yourssu.assignmentblog.global.common.enums.FailedMethod
+import com.yourssu.assignmentblog.global.common.enums.FailedTargetType
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import com.yourssu.assignmentblog.global.util.annotation.Auth
 import org.springframework.http.ResponseEntity
@@ -29,9 +31,14 @@ class CommentController(
         @PathVariable articleId: Long,
         @Auth authInfo: AuthInfo
     ): CommentResponseDto {
+
+        requestDto.setURIAndFailMessage(
+            currentURI = RequestURI.COMMENT + "/write",
+            failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}"
+        )
+
         return commentService.write(
             articleId = articleId,
-            currentURI = RequestURI.COMMENT + "/write",
             requestDto = requestDto,
             email = authInfo.email
         )
@@ -44,10 +51,15 @@ class CommentController(
         @RequestParam(name = "comment") commentId: Long,
         @Auth authInfo: AuthInfo
     ): CommentResponseDto {
+
+        requestDto.setURIAndFailMessage(
+            currentURI = RequestURI.COMMENT + "/edit?article=${articleId}&comment=${commentId}",
+            failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}"
+        )
+
         return commentService.edit(
             articleId = articleId,
             commentId = commentId,
-            currentURI = RequestURI.COMMENT + "/edit?article=${articleId}&comment=${commentId}",
             requestDto = requestDto,
             email = authInfo.email
         )
