@@ -10,8 +10,6 @@ import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.global.common.aop.ExistenceCheckAdviceHolder
 import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAdviceHolder
-import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
-import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
 import com.yourssu.assignmentblog.global.common.enums.FailedMethod
 import com.yourssu.assignmentblog.global.common.enums.FailedTargetType
 import org.springframework.stereotype.Service
