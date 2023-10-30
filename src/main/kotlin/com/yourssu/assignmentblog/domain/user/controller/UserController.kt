@@ -22,8 +22,13 @@ class UserController(
 
     @PostMapping("/signup")
     fun signup(
-        @RequestBody @Valid signupRequestDto: SignupRequestDto): SignupResponseDto {
-        return userService.signup(signupRequestDto, RequestURI.USER + "/signup")
+        @RequestBody @Valid requestDto: SignupRequestDto): SignupResponseDto {
+        requestDto.setURIAndFailMessage(
+            currentURI = RequestURI.USER + "/signup",
+            failedTargetText = ""
+        )
+
+        return userService.signup(requestDto)
     }
 
     @DeleteMapping("/withdraw")
