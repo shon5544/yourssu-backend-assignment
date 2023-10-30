@@ -1,9 +1,15 @@
 package com.yourssu.assignmentblog.domain.comment.service
 
+import com.yourssu.assignmentblog.domain.article.domain.Article
+import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentRequestDto
 import com.yourssu.assignmentblog.domain.comment.dto.response.CommentResponseDto
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
+import com.yourssu.assignmentblog.domain.user.domain.User
+import com.yourssu.assignmentblog.domain.user.repository.UserRepository
+import com.yourssu.assignmentblog.global.common.aop.ExistenceCheckAdviceHolder
+import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAdviceHolder
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
 import com.yourssu.assignmentblog.global.common.enums.FailedMethod
@@ -14,86 +20,77 @@ import javax.transaction.Transactional
 @Service
 class CommentService(
     private val commentRepository: CommentRepository,
-    private val existenceChecker: ExistenceChecker,
-    private val ownershipChecker: OwnershipChecker
+    private val articleRepository: ArticleRepository,
+    private val userRepository: UserRepository
 ) {
 
     @Transactional
     fun write(
         articleId: Long,
-        currentURI: String,
         requestDto: CommentRequestDto,
         email: String
-    ): CommentResponseDto {
+    ): CommentResponseDto = ExistenceCheckAdviceHolder.checkUserAccount(
+        currentURI = requestDto.currentURI,
+        email = email,
+        failedTargetText = requestDto.failedTargetText
+    ) {
 
-        val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}"
-
-        val user = existenceChecker.checkUserAccount(
-            currentURI = currentURI,
-            email = email,
-            failedTargetText = failedTargetText
-        )
-
-        val article = existenceChecker.checkArticle(
+        return@checkUserAccount ExistenceCheckAdviceHolder.checkArticleExistence(
             articleId = articleId,
-            currentURI = currentURI,
-            failedTargetText = failedTargetText
-        )
+            currentURI = requestDto.currentURI,
+            failedTargetText = requestDto.failedTargetText
+        ) {
+            val article: Article = articleRepository.findById(articleId)!!
+            val user: User = userRepository.findByEmail(email)!!
 
-        val comment = Comment(
-            content = requestDto.content,
-            user = user,
-            article = article
-        )
+            val comment = Comment(
+                content = requestDto.content,
+                user = user,
+                article = article
+            )
 
-        return CommentResponseDto(
-            comment = commentRepository.save(comment),
-            email = user.email
-        )
+            return@checkArticleExistence CommentResponseDto(
+                comment = commentRepository.save(comment),
+                email = user.email
+            )
+        }
     }
 
     @Transactional
     fun edit(
         articleId: Long,
         commentId: Long,
-        currentURI: String,
         requestDto: CommentRequestDto,
         email: String
-    ): CommentResponseDto {
+    ): CommentResponseDto = ExistenceCheckAdviceHolder.checkUserAccount(
+        currentURI = requestDto.currentURI,
+        email = email,
+        failedTargetText = requestDto.failedTargetText,
+    ) {
 
-        val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}"
-
-        val user = existenceChecker.checkUserAccount(
-            currentURI = currentURI,
-            email = email,
-            failedTargetText = failedTargetText
-        )
-
-        existenceChecker.checkArticle(
+        return@checkUserAccount ExistenceCheckAdviceHolder.checkArticleExistence(
             articleId = articleId,
-            failedTargetText = failedTargetText,
-            currentURI = currentURI
-        )
+            currentURI = requestDto.currentURI,
+            failedTargetText = requestDto.failedTargetText
+        ) {
 
-        val comment = existenceChecker.checkComment(
-            commentId = commentId,
-            failedTarget = failedTargetText,
-            currentURI = currentURI
-        )
+            return@checkArticleExistence ExistenceCheckAdviceHolder.checkCommentExistence(
+                commentId = commentId,
+                currentURI = requestDto.currentURI,
+                failedTargetText = requestDto.failedTargetText
+            ) {
+                val comment: Comment = commentRepository.findById(commentId)!!
+                val user: User = userRepository.findByEmail(email)!!
 
-        ownershipChecker.check(
-            target = comment,
-            currentURI = currentURI,
-            user = user,
-            failedTargetText = failedTargetText
-        )
+                comment.update(requestDto, user)
 
-        comment.content = requestDto.content
+                return@checkCommentExistence CommentResponseDto(
+                    comment = comment,
+                    email = user.email
+                )
+            }
 
-        return CommentResponseDto(
-            comment = comment,
-            email = user.email
-        )
+        }
     }
 
     @Transactional
@@ -101,36 +98,38 @@ class CommentService(
         articleId: Long,
         commentId: Long,
         currentURI: String,
-        email: String
+        email: String,
+        failedTargetText: String = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
+    ) = ExistenceCheckAdviceHolder.checkUserAccount(
+        currentURI = currentURI,
+        email = email,
+        failedTargetText = failedTargetText
     ) {
 
-        val failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
-
-        val user = existenceChecker.checkUserAccount(
-            currentURI = currentURI,
-            email = email,
-            failedTargetText = failedTargetText
-        )
-
-        existenceChecker.checkArticle(
+        return@checkUserAccount ExistenceCheckAdviceHolder.checkArticleExistence(
             articleId = articleId,
-            failedTargetText = failedTargetText,
-            currentURI = currentURI
-        )
-
-        val comment = existenceChecker.checkComment(
-            commentId =  commentId,
-            failedTarget = failedTargetText,
-            currentURI = currentURI
-        )
-
-        ownershipChecker.check(
-            target = comment,
             currentURI = currentURI,
-            user = user,
             failedTargetText = failedTargetText
-        )
+        ) {
 
-        commentRepository.delete(comment)
+            return@checkArticleExistence ExistenceCheckAdviceHolder.checkCommentExistence(
+                commentId = commentId,
+                currentURI = currentURI,
+                failedTargetText = failedTargetText
+            ) {
+
+                val comment: Comment = commentRepository.findById(commentId)!!
+                val user: User = userRepository.findByEmail(email)!!
+
+                return@checkCommentExistence OwnershipCheckAdviceHolder.checkOwnership(
+                    target = comment,
+                    currentURI = currentURI,
+                    user = user,
+                    failedTargetText = failedTargetText
+                ) {
+                    commentRepository.delete(comment)
+                }
+            }
+        }
     }
 }
