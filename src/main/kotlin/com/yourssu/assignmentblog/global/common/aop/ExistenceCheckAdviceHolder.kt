@@ -55,6 +55,15 @@ class ExistenceCheckAdviceHolder(
                 function
             )
         }
+
+        fun <T> checkUserEmailNotExist(
+            email: String,
+            currentURI: String,
+            function: () -> T
+        ): T {
+
+            return existenceCheckAdvice.checkUserEmailNotExist(email, currentURI, function)
+        }
     }
 
     @Component
@@ -106,6 +115,17 @@ class ExistenceCheckAdviceHolder(
                 failedTargetText,
                 currentURI
             )
+
+            return function.invoke()
+        }
+
+        fun <T> checkUserEmailNotExist(
+            email: String,
+            currentURI: String,
+            function: () -> T
+        ): T {
+
+            existenceChecker.checkUserEmailNotExist(email, currentURI)
 
             return function.invoke()
         }
