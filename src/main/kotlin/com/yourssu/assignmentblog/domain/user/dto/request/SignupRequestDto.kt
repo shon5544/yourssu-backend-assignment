@@ -1,5 +1,6 @@
 package com.yourssu.assignmentblog.domain.user.dto.request
 
+import com.yourssu.assignmentblog.global.common.dto.BaseRequestDto
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 
@@ -15,4 +16,4 @@ data class SignupRequestDto(
 
     @field:NotBlank(message = "user의 role은 누락되면 안 됩니다.")
     val role: String = ""
-)
+): BaseRequestDto()
