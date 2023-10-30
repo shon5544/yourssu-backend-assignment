@@ -44,12 +44,12 @@ class ExistenceChecker(
         failedTargetText: String,
         currentURI: String
     ): User {
-        return (userRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
             ?: throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
                 message = "$failedTargetText 실패: 전달받은 email에 해당하는 유저가 없습니다.",
                 requestURI = currentURI
-            ))
+            )
     }
 
 //    fun checkUserPassword(
