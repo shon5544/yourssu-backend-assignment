@@ -41,6 +41,20 @@ class ExistenceCheckAdviceHolder(
                 function
             )
         }
+
+        fun <T> checkCommentExistence(
+            commentId: Long,
+            currentURI: String,
+            failedTargetText: String,
+            function: () -> T
+        ): T {
+            return existenceCheckAdvice.checkCommentExistence(
+                commentId,
+                currentURI,
+                failedTargetText,
+                function
+            )
+        }
     }
 
     @Component
@@ -73,6 +87,22 @@ class ExistenceCheckAdviceHolder(
 
             existenceChecker.checkArticle(
                 articleId,
+                failedTargetText,
+                currentURI
+            )
+
+            return function.invoke()
+        }
+
+        fun <T> checkCommentExistence(
+            commentId: Long,
+            currentURI: String,
+            failedTargetText: String,
+            function: () -> T
+        ): T {
+
+            existenceChecker.checkComment(
+                commentId,
                 failedTargetText,
                 currentURI
             )
