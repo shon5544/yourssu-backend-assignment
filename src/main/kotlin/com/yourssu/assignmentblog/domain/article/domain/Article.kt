@@ -1,8 +1,10 @@
 package com.yourssu.assignmentblog.domain.article.domain
 
+import com.yourssu.assignmentblog.domain.article.dto.request.ArticleRequestDto
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.global.common.entity.BaseCreateAndUpdateTimeEntity
 import com.yourssu.assignmentblog.domain.user.domain.User
+import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAdviceHolder
 import com.yourssu.assignmentblog.global.common.entity.EntityWithOwnership
 import javax.persistence.*
 
@@ -25,4 +27,18 @@ class Article(
 
     @OneToMany(mappedBy = "article", cascade = [CascadeType.REMOVE])
     val commentList: List<Comment> = ArrayList()
-) : BaseCreateAndUpdateTimeEntity(), EntityWithOwnership
+) : BaseCreateAndUpdateTimeEntity(), EntityWithOwnership {
+
+    fun update(
+        requestDto: ArticleRequestDto,
+        user: User
+    ) = OwnershipCheckAdviceHolder.checkOwnership(
+        target = this,
+        currentURI = requestDto.currentURI,
+        failedTargetText = requestDto.failedTargetText,
+        user = user
+    ) {
+        this.title = requestDto.title
+        this.content = requestDto.content
+    }
+}
