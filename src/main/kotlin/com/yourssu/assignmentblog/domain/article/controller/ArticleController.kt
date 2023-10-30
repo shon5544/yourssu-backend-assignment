@@ -4,6 +4,8 @@ import com.yourssu.assignmentblog.domain.article.dto.request.ArticleRequestDto
 import com.yourssu.assignmentblog.domain.article.dto.response.ArticleResponseDto
 import com.yourssu.assignmentblog.domain.article.service.ArticleService
 import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
+import com.yourssu.assignmentblog.global.common.enums.FailedMethod
+import com.yourssu.assignmentblog.global.common.enums.FailedTargetType
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import com.yourssu.assignmentblog.global.util.annotation.Auth
 import io.swagger.v3.oas.annotations.Operation
@@ -30,9 +32,14 @@ class ArticleController(
         @RequestBody @Valid requestDto: ArticleRequestDto,
         @Auth authInfo: AuthInfo
     ): ArticleResponseDto {
+
+        requestDto.setURIAndFailMessage(
+            currentURI = RequestURI.ARTICLE + "/write",
+            failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}"
+        )
+
         return articleService.write(
             requestDto = requestDto,
-            currentURI = RequestURI.ARTICLE + "/write",
             email = authInfo.email
         )
     }
@@ -41,14 +48,19 @@ class ArticleController(
     @Operation(summary = "게시글 수정", description = "원하는 게시글을 수정합니다.")
     @Parameter(name = "article id", description = "수정하려는 게시글의 id 값입니다.")
     fun edit(
-        @RequestBody @Valid articleRequestDto: ArticleRequestDto,
+        @RequestBody @Valid requestDto: ArticleRequestDto,
         @PathVariable articleId: Long,
         @Auth authInfo: AuthInfo
     ): ArticleResponseDto {
+
+        requestDto.setURIAndFailMessage(
+            currentURI = RequestURI.ARTICLE + "/edit/$articleId",
+            failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
+        )
+
         return articleService.edit(
             articleId = articleId,
-            currentURI = RequestURI.ARTICLE + "/edit/$articleId",
-            requestDto = articleRequestDto,
+            requestDto = requestDto,
             email = authInfo.email
         )
     }
