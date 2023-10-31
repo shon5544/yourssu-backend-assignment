@@ -8,8 +8,8 @@ import com.yourssu.assignmentblog.domain.comment.dto.response.CommentResponseDto
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.common.aop.ExistenceCheckAdviceHolder
-import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAdviceHolder
+import com.yourssu.assignmentblog.global.common.aop.ExistenceCheckAspect
+import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAspect
 import com.yourssu.assignmentblog.global.common.enums.FailedMethod
 import com.yourssu.assignmentblog.global.common.enums.FailedTargetType
 import org.springframework.stereotype.Service
@@ -27,13 +27,13 @@ class CommentService(
         articleId: Long,
         requestDto: CommentRequestDto,
         email: String
-    ): CommentResponseDto = ExistenceCheckAdviceHolder.checkUserAccount(
+    ): CommentResponseDto = ExistenceCheckAspect.checkUserAccount(
         currentURI = requestDto.currentURI,
         email = email,
         failedTargetText = requestDto.failedTargetText
     ) {
 
-        return@checkUserAccount ExistenceCheckAdviceHolder.checkArticleExistence(
+        return@checkUserAccount ExistenceCheckAspect.checkArticleExistence(
             articleId = articleId,
             currentURI = requestDto.currentURI,
             failedTargetText = requestDto.failedTargetText
@@ -60,19 +60,19 @@ class CommentService(
         commentId: Long,
         requestDto: CommentRequestDto,
         email: String
-    ): CommentResponseDto = ExistenceCheckAdviceHolder.checkUserAccount(
+    ): CommentResponseDto = ExistenceCheckAspect.checkUserAccount(
         currentURI = requestDto.currentURI,
         email = email,
         failedTargetText = requestDto.failedTargetText,
     ) {
 
-        return@checkUserAccount ExistenceCheckAdviceHolder.checkArticleExistence(
+        return@checkUserAccount ExistenceCheckAspect.checkArticleExistence(
             articleId = articleId,
             currentURI = requestDto.currentURI,
             failedTargetText = requestDto.failedTargetText
         ) {
 
-            return@checkArticleExistence ExistenceCheckAdviceHolder.checkCommentExistence(
+            return@checkArticleExistence ExistenceCheckAspect.checkCommentExistence(
                 commentId = commentId,
                 currentURI = requestDto.currentURI,
                 failedTargetText = requestDto.failedTargetText
@@ -98,19 +98,19 @@ class CommentService(
         currentURI: String,
         email: String,
         failedTargetText: String = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
-    ) = ExistenceCheckAdviceHolder.checkUserAccount(
+    ) = ExistenceCheckAspect.checkUserAccount(
         currentURI = currentURI,
         email = email,
         failedTargetText = failedTargetText
     ) {
 
-        return@checkUserAccount ExistenceCheckAdviceHolder.checkArticleExistence(
+        return@checkUserAccount ExistenceCheckAspect.checkArticleExistence(
             articleId = articleId,
             currentURI = currentURI,
             failedTargetText = failedTargetText
         ) {
 
-            return@checkArticleExistence ExistenceCheckAdviceHolder.checkCommentExistence(
+            return@checkArticleExistence ExistenceCheckAspect.checkCommentExistence(
                 commentId = commentId,
                 currentURI = currentURI,
                 failedTargetText = failedTargetText
@@ -119,7 +119,7 @@ class CommentService(
                 val comment: Comment = commentRepository.findById(commentId)!!
                 val user: User = userRepository.findByEmail(email)!!
 
-                return@checkCommentExistence OwnershipCheckAdviceHolder.checkOwnership(
+                return@checkCommentExistence OwnershipCheckAspect.checkOwnership(
                     target = comment,
                     currentURI = currentURI,
                     user = user,

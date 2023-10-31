@@ -6,7 +6,7 @@ import com.yourssu.assignmentblog.global.common.entity.EntityWithOwnership
 import org.springframework.stereotype.Component
 
 @Component
-class OwnershipCheckAdviceHolder(
+class OwnershipCheckAspect(
     _ownershipCheckAdvice: OwnershipCheckAdvice
 ) {
 

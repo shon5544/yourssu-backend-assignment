@@ -4,7 +4,7 @@ import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import org.springframework.stereotype.Component
 
 @Component
-class ExistenceCheckAdviceHolder(
+class ExistenceCheckAspect(
     _existenceCheckAdvice: ExistenceCheckAdvice
 ) {
     init {

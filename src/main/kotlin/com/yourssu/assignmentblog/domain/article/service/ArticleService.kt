@@ -6,8 +6,8 @@ import com.yourssu.assignmentblog.domain.article.dto.response.ArticleResponseDto
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.common.aop.ExistenceCheckAdviceHolder
-import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAdviceHolder
+import com.yourssu.assignmentblog.global.common.aop.ExistenceCheckAspect
+import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAspect
 import com.yourssu.assignmentblog.global.common.enums.FailedMethod
 import com.yourssu.assignmentblog.global.common.enums.FailedTargetType
 import org.springframework.stereotype.Service
@@ -23,7 +23,7 @@ class ArticleService(
     fun write(
         requestDto: ArticleRequestDto,
         email: String
-    ): ArticleResponseDto = ExistenceCheckAdviceHolder.checkUserAccount(
+    ): ArticleResponseDto = ExistenceCheckAspect.checkUserAccount(
         currentURI = requestDto.currentURI,
         email = email,
         failedTargetText = requestDto.failedTargetText
@@ -47,7 +47,7 @@ class ArticleService(
         articleId: Long,
         requestDto: ArticleRequestDto,
         email: String,
-    ): ArticleResponseDto = ExistenceCheckAdviceHolder.checkUserAccount(
+    ): ArticleResponseDto = ExistenceCheckAspect.checkUserAccount(
         currentURI = requestDto.currentURI,
         email = email,
         failedTargetText = requestDto.failedTargetText
@@ -56,7 +56,7 @@ class ArticleService(
         val currentURI = requestDto.currentURI
         val failedTargetText = requestDto.failedTargetText
 
-        return@checkUserAccount ExistenceCheckAdviceHolder.checkArticleExistence(
+        return@checkUserAccount ExistenceCheckAspect.checkArticleExistence(
             articleId = articleId,
             currentURI = currentURI,
             failedTargetText = failedTargetText
@@ -79,13 +79,13 @@ class ArticleService(
         currentURI: String,
         email: String,
         failedTargetText: String = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"
-    ) = ExistenceCheckAdviceHolder.checkUserAccount(
+    ) = ExistenceCheckAspect.checkUserAccount(
         currentURI = currentURI,
         failedTargetText = failedTargetText,
         email = email
     ) {
 
-        ExistenceCheckAdviceHolder.checkArticleExistence(
+        ExistenceCheckAspect.checkArticleExistence(
             articleId = articleId,
             failedTargetText = failedTargetText,
             currentURI = currentURI
@@ -93,7 +93,7 @@ class ArticleService(
             val article: Article = articleRepository.findById(articleId)!!
             val user: User = userRepository.findByEmail(email)!!
 
-            OwnershipCheckAdviceHolder.checkOwnership(
+            OwnershipCheckAspect.checkOwnership(
                 target = article,
                 currentURI = currentURI,
                 user = user,
