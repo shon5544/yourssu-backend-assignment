@@ -6,6 +6,7 @@ import com.yourssu.assignmentblog.domain.user.service.UserService
 import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import com.yourssu.assignmentblog.global.util.annotation.Auth
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,8 +22,10 @@ class UserController(
 ) {
 
     @PostMapping("/signup")
+    @Operation(summary = "회원 가입", description = "회원 가입을 합니다.")
     fun signup(
-        @RequestBody @Valid requestDto: SignupRequestDto): SignupResponseDto {
+        @RequestBody @Valid requestDto: SignupRequestDto
+    ): SignupResponseDto {
         requestDto.setURIAndFailMessage(
             currentURI = RequestURI.USER + "/signup",
             failedTargetText = ""
@@ -32,6 +35,7 @@ class UserController(
     }
 
     @DeleteMapping("/withdraw")
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴를 합니다.")
     fun withdraw(
 //        @RequestBody @Valid withDrawRequestDto: DeleteRequestDto,
         @Auth authInfo: AuthInfo

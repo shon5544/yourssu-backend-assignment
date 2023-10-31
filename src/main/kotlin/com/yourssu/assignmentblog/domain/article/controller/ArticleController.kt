@@ -46,7 +46,7 @@ class ArticleController(
 
     @PutMapping("/edit/{articleId}")
     @Operation(summary = "게시글 수정", description = "원하는 게시글을 수정합니다.")
-    @Parameter(name = "article id", description = "수정하려는 게시글의 id 값입니다.")
+    @Parameter(name = "articleId", description = "수정하려는 게시글의 id 값입니다.")
     fun edit(
         @RequestBody @Valid requestDto: ArticleRequestDto,
         @PathVariable articleId: Long,
@@ -67,7 +67,7 @@ class ArticleController(
 
     @DeleteMapping("/delete/{articleId}")
     @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
-    @Parameter(name = "article id", description = "삭제하려는 게시글의 id 값입니다.")
+    @Parameter(name = "articleId", description = "삭제하려는 게시글의 id 값입니다.")
     fun delete(
         //@RequestBody @Valid deleteRequestDto: DeleteRequestDto,
         @PathVariable articleId: Long,
