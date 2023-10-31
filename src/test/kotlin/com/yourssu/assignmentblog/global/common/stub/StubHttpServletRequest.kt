@@ -1,12 +1,17 @@
 package com.yourssu.assignmentblog.global.common.stub
 
+import com.yourssu.assignmentblog.domain.user.domain.User
+import com.yourssu.assignmentblog.global.auth.jwt.JwtTokenManager
 import java.io.BufferedReader
 import java.security.Principal
 import java.util.*
 import javax.servlet.*
 import javax.servlet.http.*
 
-class StubHttpServletRequest: HttpServletRequest {
+class StubHttpServletRequest(
+    private val expectedAccessToken: String,
+    private val expectedRefreshToken: String
+): HttpServletRequest {
     override fun getAttribute(name: String?): Any {
         TODO("Not yet implemented")
     }
@@ -172,13 +177,13 @@ class StubHttpServletRequest: HttpServletRequest {
 
     override fun getHeader(name: String?): String {
         return if(name.equals("Authorization"))
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImVtYWlsIjoieW91cnNzdUBnbWFpbC5jb20iLCJleHAiOjE2OTQ2MDY3MDB9.V0zUCY1c89tT68yWiDNW6GDRwFGzA1nxLP2P30b8kPk"
+            "Bearer $expectedAccessToken"
         else if(name.equals("Authorization-no-bearer"))
-            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImVtYWlsIjoieW91cnNzdUBnbWFpbC5jb20iLCJleHAiOjE2OTQ2MDY3MDB9.V0zUCY1c89tT68yWiDNW6GDRwFGzA1nxLP2P30b8kPk"
+            expectedAccessToken
         else if(name.equals("Authorization-refresh"))
-            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSZWZyZXNoVG9rZW4iLCJleHAiOjE2OTQ2MDY3MDB9._bMFe2936dVTmFMvw0hOlpXtq7SCpOArCx6TMNCLtrE"
+            "Bearer $expectedRefreshToken"
         else
-            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSZWZyZXNoVG9rZW4iLCJleHAiOjE2OTQ2MDY3MDB9._bMFe2936dVTmFMvw0hOlpXtq7SCpOArCx6TMNCLtrE"
+            expectedRefreshToken
     }
 
     override fun getHeaders(name: String?): Enumeration<String> {

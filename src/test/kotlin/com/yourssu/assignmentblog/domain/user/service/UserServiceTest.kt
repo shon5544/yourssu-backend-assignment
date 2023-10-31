@@ -55,7 +55,6 @@ internal class UserServiceTest {
             existenceChecker = ExistenceChecker(
                 userRepository = userRepository,
                 articleRepository = articleRepository,
-                passwordEncoder = passwordEncoder,
                 commentRepository = commentRepository
             )
 
@@ -84,7 +83,6 @@ internal class UserServiceTest {
         existenceChecker = ExistenceChecker(
             userRepository = userRepository,
             articleRepository = articleRepository,
-            passwordEncoder = passwordEncoder,
             commentRepository = commentRepository
         )
 
@@ -137,7 +135,6 @@ internal class UserServiceTest {
                 existenceChecker = ExistenceChecker(
                     userRepository = userRepositoryForDuplicateTest,
                     articleRepository = articleRepository,
-                    passwordEncoder = passwordEncoder,
                     commentRepository = commentRepository
                 )
 
@@ -190,7 +187,6 @@ internal class UserServiceTest {
                     existenceChecker = ExistenceChecker(
                         userRepository = userRepositoryForDuplicateTest,
                         articleRepository = articleRepository,
-                        passwordEncoder = passwordEncoder,
                         commentRepository = commentRepository
                     )
 
@@ -209,7 +205,7 @@ internal class UserServiceTest {
                     // when-then
                     assertThrows(CustomException::class.java) {
                         userService.withdraw(
-                            requestDto = requestDto,
+                            email = requestDto.email,
                             currentURI = WITHDRAW
                         )
                     }
@@ -219,29 +215,6 @@ internal class UserServiceTest {
             @Nested
             @DisplayName("만약 존재하는 유저라면")
             inner class ContextExist {
-
-                @Nested
-                @DisplayName("만약 비밀번호가 틀렸다면")
-                inner class ContextWrongPassword {
-
-                    @Test
-                    @DisplayName("CustomException이 발생된다.")
-                    fun it_throws_customException() {
-                        // given
-                        val requestDto = DeleteRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "fffffff"
-                        )
-
-                        // when-then
-                        assertThrows(CustomException::class.java) {
-                            userService.withdraw(
-                                requestDto = requestDto,
-                                currentURI = WITHDRAW
-                            )
-                        }
-                    }
-                }
 
                 @Nested
                 @DisplayName("만약 비밀번호가 맞았다면")
@@ -258,7 +231,7 @@ internal class UserServiceTest {
 
                         // when-then
                         userService.withdraw(
-                            requestDto = requestDto,
+                            email = requestDto.email,
                             currentURI = WITHDRAW
                         )
                     }

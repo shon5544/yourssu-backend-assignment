@@ -1,17 +1,22 @@
 package com.yourssu.assignmentblog.global.auth.jwt
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.yourssu.assignmentblog.global.common.localDateTImeHolder.ICustomLocalDateTime
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
+import com.yourssu.assignmentblog.global.auth.dto.response.AuthenticationFailDto
+import com.yourssu.assignmentblog.global.util.sender.ResponseSender
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.*
 import javax.persistence.EntityNotFoundException
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import javax.transaction.Transactional
 import kotlin.IllegalArgumentException
 
@@ -28,7 +33,9 @@ class JwtTokenManager(
 
     private val localDateTime: ICustomLocalDateTime,
 
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+
+    private val objectMapper: ObjectMapper = ObjectMapper()
 ) {
     companion object {
         const val ACCESS_TOKEN_SUBJECT = "AccessToken"
@@ -76,16 +83,29 @@ class JwtTokenManager(
     }
 
 
-    fun extractToken(headerName: String, request: HttpServletRequest): String? {
-        val token: String? = request.getHeader(headerName)
+    fun extractToken(
+        headerName: String,
+        request: HttpServletRequest,
+        response: HttpServletResponse
+    ): String {
+        val token: String = request.getHeader(headerName)
 
-        return if (token != null && token.startsWith(BEARER)) {
-            token.replace(BEARER, "")
-        } else if (token != null && !token.startsWith(BEARER)) {
-            throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 토큰의 형식이 잘못됐습니다.")
-        } else {
-            return null
+        if (token.startsWith(BEARER)) {
+            val result = token.replace(BEARER, "")
+            println(result)
+
+            return if (isTokenValid(result)) result else throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 유효한 토큰이 아닙니다.")
         }
+
+        setBadRequestResponse(response, "인증 실패: 유효한 refresh 토큰이 아닙니다. " +
+                "로그인을 통해 토큰을 재발급 받으세요.")
+
+        throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 토큰의 형식이 잘못됐습니다.")
+    }
+
+    @Throws(IOException::class)
+    fun setBadRequestResponse(response: HttpServletResponse, message: String) {
+        return
     }
 
     fun isTokenValid(token: String): Boolean {
@@ -117,7 +137,7 @@ class JwtTokenManager(
         return ReIssuedTokens(newAccessToken, newRefreshToken)
     }
 
-    fun extractEmailFromToken(accessToken: String): String? {
+    fun extractEmailFromToken(accessToken: String): String {
         val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
 
         return try {
@@ -128,7 +148,7 @@ class JwtTokenManager(
                 .body[EMAIL]
                 .toString()
         } catch (e: Exception) {
-            null
+            throw IllegalArgumentException(e.message)
         }
     }
 }

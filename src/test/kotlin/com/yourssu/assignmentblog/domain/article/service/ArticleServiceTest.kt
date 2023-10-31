@@ -12,7 +12,6 @@ import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
 import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
-import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import com.yourssu.assignmentblog.global.error.exception.CustomException
 import org.junit.jupiter.api.Assertions.*
@@ -67,14 +66,12 @@ internal class ArticleServiceTest {
             existenceChecker = ExistenceChecker(
                 userRepository = userRepository,
                 articleRepository = articleRepository,
-                passwordEncoder = passwordEncoder,
                 commentRepository = commentRepository
             )
 
             articleService = ArticleService(
                 articleRepository = articleRepository,
-                existenceChecker = existenceChecker,
-                ownershipChecker = ownershipChecker
+                userRepository = userRepository
             )
 
             userRepository.save(user)
@@ -120,48 +117,22 @@ internal class ArticleServiceTest {
 
                     // given
                     val requestDto = ArticleRequestDto(
-                        email = "beomsu@urssu.kr",
-                        password = "asdf",
-                        title = "title",
-                        content = "content"
-                    )
-
-
-                    // when-then
-                    assertThrows(CustomException::class.java) {
-                        articleService.write(
-                            requestDto = requestDto,
-                            currentURI = WRITE
-                        )
-                    }
-                }
-            }
-
-            @Nested
-            @DisplayName("만약 이메일은 존재했지만, 비밀번호를 잘못 기재했다면")
-            inner class ContextPasswordIsNotEquals {
-
-                @Test
-                @DisplayName("CustomException이 발생된다.")
-                fun it_throw_CustomException() {
-
-                    // given
-                    val requestDto = ArticleRequestDto(
-                        email = "yourssu@gmail.com",
-                        password = "ffffff",
                         title = "title",
                         content = "content"
                     )
 
                     // when-then
                     assertThrows(CustomException::class.java) {
-                        articleService.write(
+                        val write = articleService.write(
                             requestDto = requestDto,
-                            currentURI = WRITE
+                            email = "beomsu@urssu.kr"
                         )
+
+                        println(write)
                     }
                 }
             }
+
         }
 
         @Nested
@@ -185,8 +156,6 @@ internal class ArticleServiceTest {
 
                 // given
                 val requestDto = ArticleRequestDto(
-                    email = "yourssu@gmail.com",
-                    password = "asdj",
                     title = "title",
                     content = "content"
                 )
@@ -194,7 +163,7 @@ internal class ArticleServiceTest {
                 // when
                 val result = articleService.write(
                     requestDto = requestDto,
-                    currentURI = WRITE
+                    email = "yourssu@gmail.com"
                 )
 
                 // then
@@ -221,8 +190,6 @@ internal class ArticleServiceTest {
 
                     // given
                     val requestDto = ArticleRequestDto(
-                        email = "beomsu@urssu.kr",
-                        password = "asdf",
                         title = "title",
                         content = "content"
                     )
@@ -232,38 +199,12 @@ internal class ArticleServiceTest {
                         articleService.edit(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = EDIT
+                            email = "beomsu@urssu.kr"
                         )
                     }
                 }
             }
 
-            @Nested
-            @DisplayName("만약 이메일은 존재했지만, 비밀번호를 잘못 기재했다면")
-            inner class ContextPasswordIsNotEquals {
-
-                @Test
-                @DisplayName("CustomException이 발생된다.")
-                fun it_throw_CustomException() {
-
-                    // given
-                    val requestDto = ArticleRequestDto(
-                        email = "yourssu@gmail.com",
-                        password = "ffffff",
-                        title = "title",
-                        content = "content"
-                    )
-
-                    // when-then
-                    assertThrows(CustomException::class.java) {
-                        articleService.edit(
-                            articleId = 1,
-                            requestDto = requestDto,
-                            currentURI = EDIT
-                        )
-                    }
-                }
-            }
         }
 
         @Nested
@@ -312,8 +253,6 @@ internal class ArticleServiceTest {
 
                         // given
                         val requestDto = ArticleRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "asdj",
                             title = "title",
                             content = "content"
                         )
@@ -323,7 +262,7 @@ internal class ArticleServiceTest {
                             articleService.edit(
                                 articleId = 1,
                                 requestDto = requestDto,
-                                currentURI = EDIT
+                                email = "yourssu@gmail.com"
                             )
                         }
                     }
@@ -339,8 +278,6 @@ internal class ArticleServiceTest {
 
                         // given
                         val requestDto = ArticleRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "asdj",
                             title = "title",
                             content = "content"
                         )
@@ -349,7 +286,7 @@ internal class ArticleServiceTest {
                         val result = articleService.edit(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = EDIT
+                            email = "yourssu@gmail.com"
                         )
 
                         // then
@@ -358,137 +295,121 @@ internal class ArticleServiceTest {
                 }
             }
         }
+    }
+
+    @Nested
+    @DisplayName("delete 메서드를 사용할 때")
+    inner class DescribeDelete {
 
         @Nested
-        @DisplayName("delete 메서드를 사용할 때")
-        inner class DescribeDelete {
+        @DisplayName("유저 정보가 일치하지 않을 때가 있을 수 있다.")
+        inner class ContextUserIsNotEquals {
 
             @Nested
-            @DisplayName("유저 정보가 일치하지 않을 때가 있을 수 있다.")
-            inner class ContextUserIsNotEquals {
+            @DisplayName("만약 존재하지 않는 이메일을 기재했다면")
+            inner class ContextEmailIsNotEquals {
 
-                @Nested
-                @DisplayName("만약 존재하지 않는 이메일을 기재했다면")
-                inner class ContextEmailIsNotEquals {
+                @Test
+                @DisplayName("CustomException이 발생한다")
+                fun it_throw_CustomException() {
 
-                    @Test
-                    @DisplayName("CustomException이 발생한다")
-                    fun it_throw_CustomException() {
+                    // given
 
-                        // given
-                        val requestDto = DeleteRequestDto(
-                            email = "beomsu@urssu.kr",
-                            password = "asdf"
+
+                    // when-then
+                    assertThrows(CustomException::class.java) {
+                        articleService.delete(
+                            articleId = 1,
+                            currentURI = DELETE,
+                            email = "beomsu@urssu.kr"
                         )
-
-
-                        // when-then
-                        assertThrows(CustomException::class.java) {
-                            articleService.delete(
-                                articleId = 1,
-                                requestDto = requestDto,
-                                currentURI = DELETE
-                            )
-                        }
-                    }
-                }
-
-                @Nested
-                @DisplayName("만약 이메일은 존재했지만, 비밀번호를 잘못 기재했다면")
-                inner class ContextPasswordIsNotEquals {
-
-                    @Test
-                    @DisplayName("CustomException이 발생한다")
-                    fun it_throw_CustomException() {
-
-                        // given
-                        val requestDto = DeleteRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "ffffff"
-                        )
-
-                        // when-then
-                        assertThrows(CustomException::class.java) {
-                            articleService.delete(
-                                articleId = 1,
-                                requestDto = requestDto,
-                                currentURI = DELETE
-                            )
-                        }
                     }
                 }
             }
 
             @Nested
-            @DisplayName("유저 정보가 일치하면")
-            inner class ContextUserEquals {
+            @DisplayName("만약 이메일은 존재했지만, 비밀번호를 잘못 기재했다면")
+            inner class ContextPasswordIsNotEquals {
+
+                @Test
+                @DisplayName("CustomException이 발생한다")
+                fun it_throw_CustomException() {
+
+                    // given
+
+                    // when-then
+                    assertThrows(CustomException::class.java) {
+                        articleService.delete(
+                            articleId = 1,
+                            currentURI = DELETE,
+                            email = "beomsu@urssu.kr"
+                        )
+                    }
+                }
+            }
+        }
+
+        @Nested
+        @DisplayName("유저 정보가 일치하면")
+        inner class ContextUserEquals {
+
+            @Nested
+            @DisplayName("게시글이 유저의 소유물인지 확인을 한다.")
+            inner class ContextCheckOwnership {
 
                 @Nested
-                @DisplayName("게시글이 유저의 소유물인지 확인을 한다.")
-                inner class ContextCheckOwnership {
+                @DisplayName("게시글이 유저의 소유가 아니라면,")
+                inner class ContextIncorrectOwnership {
 
-                    @Nested
-                    @DisplayName("게시글이 유저의 소유가 아니라면,")
-                    inner class ContextIncorrectOwnership {
+                    private val userForOwnershipCheck = User(
+                        id = 2,
+                        email = "beomsu@gmail.com",
+                        password = "asdf",
+                        username = "beomsu"
+                    )
 
-                        private val userForOwnershipCheck = User(
-                            id = 2,
-                            email = "beomsu@gmail.com",
-                            password = "asdf",
-                            username = "beomsu"
-                        )
+                    private val articleForOwnershipCheck = Article(
+                        id = 1,
+                        content = "content",
+                        title = "title",
+                        user = userForOwnershipCheck
+                    )
 
-                        private val articleForOwnershipCheck = Article(
-                            id = 1,
-                            content = "content",
-                            title = "title",
-                            user = userForOwnershipCheck
-                        )
+                    @Test
+                    @DisplayName("CustomException이 발생된다")
+                    fun it_throw_customException() {
 
-                        @Test
-                        @DisplayName("CustomException이 발생된다")
-                        fun it_throw_customException() {
+                        articleRepository.save(articleForOwnershipCheck)
 
-                            articleRepository.save(articleForOwnershipCheck)
+                        // given
 
-                            // given
-                            val requestDto = DeleteRequestDto(
-                                email = "yourssu@gmail.com",
-                                password = "asdj",
-                            )
-
-                            // when-then
-                            assertThrows(CustomException::class.java) {
-                                articleService.delete(
-                                    articleId = 1,
-                                    requestDto = requestDto,
-                                    currentURI = EDIT
-                                )
-                            }
-                        }
-                    }
-
-                    @Nested
-                    @DisplayName("게시글이 유저의 소유가 맞다면,")
-                    inner class ContextCorrectOwnership {
-
-                        @Test
-                        @DisplayName("어떠한 exception 없이 성공적으로 함수가 실행된다.")
-                        fun it_works_well() {
-
-                            // given
-                            val requestDto = DeleteRequestDto(
-                                email = "yourssu@gmail.com",
-                                password = "asdj",
-                            )
-
-                            // when-then
+                        // when-then
+                        assertThrows(CustomException::class.java) {
                             articleService.delete(
                                 articleId = 1,
-                                requestDto = requestDto,
-                                currentURI = DELETE
+                                currentURI = EDIT,
+                                email = "beomsu@urssu.kr"
                             )
                         }
+                    }
+                }
+
+                @Nested
+                @DisplayName("게시글이 유저의 소유가 맞다면,")
+                inner class ContextCorrectOwnership {
+
+                    @Test
+                    @DisplayName("어떠한 exception 없이 성공적으로 함수가 실행된다.")
+                    fun it_works_well() {
+
+                        // given
+
+                        // when-then
+                        articleService.delete(
+                            articleId = 1,
+                            currentURI = DELETE,
+                            email = "yourssu@gmail.com"
+                        )
                     }
                 }
             }

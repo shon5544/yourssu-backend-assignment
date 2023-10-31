@@ -8,36 +8,35 @@ import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
 import com.yourssu.assignmentblog.global.error.exception.CustomException
 import org.springframework.http.HttpStatus
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 
 @Component
 class ExistenceChecker(
     private val userRepository: UserRepository,
     private val articleRepository: ArticleRepository,
-    private val passwordEncoder: BCryptPasswordEncoder,
+//    private val passwordEncoder: BCryptPasswordEncoder,
     private val commentRepository: CommentRepository
 ) {
     fun checkUserAccount(
         currentURI: String,
         email: String,
-        password: String,
+//        password: String,
         failedTargetText: String,
     ): User {
-        val user = checkUserEmailExist(
+
+//        checkUserPassword(
+//            password = password,
+//            user = user,
+//            failedTargetText = failedTargetText,
+//            currentURI = currentURI
+//        )
+
+        return checkUserEmailExist(
             email = email,
             failedTargetText = failedTargetText,
             currentURI = currentURI
         )
-
-        checkUserPassword(
-            password = password,
-            user = user,
-            failedTargetText = failedTargetText,
-            currentURI = currentURI
-        )
-
-        return user
     }
 
     fun checkUserEmailExist(
@@ -45,28 +44,28 @@ class ExistenceChecker(
         failedTargetText: String,
         currentURI: String
     ): User {
-        return (userRepository.findByEmail(email)
+        return userRepository.findByEmail(email)
             ?: throw CustomException(
                 status = HttpStatus.BAD_REQUEST,
                 message = "$failedTargetText 실패: 전달받은 email에 해당하는 유저가 없습니다.",
                 requestURI = currentURI
-            ))
+            )
     }
 
-    fun checkUserPassword(
-        password: String,
-        user: User,
-        failedTargetText: String,
-        currentURI: String
-    ) {
-        if (!passwordEncoder.matches(password, user.password)) {
-            throw CustomException(
-                status = HttpStatus.BAD_REQUEST,
-                message = "$failedTargetText 실패: 비밀번호가 일치하지 않습니다.",
-                requestURI = currentURI
-            )
-        }
-    }
+//    fun checkUserPassword(
+//        password: String,
+//        user: User,
+//        failedTargetText: String,
+//        currentURI: String
+//    ) {
+//        if (!passwordEncoder.matches(password, user.password)) {
+//            throw CustomException(
+//                status = HttpStatus.BAD_REQUEST,
+//                message = "$failedTargetText 실패: 비밀번호가 일치하지 않습니다.",
+//                requestURI = currentURI
+//            )
+//        }
+//    }
 
     fun checkUserEmailNotExist(
         email: String,

@@ -6,7 +6,7 @@ import com.yourssu.assignmentblog.global.auth.filter.CustomLoginFilter
 import com.yourssu.assignmentblog.global.auth.filter.JwtAuthenticationFilter
 import com.yourssu.assignmentblog.global.auth.handler.LoginFailureHandler
 import com.yourssu.assignmentblog.global.auth.handler.LoginSuccessHandler
-import com.yourssu.assignmentblog.global.auth.jwt.JwtTokenManager
+import com.yourssu.assignmentblog.global.auth.jwt.token.TokenProvider
 import com.yourssu.assignmentblog.global.auth.service.CustomUserDetailsService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -34,7 +34,7 @@ class SecurityConfig(
     private val customUserDetailsService: CustomUserDetailsService,
     private val loginSuccessHandler: LoginSuccessHandler,
     private val loginFailureHandler: LoginFailureHandler,
-    private val jwtTokenManager: JwtTokenManager,
+    private val tokenProvider: TokenProvider,
     private val userRepository: UserRepository,
 ) {
 
@@ -102,8 +102,7 @@ class SecurityConfig(
         return JwtAuthenticationFilter(
             accessTokenHeader = this.accessTokenHeader,
             refreshTokenHeader = this.refreshTokenHeader,
-            jwtTokenManager = this.jwtTokenManager,
-            objectMapper = objectMapper,
+            tokenProvider = this.tokenProvider,
             userRepository = this.userRepository
         )
     }
