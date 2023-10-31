@@ -13,7 +13,7 @@ import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAdviceHolder
 import com.yourssu.assignmentblog.global.common.enums.FailedMethod
 import com.yourssu.assignmentblog.global.common.enums.FailedTargetType
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CommentService(
