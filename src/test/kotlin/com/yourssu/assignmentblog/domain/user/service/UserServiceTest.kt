@@ -60,7 +60,6 @@ internal class UserServiceTest {
 
             userService = UserService(
                 userRepository = userRepository,
-                existenceChecker = existenceChecker,
                 passwordEncoder = passwordEncoder,
             )
 
@@ -89,7 +88,6 @@ internal class UserServiceTest {
         userService = UserService(
             userRepository = userRepository,
             passwordEncoder = passwordEncoder,
-            existenceChecker = existenceChecker
         )
     }
 
@@ -111,11 +109,15 @@ internal class UserServiceTest {
                     username = "beomsu"
                 )
 
+                requestDto.setURIAndFailMessage(
+                    currentURI = SIGNUP,
+                    failedTargetText = ""
+                )
+
                 // when-then
                 assertThrows(CustomException::class.java) {
                     userService.signup(
                         requestDto = requestDto,
-                        currentURI = SIGNUP
                     )
                 }
             }
@@ -141,7 +143,6 @@ internal class UserServiceTest {
                 userService = UserService(
                     userRepository = userRepository,
                     passwordEncoder = passwordEncoder,
-                    existenceChecker = existenceChecker
                 )
 
                 // given
@@ -152,10 +153,14 @@ internal class UserServiceTest {
                     role = "USER"
                 )
 
+                requestDto.setURIAndFailMessage(
+                    currentURI = SIGNUP,
+                    failedTargetText = ""
+                )
+
                 // when
                 val result = userService.signup(
                     requestDto = requestDto,
-                    currentURI = SIGNUP
                 )
 
                 // then
@@ -193,7 +198,6 @@ internal class UserServiceTest {
                     userService = UserService(
                         userRepository = userRepository,
                         passwordEncoder = passwordEncoder,
-                        existenceChecker = existenceChecker
                     )
 
                     // given

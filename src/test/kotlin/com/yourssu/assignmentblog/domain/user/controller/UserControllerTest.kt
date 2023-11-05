@@ -57,7 +57,6 @@ internal class UserControllerTest {
 
             userService = UserService(
                 userRepository = userRepository,
-                existenceChecker = existenceChecker,
                 passwordEncoder = passwordEncoder,
             )
 
@@ -79,7 +78,6 @@ internal class UserControllerTest {
         userService = UserService(
             userRepository = userRepository,
             passwordEncoder = passwordEncoder,
-            existenceChecker = existenceChecker
         )
 
         userController = UserController(userService)

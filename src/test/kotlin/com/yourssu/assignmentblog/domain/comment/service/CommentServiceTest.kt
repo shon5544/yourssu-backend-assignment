@@ -69,8 +69,8 @@ internal class CommentServiceTest {
 
             commentService = CommentService(
                 commentRepository = commentRepository,
-                existenceChecker = existenceChecker,
-                ownershipChecker = ownershipChecker
+                articleRepository = articleRepository,
+                userRepository = userRepository
             )
 
             userRepository.save(user)
@@ -113,8 +113,8 @@ internal class CommentServiceTest {
         )
         commentService = CommentService(
             commentRepository = commentRepository,
-            existenceChecker = existenceChecker,
-            ownershipChecker = ownershipChecker
+            articleRepository = articleRepository,
+            userRepository = userRepository
         )
 
     }
@@ -141,12 +141,16 @@ internal class CommentServiceTest {
                         content = "content"
                     )
 
+                    requestDto.setURIAndFailMessage(
+                        currentURI = ArticleServiceTest.WRITE,
+                        failedTargetText = ""
+                    )
+
                     // when-then
                     assertThrows(CustomException::class.java) {
                         commentService.write(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = ArticleServiceTest.WRITE,
                             email = email
                         )
                     }
@@ -190,8 +194,8 @@ internal class CommentServiceTest {
                         )
                         commentService = CommentService(
                             commentRepository = commentRepository,
-                            existenceChecker = existenceChecker,
-                            ownershipChecker = ownershipChecker
+                            articleRepository = articleRepositoryForNotExistTest,
+                            userRepository = userRepository
                         )
 
                         // given
@@ -200,12 +204,16 @@ internal class CommentServiceTest {
                             content = "content"
                         )
 
+                        requestDto.setURIAndFailMessage(
+                            currentURI = WRITE,
+                            failedTargetText = ""
+                        )
+
                         // when-then
                         assertThrows(CustomException::class.java) {
                             commentService.write(
                                 articleId = 1,
                                 requestDto = requestDto,
-                                currentURI = WRITE,
                                 email = email
                             )
                         }
@@ -226,11 +234,15 @@ internal class CommentServiceTest {
                             content = "content"
                         )
 
+                        requestDto.setURIAndFailMessage(
+                            currentURI = WRITE,
+                            failedTargetText = ""
+                        )
+
                         // when
                         val result = commentService.write(
                             articleId = 1,
                             requestDto = requestDto,
-                            currentURI = WRITE,
                             email = email
                         )
 
@@ -263,13 +275,17 @@ internal class CommentServiceTest {
                         content = "content"
                     )
 
+                    requestDto.setURIAndFailMessage(
+                        currentURI = EDIT,
+                        failedTargetText = ""
+                    )
+
                     // when-then
                     assertThrows(CustomException::class.java) {
                         commentService.edit(
                             articleId = 1,
                             commentId = 1,
                             requestDto = requestDto,
-                            currentURI = ArticleServiceTest.EDIT,
                             email = email
                         )
                     }
@@ -313,8 +329,8 @@ internal class CommentServiceTest {
                         )
                         commentService = CommentService(
                             commentRepository = commentRepository,
-                            existenceChecker = existenceChecker,
-                            ownershipChecker = ownershipChecker
+                            articleRepository = articleRepository,
+                            userRepository = userRepository
                         )
 
                         // given
@@ -324,13 +340,17 @@ internal class CommentServiceTest {
                             content = "content"
                         )
 
+                        requestDto.setURIAndFailMessage(
+                            currentURI = EDIT,
+                            failedTargetText = ""
+                        )
+
                         // when-then
                         assertThrows(CustomException::class.java) {
                             commentService.edit(
                                 articleId = 1,
                                 commentId = 1,
                                 requestDto = requestDto,
-                                currentURI = EDIT,
                                 email = email
                             )
                         }
@@ -361,8 +381,8 @@ internal class CommentServiceTest {
                                 )
                                 commentService = CommentService(
                                     commentRepository = commentRepository,
-                                    existenceChecker = existenceChecker,
-                                    ownershipChecker = ownershipChecker
+                                    articleRepository = articleRepository,
+                                    userRepository = userRepository
                                 )
 
                                 // given
@@ -378,7 +398,6 @@ internal class CommentServiceTest {
                                         articleId = 1,
                                         commentId = 1,
                                         requestDto = requestDto,
-                                        currentURI = EDIT,
                                         email = email
                                     )
                                 }
@@ -423,13 +442,17 @@ internal class CommentServiceTest {
                                             content = "content"
                                         )
 
+                                        requestDto.setURIAndFailMessage(
+                                            currentURI = EDIT,
+                                            failedTargetText = ""
+                                        )
+
                                         // when-then
                                         assertThrows(CustomException::class.java) {
                                             commentService.edit(
                                                 articleId = 1,
                                                 commentId = 1,
                                                 requestDto = requestDto,
-                                                currentURI = EDIT,
                                                 email = email
                                             )
                                         }
@@ -451,11 +474,15 @@ internal class CommentServiceTest {
                                             content = "content"
                                         )
 
+                                        requestDto.setURIAndFailMessage(
+                                            currentURI = WRITE,
+                                            failedTargetText = ""
+                                        )
+
                                         // when
                                         val result = commentService.write(
                                             articleId = 1,
                                             requestDto = requestDto,
-                                            currentURI = EDIT,
                                             email = email
                                         )
 
@@ -527,8 +554,8 @@ internal class CommentServiceTest {
                         )
                         commentService = CommentService(
                             commentRepository = commentRepository,
-                            existenceChecker = existenceChecker,
-                            ownershipChecker = ownershipChecker
+                            articleRepository = articleRepository,
+                            userRepository = userRepository
                         )
 
                         // given
@@ -570,8 +597,8 @@ internal class CommentServiceTest {
                                 )
                                 commentService = CommentService(
                                     commentRepository = commentRepository,
-                                    existenceChecker = existenceChecker,
-                                    ownershipChecker = ownershipChecker
+                                    articleRepository = articleRepository,
+                                    userRepository = userRepository
                                 )
 
                                 // given
