@@ -74,8 +74,8 @@ internal class CommentControllerTest {
 
             commentService = CommentService(
                 commentRepository = commentRepository,
-                existenceChecker = existenceChecker,
-                ownershipChecker = ownershipChecker
+                articleRepository = articleRepository,
+                userRepository = userRepository
             )
 
             userRepository.save(user)
@@ -120,8 +120,8 @@ internal class CommentControllerTest {
         )
         commentService = CommentService(
             commentRepository = commentRepository,
-            existenceChecker = existenceChecker,
-            ownershipChecker = ownershipChecker
+            articleRepository = articleRepository,
+            userRepository = userRepository
         )
 
         commentController = CommentController(commentService)
