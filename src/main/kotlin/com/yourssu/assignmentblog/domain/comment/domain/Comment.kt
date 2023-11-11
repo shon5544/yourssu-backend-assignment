@@ -4,7 +4,7 @@ import com.yourssu.assignmentblog.domain.article.domain.Article
 import com.yourssu.assignmentblog.domain.comment.dto.request.CommentRequestDto
 import com.yourssu.assignmentblog.global.common.entity.BaseCreateAndUpdateTimeEntity
 import com.yourssu.assignmentblog.domain.user.domain.User
-import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAspect
+import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAdvice
 import com.yourssu.assignmentblog.global.common.entity.EntityWithOwnership
 import javax.persistence.*
 
@@ -25,7 +25,7 @@ class Comment(
     @JoinColumn(nullable = false, name = "article_id")
     val article: Article? = null
 ) : BaseCreateAndUpdateTimeEntity(), EntityWithOwnership {
-    fun update(requestDto: CommentRequestDto, user: User) = OwnershipCheckAspect.checkOwnership(
+    fun update(requestDto: CommentRequestDto, user: User) = OwnershipCheckAdvice.checkOwnership(
         target = this,
         currentURI = requestDto.currentURI,
         user = user,
