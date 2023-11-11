@@ -9,8 +9,6 @@ import com.yourssu.assignmentblog.domain.comment.dto.response.CommentResponseDto
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
 import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
-import com.yourssu.assignmentblog.global.common.domain.OwnershipChecker
 import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
 import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
@@ -29,7 +27,6 @@ internal class CommentServiceTest {
         private lateinit var commentRepository: CommentRepository
 
         private val passwordEncoder = BCryptPasswordEncoder()
-        private val ownershipChecker = OwnershipChecker()
 
         private val user: User = User(
             id = 1,
@@ -45,8 +42,6 @@ internal class CommentServiceTest {
             user = user
         )
 
-        private lateinit var existenceChecker: ExistenceChecker
-
         lateinit var commentService: CommentService
 
         const val WRITE = "${RequestURI.COMMENT}/write"
@@ -60,12 +55,6 @@ internal class CommentServiceTest {
             userRepository = TestUserRepository()
             articleRepository = TestArticleRepository()
             commentRepository = TestCommentRepository()
-
-            existenceChecker = ExistenceChecker(
-                userRepository = userRepository,
-                articleRepository = articleRepository,
-                commentRepository = commentRepository
-            )
 
             commentService = CommentService(
                 commentRepository = commentRepository,
@@ -106,11 +95,6 @@ internal class CommentServiceTest {
         articleRepository.save(article)
         commentRepository.save(comment)
 
-        existenceChecker = ExistenceChecker(
-            userRepository = userRepository,
-            articleRepository = articleRepository,
-            commentRepository = commentRepository
-        )
         commentService = CommentService(
             commentRepository = commentRepository,
             articleRepository = articleRepository,
@@ -187,11 +171,7 @@ internal class CommentServiceTest {
                     fun it_throw_customException() {
 
                         val articleRepositoryForNotExistTest = TestArticleRepository()
-                        existenceChecker = ExistenceChecker(
-                            userRepository = userRepository,
-                            articleRepository = articleRepositoryForNotExistTest,
-                            commentRepository = commentRepository
-                        )
+
                         commentService = CommentService(
                             commentRepository = commentRepository,
                             articleRepository = articleRepositoryForNotExistTest,
@@ -320,13 +300,8 @@ internal class CommentServiceTest {
                     @Test
                     @DisplayName("CustomException이 발생된다")
                     fun it_throw_customException() {
+                        articleRepository = TestArticleRepository()
 
-                        val articleRepositoryForNotExistTest = TestArticleRepository()
-                        existenceChecker = ExistenceChecker(
-                            userRepository = userRepository,
-                            articleRepository = articleRepositoryForNotExistTest,
-                            commentRepository = commentRepository
-                        )
                         commentService = CommentService(
                             commentRepository = commentRepository,
                             articleRepository = articleRepository,
@@ -372,13 +347,8 @@ internal class CommentServiceTest {
                             @Test
                             @DisplayName("CustomException이 발생된다")
                             fun it_throw_customException() {
+                                commentRepository = TestCommentRepository()
 
-                                val commentRepositoryForExistTest = TestCommentRepository()
-                                existenceChecker = ExistenceChecker(
-                                    userRepository = userRepository,
-                                    articleRepository = articleRepository,
-                                    commentRepository = commentRepositoryForExistTest
-                                )
                                 commentService = CommentService(
                                     commentRepository = commentRepository,
                                     articleRepository = articleRepository,
@@ -545,13 +515,8 @@ internal class CommentServiceTest {
                     @Test
                     @DisplayName("CustomException이 발생된다")
                     fun it_throw_customException() {
+                        articleRepository = TestArticleRepository()
 
-                        val articleRepositoryForNotExistTest = TestArticleRepository()
-                        existenceChecker = ExistenceChecker(
-                            userRepository = userRepository,
-                            articleRepository = articleRepositoryForNotExistTest,
-                            commentRepository = commentRepository
-                        )
                         commentService = CommentService(
                             commentRepository = commentRepository,
                             articleRepository = articleRepository,
@@ -588,13 +553,8 @@ internal class CommentServiceTest {
                             @Test
                             @DisplayName("CustomException이 발생된다")
                             fun it_throw_customException() {
+                                commentRepository = TestCommentRepository()
 
-                                val commentRepositoryForExistTest = TestCommentRepository()
-                                existenceChecker = ExistenceChecker(
-                                    userRepository = userRepository,
-                                    articleRepository = articleRepository,
-                                    commentRepository = commentRepositoryForExistTest
-                                )
                                 commentService = CommentService(
                                     commentRepository = commentRepository,
                                     articleRepository = articleRepository,

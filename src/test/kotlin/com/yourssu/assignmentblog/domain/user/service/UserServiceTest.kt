@@ -6,7 +6,6 @@ import com.yourssu.assignmentblog.domain.user.domain.User
 import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
 import com.yourssu.assignmentblog.domain.user.dto.response.SignupResponseDto
 import com.yourssu.assignmentblog.domain.user.repository.UserRepository
-import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.dto.DeleteRequestDto
 import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
 import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
@@ -38,8 +37,6 @@ internal class UserServiceTest {
             username = "beomsu son"
         )
 
-        private lateinit var existenceChecker: ExistenceChecker
-
         private lateinit var userService: UserService
 
         const val SIGNUP = "${RequestURI.USER}/signup"
@@ -51,12 +48,6 @@ internal class UserServiceTest {
             userRepository = TestUserRepository()
             articleRepository = TestArticleRepository()
             commentRepository = TestCommentRepository()
-
-            existenceChecker = ExistenceChecker(
-                userRepository = userRepository,
-                articleRepository = articleRepository,
-                commentRepository = commentRepository
-            )
 
             userService = UserService(
                 userRepository = userRepository,
@@ -78,12 +69,6 @@ internal class UserServiceTest {
         )
 
         userRepository.save(user)
-
-        existenceChecker = ExistenceChecker(
-            userRepository = userRepository,
-            articleRepository = articleRepository,
-            commentRepository = commentRepository
-        )
 
         userService = UserService(
             userRepository = userRepository,
@@ -132,13 +117,7 @@ internal class UserServiceTest {
             @DisplayName("성공적으로 SignupResponseDto를 반환한다.")
             fun it_return_signupResponseDto() {
 
-                val userRepositoryForDuplicateTest = TestUserRepository()
-
-                existenceChecker = ExistenceChecker(
-                    userRepository = userRepositoryForDuplicateTest,
-                    articleRepository = articleRepository,
-                    commentRepository = commentRepository
-                )
+                userRepository = TestUserRepository()
 
                 userService = UserService(
                     userRepository = userRepository,
@@ -187,13 +166,7 @@ internal class UserServiceTest {
                 @DisplayName("CustomException이 발생된다")
                 fun it_throws_customException() {
 
-                    val userRepositoryForDuplicateTest = TestUserRepository()
-
-                    existenceChecker = ExistenceChecker(
-                        userRepository = userRepositoryForDuplicateTest,
-                        articleRepository = articleRepository,
-                        commentRepository = commentRepository
-                    )
+                    userRepository = TestUserRepository()
 
                     userService = UserService(
                         userRepository = userRepository,
