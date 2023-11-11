@@ -27,7 +27,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew "-x" build
+        run: ./gradlew build
         shell: bash
 
         ### 새로 추가한 부분 ###
