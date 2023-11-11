@@ -4,7 +4,7 @@ import com.yourssu.assignmentblog.domain.article.dto.request.ArticleRequestDto
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.global.common.entity.BaseCreateAndUpdateTimeEntity
 import com.yourssu.assignmentblog.domain.user.domain.User
-import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAspect
+import com.yourssu.assignmentblog.global.common.aop.OwnershipCheckAdvice
 import com.yourssu.assignmentblog.global.common.entity.EntityWithOwnership
 import javax.persistence.*
 
@@ -32,7 +32,7 @@ class Article(
     fun update(
         requestDto: ArticleRequestDto,
         user: User
-    ) = OwnershipCheckAspect.checkOwnership(
+    ) = OwnershipCheckAdvice.checkOwnership(
         target = this,
         currentURI = requestDto.currentURI,
         failedTargetText = requestDto.failedTargetText,
