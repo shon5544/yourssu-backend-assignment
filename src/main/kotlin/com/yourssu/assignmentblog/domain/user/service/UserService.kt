@@ -21,7 +21,8 @@ class UserService(
     fun signup(
         requestDto: SignupRequestDto
     ): SignupResponseDto = ExistenceCheckAdvice.checkUserEmailNotExist(
-        email = requestDto.email, currentURI = requestDto.currentURI,
+        email = requestDto.email,
+        currentURI = requestDto.currentURI,
         userRepository = userRepository
     ) {
         requestDto.password = passwordEncoder.encode(requestDto.password)
