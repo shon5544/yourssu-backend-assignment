@@ -6,6 +6,7 @@ plugins {
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
+	kotlin("kapt")  version "1.6.10" // kapt 등록
 }
 
 group = "com.yourssu"
@@ -19,6 +20,13 @@ repositories {
 	mavenCentral()
 }
 
+// Q파일 생성 경로
+sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
+	kotlin.srcDir("$buildDir/generated/source/kapt/main")
+}
+
+apply(plugin = "kotlin-kapt")
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
@@ -28,6 +36,10 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.2")
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
+
+	// querydsl
+	api("com.querydsl:querydsl-jpa:")
+	kapt(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
 
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
