@@ -40,7 +40,12 @@ dependencies {
 
 	// querydsl
 	api("com.querydsl:querydsl-jpa:")
-	kapt(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
+	implementation("com.querydsl:querydsl-jpa:5.0.0")
+	implementation("com.querydsl:querydsl-apt:5.0.0")
+	implementation("javax.annotation:javax.annotation-api:1.3.2")
+	implementation("javax.persistence:javax.persistence-api:2.2")
+	annotationProcessor(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
+	kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
 
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.2")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.2")
