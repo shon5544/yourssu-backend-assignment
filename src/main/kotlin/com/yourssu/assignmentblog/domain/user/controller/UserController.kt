@@ -1,6 +1,8 @@
 package com.yourssu.assignmentblog.domain.user.controller
 
+import com.yourssu.assignmentblog.domain.user.dto.request.GetUsersRequestDto
 import com.yourssu.assignmentblog.domain.user.dto.request.SignupRequestDto
+import com.yourssu.assignmentblog.domain.user.dto.response.GetUsersResponseDto
 import com.yourssu.assignmentblog.domain.user.dto.response.SignupResponseDto
 import com.yourssu.assignmentblog.domain.user.service.UserService
 import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
@@ -9,10 +11,13 @@ import com.yourssu.assignmentblog.global.util.annotation.Auth
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 import javax.validation.Valid
 
 @RestController
@@ -47,5 +52,19 @@ class UserController(
         )
 
         return ResponseEntity.ok().build()
+    }
+
+    @GetMapping("/users")
+    @Operation(summary = "유저 정보 검색", description = "ADMIN용 API 입니다. 조건에 맞는 유저를 검색해 정보를 가져옵니다.")
+    fun getUsers(
+        @RequestParam("username") username: String?,
+        @RequestParam("email") email: String?,
+        @RequestParam("createdAtStart") createdAtStart: LocalDate?,
+        @RequestParam("createdAtEnd") createdAtEnd: LocalDate?,
+        @Auth authInfo: AuthInfo
+    ): GetUsersResponseDto {
+        val requestDto = GetUsersRequestDto(username, email, createdAtStart, createdAtEnd)
+
+        return userService.getUsers(requestDto, authInfo)
     }
 }
