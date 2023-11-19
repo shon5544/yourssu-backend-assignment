@@ -9,6 +9,7 @@ import com.yourssu.assignmentblog.global.auth.jwt.AuthInfo
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import com.yourssu.assignmentblog.global.util.annotation.Auth
 import io.swagger.v3.oas.annotations.Operation
+import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -59,8 +60,8 @@ class UserController(
     fun getUsers(
         @RequestParam("username") username: String?,
         @RequestParam("email") email: String?,
-        @RequestParam("createdAtStart") createdAtStart: LocalDate?,
-        @RequestParam("createdAtEnd") createdAtEnd: LocalDate?,
+        @RequestParam("createdAtStart") @DateTimeFormat(pattern = "yyyy-MM-dd") createdAtStart: LocalDate?,
+        @RequestParam("createdAtEnd") @DateTimeFormat(pattern = "yyyy-MM-dd") createdAtEnd: LocalDate?,
         @Auth authInfo: AuthInfo
     ): GetUsersResponseDto {
         val requestDto = GetUsersRequestDto(username, email, createdAtStart, createdAtEnd)
