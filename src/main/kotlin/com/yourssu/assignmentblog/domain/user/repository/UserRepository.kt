@@ -54,44 +54,23 @@ class UserRepositoryImpl(
         val createdAtStart = userDto.createdAtStart
         val createdAtEnd = userDto.createdAtEnd
 
-        val argsNullity = checkArgsAreAllNull(username, email, createdAtStart, createdAtEnd)
-
-        return if (argsNullity) selectUsersByRoleUser()
-            else selectUsersByArgs(username!!, email!!, createdAtStart!!, createdAtEnd!!)
+        return selectUsersByArgs(username, email, createdAtStart, createdAtEnd)
     }
 
-    private fun selectUsersByRoleUser(): List<User>? {
-        return jpaQueryFactory.selectFrom(qUser)
-            .where(qUser.role.eq(Role.USER))
-            .orderBy(qUser.id.desc())
-            .fetch()
-    }
-
-    private fun selectUsersByArgs(username: String, email: String, createdAtStart: LocalDate, createdAtEnd: LocalDate): List<User>? {
-        val startDateTime: LocalDateTime = createdAtStart.atStartOfDay()
-        val endDateTime: LocalDateTime = createdAtEnd.atTime(LocalTime.MAX)
+    private fun selectUsersByArgs(username: String?, email: String?, createdAtStart: LocalDate?, createdAtEnd: LocalDate?): List<User>? {
+        val startDateTime: LocalDateTime? = createdAtStart?.atStartOfDay()
+        val endDateTime: LocalDateTime? = createdAtEnd?.atTime(LocalTime.MAX)
 
         return jpaQueryFactory.selectFrom(qUser)
             .where(
                 eqUsername(username),
                 eqEmail(email),
                 greaterEqDate(startDateTime),
-                lessEqDate(endDateTime)
+                lessEqDate(endDateTime),
+                qUser.role.eq(Role.USER)
             )
             .orderBy(qUser.id.desc())
             .fetch()
-    }
-
-    private fun checkArgsAreAllNull(
-        username: String?,
-        email: String?,
-        createdAtStart: LocalDate?,
-        createdAtEnd: LocalDate?
-    ): Boolean {
-        return username == null &&
-        email == null &&
-        createdAtStart == null &&
-        createdAtEnd == null
     }
 
     private fun eqUsername(username: String?): BooleanExpression? {
