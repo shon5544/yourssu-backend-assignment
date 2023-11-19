@@ -3,7 +3,7 @@ package com.yourssu.assignmentblog.global.common.entity
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
-import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.EntityListeners
 import javax.persistence.MappedSuperclass
@@ -13,9 +13,9 @@ import javax.persistence.MappedSuperclass
 abstract class BaseCreateAndUpdateTimeEntity {
     @CreatedDate
     @Column(nullable = false, name = "created_at")
-    protected var createdAt: LocalDate? = null
+    protected var createdAt: LocalDateTime? = null
 
     @LastModifiedDate
     @Column(nullable = false, name = "updated_at")
-    protected var updatedAt: LocalDate? = null
+    protected var updatedAt: LocalDateTime? = null
 }
