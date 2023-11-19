@@ -9,6 +9,8 @@ import com.yourssu.assignmentblog.global.common.enums.Role
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 interface UserJpaRepository: JpaRepository<User, Long?> {
     fun findByEmail(email: String): User?
@@ -66,12 +68,15 @@ class UserRepositoryImpl(
     }
 
     private fun selectUsersByArgs(username: String, email: String, createdAtStart: LocalDate, createdAtEnd: LocalDate): List<User>? {
+        val startDateTime: LocalDateTime = createdAtStart.atStartOfDay()
+        val endDateTime: LocalDateTime = createdAtEnd.atTime(LocalTime.MAX)
+
         return jpaQueryFactory.selectFrom(qUser)
             .where(
                 eqUsername(username),
                 eqEmail(email),
-                greaterEqDate(createdAtStart),
-                lessEqDate(createdAtEnd)
+                greaterEqDate(startDateTime),
+                lessEqDate(endDateTime)
             )
             .orderBy(qUser.id.desc())
             .fetch()
@@ -97,12 +102,12 @@ class UserRepositoryImpl(
         return if (email == null) null else qUser.email.eq(email)
     }
 
-    private fun greaterEqDate(date: LocalDate?): BooleanExpression? {
-        return if (date == null) null else qUser.createdAt.goe(date)
+    private fun greaterEqDate(dateTime: LocalDateTime?): BooleanExpression? {
+        return if (dateTime == null) null else qUser.createdAt.goe(dateTime)
     }
 
-    private fun lessEqDate(date: LocalDate?): BooleanExpression? {
-        return if (date == null) null else qUser.createdAt.loe(date)
+    private fun lessEqDate(dateTime: LocalDateTime?): BooleanExpression? {
+        return if (dateTime == null) null else qUser.createdAt.loe(dateTime)
     }
 
 }
