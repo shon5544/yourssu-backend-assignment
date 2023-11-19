@@ -20,9 +20,10 @@ repositories {
 	mavenCentral()
 }
 
-// Q파일 생성 경로
-sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
-	kotlin.srcDir("$buildDir/generated/source/kapt/main")
+// Kotlin QClass Setting
+kotlin.sourceSets.main {
+	println("kotlin sourceSets builDir:: $buildDir")
+	setBuildDir("$buildDir")
 }
 
 apply(plugin = "kotlin-kapt")
