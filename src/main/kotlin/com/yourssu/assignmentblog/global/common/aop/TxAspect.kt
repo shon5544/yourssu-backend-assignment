@@ -5,9 +5,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Component
 class TxAspect(
-    _txAdvice: TxAdvice
+    _txAdvice: TxAdvice,
 ) {
-
     init {
         txAdvice = _txAdvice
     }
@@ -26,7 +25,6 @@ class TxAspect(
 
     @Component
     class TxAdvice {
-
         @Transactional
         fun <T> writeable(function: () -> T): T {
             return function.invoke()

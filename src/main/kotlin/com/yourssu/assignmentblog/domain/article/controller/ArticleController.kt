@@ -23,24 +23,23 @@ import javax.validation.Valid
 @RestController
 @RequestMapping(RequestURI.ARTICLE)
 class ArticleController(
-    private val articleService: ArticleService
+    private val articleService: ArticleService,
 ) {
-
     @PostMapping("/write")
     @Operation(summary = "게시글 작성", description = "title, content를 입력받아 게시글을 작성합니다")
     fun write(
-        @RequestBody @Valid requestDto: ArticleRequestDto,
-        @Auth authInfo: AuthInfo
+        @RequestBody @Valid
+        requestDto: ArticleRequestDto,
+        @Auth authInfo: AuthInfo,
     ): ArticleResponseDto {
-
         requestDto.setURIAndFailMessage(
             currentURI = RequestURI.ARTICLE + "/write",
-            failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}"
+            failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.WRITE}",
         )
 
         return articleService.write(
             requestDto = requestDto,
-            email = authInfo.email
+            email = authInfo.email,
         )
     }
 
@@ -48,20 +47,20 @@ class ArticleController(
     @Operation(summary = "게시글 수정", description = "원하는 게시글을 수정합니다.")
     @Parameter(name = "articleId", description = "수정하려는 게시글의 id 값입니다.")
     fun edit(
-        @RequestBody @Valid requestDto: ArticleRequestDto,
+        @RequestBody @Valid
+        requestDto: ArticleRequestDto,
         @PathVariable articleId: Long,
-        @Auth authInfo: AuthInfo
+        @Auth authInfo: AuthInfo,
     ): ArticleResponseDto {
-
         requestDto.setURIAndFailMessage(
             currentURI = RequestURI.ARTICLE + "/edit/$articleId",
-            failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}"
+            failedTargetText = "${FailedTargetType.ARTICLE} ${FailedMethod.EDIT}",
         )
 
         return articleService.edit(
             articleId = articleId,
             requestDto = requestDto,
-            email = authInfo.email
+            email = authInfo.email,
         )
     }
 
@@ -69,14 +68,13 @@ class ArticleController(
     @Operation(summary = "게시글 삭제", description = "게시글을 삭제합니다.")
     @Parameter(name = "articleId", description = "삭제하려는 게시글의 id 값입니다.")
     fun delete(
-        //@RequestBody @Valid deleteRequestDto: DeleteRequestDto,
         @PathVariable articleId: Long,
-        @Auth authInfo: AuthInfo
+        @Auth authInfo: AuthInfo,
     ): ResponseEntity<Void> {
         articleService.delete(
             articleId = articleId,
             currentURI = RequestURI.ARTICLE + "/delete/$articleId",
-            email = authInfo.email
+            email = authInfo.email,
         )
 
         return ResponseEntity.ok().build()

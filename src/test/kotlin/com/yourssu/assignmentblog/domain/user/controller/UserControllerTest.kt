@@ -12,7 +12,7 @@ import com.yourssu.assignmentblog.global.common.domain.ExistenceChecker
 import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
 import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -21,7 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @DisplayName("UserController 테스트")
 internal class UserControllerTest {
-
     companion object {
         private lateinit var userRepository: UserRepository
         private lateinit var articleRepository: ArticleRepository
@@ -29,12 +28,13 @@ internal class UserControllerTest {
 
         private val passwordEncoder = BCryptPasswordEncoder()
 
-        private val user: User = User(
-            id = 1,
-            email = "yourssu@gmail.com",
-            password = passwordEncoder.encode("asdj"),
-            username = "beomsu son"
-        )
+        private val user: User =
+            User(
+                id = 1,
+                email = "yourssu@gmail.com",
+                password = passwordEncoder.encode("asdj"),
+                username = "beomsu son",
+            )
 
         private lateinit var existenceChecker: ExistenceChecker
 
@@ -49,16 +49,18 @@ internal class UserControllerTest {
             articleRepository = TestArticleRepository()
             commentRepository = TestCommentRepository()
 
-            existenceChecker = ExistenceChecker(
-                userRepository = userRepository,
-                articleRepository = articleRepository,
-                commentRepository = commentRepository
-            )
+            existenceChecker =
+                ExistenceChecker(
+                    userRepository = userRepository,
+                    articleRepository = articleRepository,
+                    commentRepository = commentRepository,
+                )
 
-            userService = UserService(
-                userRepository = userRepository,
-                passwordEncoder = passwordEncoder,
-            )
+            userService =
+                UserService(
+                    userRepository = userRepository,
+                    passwordEncoder = passwordEncoder,
+                )
 
             userController = UserController(userService)
         }
@@ -66,19 +68,20 @@ internal class UserControllerTest {
 
     @BeforeEach
     fun initializeEach() {
-
         userRepository = TestUserRepository()
 
-        existenceChecker = ExistenceChecker(
-            userRepository = userRepository,
-            articleRepository = articleRepository,
-            commentRepository = commentRepository
-        )
+        existenceChecker =
+            ExistenceChecker(
+                userRepository = userRepository,
+                articleRepository = articleRepository,
+                commentRepository = commentRepository,
+            )
 
-        userService = UserService(
-            userRepository = userRepository,
-            passwordEncoder = passwordEncoder,
-        )
+        userService =
+            UserService(
+                userRepository = userRepository,
+                passwordEncoder = passwordEncoder,
+            )
 
         userController = UserController(userService)
     }
@@ -87,12 +90,13 @@ internal class UserControllerTest {
     @DisplayName("signup 테스트")
     fun signup() {
         // given
-        val requestDto = SignupRequestDto(
-            email = "yourssu@gmail.com",
-            password = "asdj",
-            username = "beomsu son",
-            role = "USER"
-        )
+        val requestDto =
+            SignupRequestDto(
+                email = "yourssu@gmail.com",
+                password = "asdj",
+                username = "beomsu son",
+                role = "USER",
+            )
 
         // when
         val result = userController.signup(requestDto)
@@ -105,7 +109,6 @@ internal class UserControllerTest {
     @Test
     @DisplayName("withdraw 테스트")
     fun withdraw() {
-
         userRepository.save(user)
 
         // given

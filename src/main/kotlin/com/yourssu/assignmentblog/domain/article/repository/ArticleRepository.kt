@@ -6,21 +6,22 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
-
-interface ArticleJpaRepository: JpaRepository<Article, Long> {
+interface ArticleJpaRepository : JpaRepository<Article, Long> {
     fun findByUser(user: User): Article?
 }
 
 interface ArticleRepository {
     fun save(article: Article): Article
+
     fun findById(id: Long): Article?
+
     fun delete(article: Article)
 }
 
 @Repository
 class ArticleRepositoryImpl(
-    private val articleJpaRepository: ArticleJpaRepository
-): ArticleRepository {
+    private val articleJpaRepository: ArticleJpaRepository,
+) : ArticleRepository {
     override fun save(article: Article): Article {
         return articleJpaRepository.save(article)
     }

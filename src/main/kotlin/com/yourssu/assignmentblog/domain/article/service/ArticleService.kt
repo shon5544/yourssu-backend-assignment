@@ -18,82 +18,82 @@ class ArticleService(
     private val articleRepository: ArticleRepository,
     private val userRepository: UserRepository,
 ) {
-
     @Transactional
     fun write(
         requestDto: ArticleRequestDto,
-        email: String
-    ): ArticleResponseDto = ExistenceCheckAdvice.checkUserAccount(
-        currentURI = requestDto.currentURI,
-        email = email,
-        failedTargetText = requestDto.failedTargetText,
-        userRepository = userRepository
-    ) {
-        val user = userRepository.findByEmail(email)
+        email: String,
+    ): ArticleResponseDto =
+        ExistenceCheckAdvice.checkUserAccount(
+            currentURI = requestDto.currentURI,
+            email = email,
+            failedTargetText = requestDto.failedTargetText,
+            userRepository = userRepository,
+        ) {
+            val user = userRepository.findByEmail(email)
 
-        val article = Article(
-            content = requestDto.content,
-            title = requestDto.title,
-            user = user
-        )
+            val article =
+                Article(
+                    content = requestDto.content,
+                    title = requestDto.title,
+                    user = user,
+                )
 
-        ArticleResponseDto(
-            articleRepository.save(article),
-            email
-        )
-    }
+            ArticleResponseDto(
+                articleRepository.save(article),
+                email,
+            )
+        }
 
     @Transactional
     fun edit(
         articleId: Long,
         requestDto: ArticleRequestDto,
         email: String,
-    ): ArticleResponseDto = ExistenceCheckAdvice.checkUserAccount(
-        currentURI = requestDto.currentURI,
-        email = email,
-        failedTargetText = requestDto.failedTargetText,
-        userRepository = userRepository
-    ) {
-
-        val currentURI = requestDto.currentURI
-        val failedTargetText = requestDto.failedTargetText
-
-        return@checkUserAccount ExistenceCheckAdvice.checkArticleExistence(
-            articleId = articleId,
-            currentURI = currentURI,
-            failedTargetText = failedTargetText,
-            articleRepository = articleRepository
+    ): ArticleResponseDto =
+        ExistenceCheckAdvice.checkUserAccount(
+            currentURI = requestDto.currentURI,
+            email = email,
+            failedTargetText = requestDto.failedTargetText,
+            userRepository = userRepository,
         ) {
+            val currentURI = requestDto.currentURI
+            val failedTargetText = requestDto.failedTargetText
 
-            val article: Article = articleRepository.findById(articleId)!!
-            val user: User = userRepository.findByEmail(email)!!
+            return@checkUserAccount ExistenceCheckAdvice.checkArticleExistence(
+                articleId = articleId,
+                currentURI = currentURI,
+                failedTargetText = failedTargetText,
+                articleRepository = articleRepository,
+            ) {
+                val article: Article = articleRepository.findById(articleId)!!
+                val user: User = userRepository.findByEmail(email)!!
 
-            article.update(requestDto, user)
+                article.update(requestDto, user)
 
-            return@checkArticleExistence ArticleResponseDto(
-                article, article.user!!.email
-            )
+                return@checkArticleExistence ArticleResponseDto(
+                    article,
+                    article.user!!.email,
+                )
+            }
         }
-    }
 
     @Transactional
     fun delete(
         articleId: Long,
         currentURI: String,
         email: String,
-        failedTargetText: String = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}"
+        failedTargetText: String = "${FailedTargetType.ARTICLE} ${FailedMethod.DELETE}",
     ) = ExistenceCheckAdvice.checkUserAccount(
         currentURI = currentURI,
         failedTargetText = failedTargetText,
         email = email,
-        userRepository = userRepository
+        userRepository = userRepository,
     ) {
-
         ExistenceCheckAdvice.checkArticleExistence(
             articleId = articleId,
             failedTargetText = failedTargetText,
             currentURI = currentURI,
-            articleRepository = articleRepository
+            articleRepository = articleRepository,
         ) {
             val article: Article = articleRepository.findById(articleId)!!
             val user: User = userRepository.findByEmail(email)!!
@@ -102,7 +102,7 @@ class ArticleService(
                 target = article,
                 currentURI = currentURI,
                 user = user,
-                failedTargetText = failedTargetText
+                failedTargetText = failedTargetText,
             ) {
                 articleRepository.delete(article)
             }

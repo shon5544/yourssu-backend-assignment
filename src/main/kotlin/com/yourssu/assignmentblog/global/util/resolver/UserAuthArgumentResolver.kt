@@ -16,18 +16,18 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class UserAuthArgumentResolver(
     @Value("\${jwt.access.header}")
-    private val accessTokenHeader: String
-): HandlerMethodArgumentResolver {
+    private val accessTokenHeader: String,
+) : HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.parameterType == AuthInfo::class.java &&
-                parameter.hasParameterAnnotation(Auth::class.java)
+            parameter.hasParameterAnnotation(Auth::class.java)
     }
 
     override fun resolveArgument(
         parameter: MethodParameter,
         mavContainer: ModelAndViewContainer?,
         webRequest: NativeWebRequest,
-        binderFactory: WebDataBinderFactory?
+        binderFactory: WebDataBinderFactory?,
     ): Any {
         val request = webRequest.nativeRequest as HttpServletRequest
         val response = webRequest.nativeResponse as HttpServletResponse

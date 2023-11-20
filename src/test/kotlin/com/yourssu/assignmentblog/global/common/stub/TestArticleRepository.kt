@@ -3,8 +3,7 @@ package com.yourssu.assignmentblog.global.common.stub
 import com.yourssu.assignmentblog.domain.article.domain.Article
 import com.yourssu.assignmentblog.domain.article.repository.ArticleRepository
 
-class TestArticleRepository: ArticleRepository {
-
+class TestArticleRepository : ArticleRepository {
     private var article: Article? = null
 
     override fun save(article: Article): Article {

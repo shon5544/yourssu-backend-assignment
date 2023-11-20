@@ -1,17 +1,27 @@
 package com.yourssu.assignmentblog.global.common.stub
 
-import com.yourssu.assignmentblog.domain.user.domain.User
-import com.yourssu.assignmentblog.global.auth.jwt.JwtTokenManager
 import java.io.BufferedReader
 import java.security.Principal
-import java.util.*
-import javax.servlet.*
-import javax.servlet.http.*
+import java.util.Enumeration
+import java.util.Locale
+import javax.servlet.AsyncContext
+import javax.servlet.DispatcherType
+import javax.servlet.RequestDispatcher
+import javax.servlet.ServletContext
+import javax.servlet.ServletInputStream
+import javax.servlet.ServletRequest
+import javax.servlet.ServletResponse
+import javax.servlet.http.Cookie
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.HttpSession
+import javax.servlet.http.HttpUpgradeHandler
+import javax.servlet.http.Part
 
 class StubHttpServletRequest(
     private val expectedAccessToken: String,
-    private val expectedRefreshToken: String
-): HttpServletRequest {
+    private val expectedRefreshToken: String,
+) : HttpServletRequest {
     override fun getAttribute(name: String?): Any {
         TODO("Not yet implemented")
     }
@@ -88,7 +98,10 @@ class StubHttpServletRequest(
         TODO("Not yet implemented")
     }
 
-    override fun setAttribute(name: String?, o: Any?) {
+    override fun setAttribute(
+        name: String?,
+        o: Any?,
+    ) {
         TODO("Not yet implemented")
     }
 
@@ -112,6 +125,7 @@ class StubHttpServletRequest(
         TODO("Not yet implemented")
     }
 
+    @Deprecated("Deprecated in Java")
     override fun getRealPath(path: String?): String {
         TODO("Not yet implemented")
     }
@@ -142,7 +156,7 @@ class StubHttpServletRequest(
 
     override fun startAsync(
         servletRequest: ServletRequest?,
-        servletResponse: ServletResponse?
+        servletResponse: ServletResponse?,
     ): AsyncContext {
         TODO("Not yet implemented")
     }
@@ -176,14 +190,15 @@ class StubHttpServletRequest(
     }
 
     override fun getHeader(name: String?): String {
-        return if(name.equals("Authorization"))
+        return if (name.equals("Authorization")) {
             "Bearer $expectedAccessToken"
-        else if(name.equals("Authorization-no-bearer"))
+        } else if (name.equals("Authorization-no-bearer")) {
             expectedAccessToken
-        else if(name.equals("Authorization-refresh"))
+        } else if (name.equals("Authorization-refresh")) {
             "Bearer $expectedRefreshToken"
-        else
+        } else {
             expectedRefreshToken
+        }
     }
 
     override fun getHeaders(name: String?): Enumeration<String> {
@@ -270,6 +285,7 @@ class StubHttpServletRequest(
         TODO("Not yet implemented")
     }
 
+    @Deprecated("Deprecated in Java")
     override fun isRequestedSessionIdFromUrl(): Boolean {
         TODO("Not yet implemented")
     }
@@ -278,7 +294,10 @@ class StubHttpServletRequest(
         TODO("Not yet implemented")
     }
 
-    override fun login(username: String?, password: String?) {
+    override fun login(
+        username: String?,
+        password: String?,
+    ) {
         TODO("Not yet implemented")
     }
 

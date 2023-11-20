@@ -7,9 +7,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class WebMvcConfig(
-    private val userArgumentResolver: UserAuthArgumentResolver
-): WebMvcConfigurer {
-
+    private val userArgumentResolver: UserAuthArgumentResolver,
+) : WebMvcConfigurer {
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
         resolvers.add(userArgumentResolver)
     }

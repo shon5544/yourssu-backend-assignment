@@ -13,9 +13,8 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class TokenExtractor(
     @Value("\${jwt.secretKey}")
-    private val _secretKey: String
+    private val _secretKey: String,
 ) {
-
     init {
         secretKey = _secretKey
     }
@@ -26,15 +25,17 @@ class TokenExtractor(
         fun extractToken(
             headerName: String,
             request: HttpServletRequest,
-            response: HttpServletResponse
+            response: HttpServletResponse,
         ): String? {
             val token: String? = request.getHeader(headerName)
 
-            return if(token != null) TokenChecker.removeBearer(token, response) else null
-
+            return if (token != null) TokenChecker.removeBearer(token, response) else null
         }
 
-        fun extractEmailFromToken(accessToken: String, response: HttpServletResponse): String {
+        fun extractEmailFromToken(
+            accessToken: String,
+            response: HttpServletResponse,
+        ): String {
             val key = Keys.hmacShaKeyFor(secretKey.toByteArray(StandardCharsets.UTF_8))
 
             return try {

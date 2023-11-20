@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServletResponse
 class TokenChecker(
     @Value("\${jwt.secretKey}")
     private val _secretKey: String,
-
-    _userRepository: UserRepository
+    _userRepository: UserRepository,
 ) {
     init {
         secretKey = _secretKey
@@ -27,7 +26,10 @@ class TokenChecker(
 
         private const val BEARER = "Bearer "
 
-        fun removeBearer(token: String?, response: HttpServletResponse): String? {
+        fun removeBearer(
+            token: String?,
+            response: HttpServletResponse,
+        ): String? {
             if (token != null) {
                 if (token.startsWith(BEARER)) {
                     val result = token.replace(BEARER, "")
@@ -35,8 +37,11 @@ class TokenChecker(
                     return if (isTokenValid(result)) {
                         result
                     } else {
-                        ResponseSender.setBadRequestResponse(response, "인증 실패: 유효한 refresh 토큰이 아닙니다. " +
-                                "로그인을 통해 토큰을 재발급 받으세요.")
+                        ResponseSender.setBadRequestResponse(
+                            response,
+                            "인증 실패: 유효한 refresh 토큰이 아닙니다. " +
+                                "로그인을 통해 토큰을 재발급 받으세요.",
+                        )
 
                         throw IllegalArgumentException("요청 헤더에서 토큰 추출 실패: 유효한 토큰이 아닙니다.")
                     }
@@ -68,6 +73,5 @@ class TokenChecker(
                 false
             }
         }
-
     }
 }

@@ -17,9 +17,8 @@ import javax.transaction.Transactional
 class LoginSuccessHandler(
     private val jwtTokenManager: JwtTokenManager,
     private val userRepository: UserRepository,
-    private val objectMapper: ObjectMapper
-): SimpleUrlAuthenticationSuccessHandler() {
-
+    private val objectMapper: ObjectMapper,
+) : SimpleUrlAuthenticationSuccessHandler() {
     private fun extractEmailInUserDetails(authentication: Authentication): String {
         val userDetails: UserDetails = authentication.principal as UserDetails
 
@@ -30,7 +29,7 @@ class LoginSuccessHandler(
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        authentication: Authentication
+        authentication: Authentication,
     ) {
         val email = extractEmailInUserDetails(authentication)
 
@@ -41,12 +40,14 @@ class LoginSuccessHandler(
 
         user.refreshToken = refreshToken
 
-        val responseDto = LoginResponseDto(
-            email = user.email,
-            username = user.username,
-            role = user.role.toString(),
-            accessToken = accessToken,
-            refreshToken = refreshToken)
+        val responseDto =
+            LoginResponseDto(
+                email = user.email,
+                username = user.username,
+                role = user.role.toString(),
+                accessToken = accessToken,
+                refreshToken = refreshToken,
+            )
 
         val result = objectMapper.writeValueAsString(responseDto)
 

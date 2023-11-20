@@ -24,27 +24,26 @@ import javax.validation.Valid
 @RestController
 @RequestMapping(RequestURI.COMMENT)
 class CommentController(
-    private val commentService: CommentService
+    private val commentService: CommentService,
 ) {
-
     @PostMapping("/write/{articleId}")
     @Operation(summary = "댓글 작성", description = "댓글을 작성합니다.")
     @Parameter(name = "article id", description = "작성하고자 하는 게시글의 id 값")
     fun write(
-        @RequestBody @Valid requestDto: CommentRequestDto,
+        @RequestBody @Valid
+        requestDto: CommentRequestDto,
         @PathVariable articleId: Long,
-        @Auth authInfo: AuthInfo
+        @Auth authInfo: AuthInfo,
     ): CommentResponseDto {
-
         requestDto.setURIAndFailMessage(
             currentURI = RequestURI.COMMENT + "/write",
-            failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}"
+            failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.WRITE}",
         )
 
         return commentService.write(
             articleId = articleId,
             requestDto = requestDto,
-            email = authInfo.email
+            email = authInfo.email,
         )
     }
 
@@ -53,22 +52,22 @@ class CommentController(
     @Parameter(name = "article", description = "수정하고자 하는 댓글이 달린 게시글의 id 값")
     @Parameter(name = "comment", description = "수정하고자 하는 댓글의 id 값")
     fun edit(
-        @RequestBody @Valid requestDto: CommentRequestDto,
+        @RequestBody @Valid
+        requestDto: CommentRequestDto,
         @RequestParam(name = "article") articleId: Long,
         @RequestParam(name = "comment") commentId: Long,
-        @Auth authInfo: AuthInfo
+        @Auth authInfo: AuthInfo,
     ): CommentResponseDto {
-
         requestDto.setURIAndFailMessage(
-            currentURI = RequestURI.COMMENT + "/edit?article=${articleId}&comment=${commentId}",
-            failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}"
+            currentURI = RequestURI.COMMENT + "/edit?article=$articleId&comment=$commentId",
+            failedTargetText = "${FailedTargetType.COMMENT} ${FailedMethod.EDIT}",
         )
 
         return commentService.edit(
             articleId = articleId,
             commentId = commentId,
             requestDto = requestDto,
-            email = authInfo.email
+            email = authInfo.email,
         )
     }
 
@@ -80,14 +79,13 @@ class CommentController(
 //        @RequestBody @Valid deleteRequestDto: DeleteRequestDto,
         @RequestParam(name = "article") articleId: Long,
         @RequestParam(name = "comment") commentId: Long,
-        @Auth authInfo: AuthInfo
+        @Auth authInfo: AuthInfo,
     ): ResponseEntity<Void> {
-
         commentService.delete(
             articleId = articleId,
             commentId = commentId,
             currentURI = RequestURI.COMMENT,
-            email = authInfo.email
+            email = authInfo.email,
         )
 
         return ResponseEntity.ok().build()

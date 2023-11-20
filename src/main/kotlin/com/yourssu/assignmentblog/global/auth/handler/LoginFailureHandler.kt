@@ -9,12 +9,11 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class LoginFailureHandler(private val objectMapper: ObjectMapper): SimpleUrlAuthenticationFailureHandler() {
-
+class LoginFailureHandler(private val objectMapper: ObjectMapper) : SimpleUrlAuthenticationFailureHandler() {
     override fun onAuthenticationFailure(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        exception: AuthenticationException
+        exception: AuthenticationException,
     ) {
         val responseDto = AuthenticationFailDto(false, "로그인 실패: ${exception.message}")
 

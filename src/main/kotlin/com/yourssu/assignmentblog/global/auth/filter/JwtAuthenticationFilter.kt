@@ -22,33 +22,29 @@ import javax.servlet.http.HttpServletResponse
 
 class JwtAuthenticationFilter(
     private val accessTokenHeader: String,
-
     private val refreshTokenHeader: String,
-
     private val tokenProvider: TokenProvider,
-
     private val userRepository: UserRepository,
-
-    private val authoritiesMapper: GrantedAuthoritiesMapper = NullAuthoritiesMapper()
-): OncePerRequestFilter() {
-
+    private val authoritiesMapper: GrantedAuthoritiesMapper = NullAuthoritiesMapper(),
+) : OncePerRequestFilter() {
     companion object {
-        private val NO_CHECK_URIS: List<String> = arrayListOf(
-            RequestURI.USER + "/signup",
-            RequestURI.USER + "/login",
-            "/swagger-ui/index.html",
-            "/favicon.ico"
-        )
+        private val NO_CHECK_URIS: List<String> =
+            arrayListOf(
+                RequestURI.USER + "/signup",
+                RequestURI.USER + "/login",
+                "/swagger-ui/index.html",
+                "/favicon.ico",
+            )
     }
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
-        if (NO_CHECK_URIS.contains(request.requestURI)
-            || request.requestURI.contains("/swagger-ui")
-            || request.requestURI.contains("/v3")
+        if (NO_CHECK_URIS.contains(request.requestURI) ||
+            request.requestURI.contains("/swagger-ui") ||
+            request.requestURI.contains("/v3")
         ) {
             filterChain.doFilter(request, response)
             return
@@ -58,10 +54,12 @@ class JwtAuthenticationFilter(
         val refreshToken = TokenExtractor.extractToken(refreshTokenHeader, request, response)
 
         if (refreshToken != null) {
-
-            if(!TokenChecker.isRefreshTokenInDB(refreshToken)) {
-                ResponseSender.setBadRequestResponse(response, "인증 실패: 해당 refresh 토큰에 대한 기록이 없습니다. " +
-                        "로그인을 통해 토큰을 재발급 받으세요.")
+            if (!TokenChecker.isRefreshTokenInDB(refreshToken)) {
+                ResponseSender.setBadRequestResponse(
+                    response,
+                    "인증 실패: 해당 refresh 토큰에 대한 기록이 없습니다. " +
+                        "로그인을 통해 토큰을 재발급 받으세요.",
+                )
                 return
             }
 
@@ -71,7 +69,6 @@ class JwtAuthenticationFilter(
         }
 
         if (accessToken != null) {
-
             val userEmail = TokenExtractor.extractEmailFromToken(accessToken, response)
             val user = userRepository.findByEmail(userEmail)
 
@@ -92,11 +89,12 @@ class JwtAuthenticationFilter(
     private fun setAuthentication(user: User) {
         val userDetails: UserDetails = CustomUserDetails(user)
 
-        val authentication: Authentication = UsernamePasswordAuthenticationToken(
-            userDetails,
-            null,
-            authoritiesMapper.mapAuthorities(userDetails.authorities)
-        )
+        val authentication: Authentication =
+            UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                authoritiesMapper.mapAuthorities(userDetails.authorities),
+            )
 
         SecurityContextHolder.getContext().authentication = authentication
     }

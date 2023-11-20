@@ -5,8 +5,8 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class CustomUserDetails(
-    val user: User
-): UserDetails {
+    val user: User,
+) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         val collection = ArrayList<GrantedAuthority>()
 

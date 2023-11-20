@@ -6,5 +6,5 @@ data class ExceptionResponseDto(
     val time: LocalDateTime = LocalDateTime.now(),
     val status: String = "",
     val message: String = "",
-    val requestURI: String = ""
+    val requestURI: String = "",
 )

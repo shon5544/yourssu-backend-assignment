@@ -12,7 +12,8 @@ import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
 import com.yourssu.assignmentblog.global.error.exception.CustomException
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -22,7 +23,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @DisplayName("UserService 테스트")
 internal class UserServiceTest {
-
     companion object {
         private lateinit var userRepository: UserRepository
         private lateinit var articleRepository: ArticleRepository
@@ -30,12 +30,13 @@ internal class UserServiceTest {
 
         private val passwordEncoder = BCryptPasswordEncoder()
 
-        private val user: User = User(
-            id = 1,
-            email = "yourssu@gmail.com",
-            password = passwordEncoder.encode("asdj"),
-            username = "beomsu son"
-        )
+        private val user: User =
+            User(
+                id = 1,
+                email = "yourssu@gmail.com",
+                password = passwordEncoder.encode("asdj"),
+                username = "beomsu son",
+            )
 
         private lateinit var userService: UserService
 
@@ -49,10 +50,11 @@ internal class UserServiceTest {
             articleRepository = TestArticleRepository()
             commentRepository = TestCommentRepository()
 
-            userService = UserService(
-                userRepository = userRepository,
-                passwordEncoder = passwordEncoder,
-            )
+            userService =
+                UserService(
+                    userRepository = userRepository,
+                    passwordEncoder = passwordEncoder,
+                )
 
             userRepository.save(user)
         }
@@ -60,43 +62,43 @@ internal class UserServiceTest {
 
     @BeforeEach
     fun initializeEach() {
-
-        val user = User(
-            id = 1,
-            email = "yourssu@gmail.com",
-            password = passwordEncoder.encode("asdj"),
-            username = "beomsu son"
-        )
+        val user =
+            User(
+                id = 1,
+                email = "yourssu@gmail.com",
+                password = passwordEncoder.encode("asdj"),
+                username = "beomsu son",
+            )
 
         userRepository.save(user)
 
-        userService = UserService(
-            userRepository = userRepository,
-            passwordEncoder = passwordEncoder,
-        )
+        userService =
+            UserService(
+                userRepository = userRepository,
+                passwordEncoder = passwordEncoder,
+            )
     }
 
     @Nested
     @DisplayName("signup 메서드를 사용할 때")
     inner class DescribeSignup {
-
         @Nested
         @DisplayName("이미 동일 email로 가입한 기록이 있는 경우")
         inner class ContextDuplicatedEmail {
-
             @Test
             @DisplayName("CustomException이 발생된다")
             fun it_throw_customException() {
                 // given
-                val requestDto = SignupRequestDto(
-                    email = "yourssu@gmail.com",
-                    password = "asdj",
-                    username = "beomsu"
-                )
+                val requestDto =
+                    SignupRequestDto(
+                        email = "yourssu@gmail.com",
+                        password = "asdj",
+                        username = "beomsu",
+                    )
 
                 requestDto.setURIAndFailMessage(
                     currentURI = SIGNUP,
-                    failedTargetText = ""
+                    failedTargetText = "",
                 )
 
                 // when-then
@@ -106,84 +108,81 @@ internal class UserServiceTest {
                     )
                 }
             }
-
         }
 
         @Nested
         @DisplayName("아예 새로 등록하는 유저일 경우")
         inner class ContextNotDuplicatedEmail {
-
             @Test
             @DisplayName("성공적으로 SignupResponseDto를 반환한다.")
             fun it_return_signupResponseDto() {
-
                 userRepository = TestUserRepository()
 
-                userService = UserService(
-                    userRepository = userRepository,
-                    passwordEncoder = passwordEncoder,
-                )
+                userService =
+                    UserService(
+                        userRepository = userRepository,
+                        passwordEncoder = passwordEncoder,
+                    )
 
                 // given
-                val requestDto = SignupRequestDto(
-                    email = "yourssu@gmail.com",
-                    password = "asdj",
-                    username = "beomsu son",
-                    role = "USER"
-                )
+                val requestDto =
+                    SignupRequestDto(
+                        email = "yourssu@gmail.com",
+                        password = "asdj",
+                        username = "beomsu son",
+                        role = "USER",
+                    )
 
                 requestDto.setURIAndFailMessage(
                     currentURI = SIGNUP,
-                    failedTargetText = ""
+                    failedTargetText = "",
                 )
 
                 // when
-                val result = userService.signup(
-                    requestDto = requestDto,
-                )
+                val result =
+                    userService.signup(
+                        requestDto = requestDto,
+                    )
 
                 // then
                 val expectedResult = SignupResponseDto(user)
                 assertEquals(expectedResult, result)
             }
         }
-
     }
 
     @Nested
     @DisplayName("withdraw 메서드를 사용할 때")
     inner class DescribeWithdraw {
-
         @Nested
         @DisplayName("유저가 실제 존재하는 유저인지 확인한다.")
         inner class ContextUserExist {
-
             @Nested
             @DisplayName("만약 존재하지 않는 유저라면")
             inner class ContextNotExist {
-
                 @Test
                 @DisplayName("CustomException이 발생된다")
                 fun it_throws_customException() {
-
                     userRepository = TestUserRepository()
 
-                    userService = UserService(
-                        userRepository = userRepository,
-                        passwordEncoder = passwordEncoder,
-                    )
+                    userService =
+                        UserService(
+                            userRepository = userRepository,
+                            passwordEncoder = passwordEncoder,
+                        )
 
                     // given
-                    val requestDto = DeleteRequestDto(
-                        email = "yourssu@gmail.com",
-                        password = "asdj"
-                    )
+                    val requestDto =
+                        DeleteRequestDto(
+                            email = "yourssu@gmail.com",
+                            password = "asdj",
+                        )
 
                     // when-then
                     assertThrows(CustomException::class.java) {
                         userService.withdraw(
                             email = requestDto.email,
-                            currentURI = WITHDRAW
+                            currentURI = WITHDRAW,
                         )
                     }
                 }
@@ -192,24 +191,23 @@ internal class UserServiceTest {
             @Nested
             @DisplayName("만약 존재하는 유저라면")
             inner class ContextExist {
-
                 @Nested
                 @DisplayName("만약 비밀번호가 맞았다면")
                 inner class ContextCorrectPassword {
-
                     @Test
                     @DisplayName("어떤 Exception 없이 잘 탈퇴된다.")
                     fun it_works_well() {
                         // given
-                        val requestDto = DeleteRequestDto(
-                            email = "yourssu@gmail.com",
-                            password = "asdj"
-                        )
+                        val requestDto =
+                            DeleteRequestDto(
+                                email = "yourssu@gmail.com",
+                                password = "asdj",
+                            )
 
                         // when-then
                         userService.withdraw(
                             email = requestDto.email,
-                            currentURI = WITHDRAW
+                            currentURI = WITHDRAW,
                         )
                     }
                 }
