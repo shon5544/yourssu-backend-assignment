@@ -1,12 +1,12 @@
 package com.yourssu.assignmentblog.global.common.stub
 
 import java.io.PrintWriter
-import java.util.*
+import java.util.Locale
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
 
-class StubHttpServletResponse: HttpServletResponse {
+class StubHttpServletResponse : HttpServletResponse {
     override fun getCharacterEncoding(): String {
         TODO("Not yet implemented")
     }
@@ -87,15 +87,20 @@ class StubHttpServletResponse: HttpServletResponse {
         TODO("Not yet implemented")
     }
 
+    @Deprecated("Deprecated in Java")
     override fun encodeUrl(p0: String?): String {
         TODO("Not yet implemented")
     }
 
+    @Deprecated("Deprecated in Java")
     override fun encodeRedirectUrl(p0: String?): String {
         TODO("Not yet implemented")
     }
 
-    override fun sendError(p0: Int, p1: String?) {
+    override fun sendError(
+        p0: Int,
+        p1: String?,
+    ) {
         TODO("Not yet implemented")
     }
 
@@ -107,27 +112,45 @@ class StubHttpServletResponse: HttpServletResponse {
         TODO("Not yet implemented")
     }
 
-    override fun setDateHeader(p0: String?, p1: Long) {
+    override fun setDateHeader(
+        p0: String?,
+        p1: Long,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun addDateHeader(p0: String?, p1: Long) {
+    override fun addDateHeader(
+        p0: String?,
+        p1: Long,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun setHeader(p0: String?, p1: String?) {
+    override fun setHeader(
+        p0: String?,
+        p1: String?,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun addHeader(p0: String?, p1: String?) {
+    override fun addHeader(
+        p0: String?,
+        p1: String?,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun setIntHeader(p0: String?, p1: Int) {
+    override fun setIntHeader(
+        p0: String?,
+        p1: Int,
+    ) {
         TODO("Not yet implemented")
     }
 
-    override fun addIntHeader(p0: String?, p1: Int) {
+    override fun addIntHeader(
+        p0: String?,
+        p1: Int,
+    ) {
         TODO("Not yet implemented")
     }
 
@@ -135,7 +158,11 @@ class StubHttpServletResponse: HttpServletResponse {
         TODO("Not yet implemented")
     }
 
-    override fun setStatus(p0: Int, p1: String?) {
+    @Deprecated("Deprecated in Java")
+    override fun setStatus(
+        p0: Int,
+        p1: String?,
+    ) {
         TODO("Not yet implemented")
     }
 

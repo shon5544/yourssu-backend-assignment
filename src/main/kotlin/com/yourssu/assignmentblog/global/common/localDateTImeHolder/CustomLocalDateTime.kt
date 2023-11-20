@@ -6,12 +6,11 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 @Component
-class CustomLocalDateTime: ICustomLocalDateTime {
+class CustomLocalDateTime : ICustomLocalDateTime {
     override fun plusHour(hour: Long): Instant {
         return LocalDateTime.now()
             .plusHours(hour)
             .atZone(ZoneId.of("Asia/Seoul"))
             .toInstant()
     }
-
 }

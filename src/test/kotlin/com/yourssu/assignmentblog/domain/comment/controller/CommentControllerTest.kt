@@ -16,7 +16,7 @@ import com.yourssu.assignmentblog.global.common.stub.TestArticleRepository
 import com.yourssu.assignmentblog.global.common.stub.TestCommentRepository
 import com.yourssu.assignmentblog.global.common.stub.TestUserRepository
 import com.yourssu.assignmentblog.global.common.uri.RequestURI
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -25,7 +25,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @DisplayName("CommentController 테스트")
 internal class CommentControllerTest {
-
     companion object {
         private lateinit var userRepository: UserRepository
         private lateinit var articleRepository: ArticleRepository
@@ -34,19 +33,21 @@ internal class CommentControllerTest {
         private val passwordEncoder = BCryptPasswordEncoder()
         private val ownershipChecker = OwnershipChecker()
 
-        private val user: User = User(
-            id = 1,
-            email = "yourssu@gmail.com",
-            password = passwordEncoder.encode("asdj"),
-            username = "beomsu son"
-        )
+        private val user: User =
+            User(
+                id = 1,
+                email = "yourssu@gmail.com",
+                password = passwordEncoder.encode("asdj"),
+                username = "beomsu son",
+            )
 
-        private val article: Article = Article(
-            id = 1,
-            content = "content",
-            title = "title",
-            user = user
-        )
+        private val article: Article =
+            Article(
+                id = 1,
+                content = "content",
+                title = "title",
+                user = user,
+            )
 
         private lateinit var existenceChecker: ExistenceChecker
 
@@ -58,7 +59,6 @@ internal class CommentControllerTest {
         const val EDIT = "${RequestURI.COMMENT}/edit"
         const val DELETE = "${RequestURI.COMMENT}/delete"
 
-
         @BeforeAll
         @JvmStatic
         fun initialize() {
@@ -66,17 +66,19 @@ internal class CommentControllerTest {
             articleRepository = TestArticleRepository()
             commentRepository = TestCommentRepository()
 
-            existenceChecker = ExistenceChecker(
-                userRepository = userRepository,
-                articleRepository = articleRepository,
-                commentRepository = commentRepository
-            )
+            existenceChecker =
+                ExistenceChecker(
+                    userRepository = userRepository,
+                    articleRepository = articleRepository,
+                    commentRepository = commentRepository,
+                )
 
-            commentService = CommentService(
-                commentRepository = commentRepository,
-                articleRepository = articleRepository,
-                userRepository = userRepository
-            )
+            commentService =
+                CommentService(
+                    commentRepository = commentRepository,
+                    articleRepository = articleRepository,
+                    userRepository = userRepository,
+                )
 
             userRepository.save(user)
             articleRepository.save(article)
@@ -87,42 +89,46 @@ internal class CommentControllerTest {
 
     @BeforeEach
     fun initializeEach() {
+        val user =
+            User(
+                id = 1,
+                email = "yourssu@gmail.com",
+                password = passwordEncoder.encode("asdj"),
+                username = "beomsu son",
+            )
 
-        val user = User(
-            id = 1,
-            email = "yourssu@gmail.com",
-            password = passwordEncoder.encode("asdj"),
-            username = "beomsu son"
-        )
+        val article =
+            Article(
+                id = 1,
+                content = "content",
+                title = "title",
+                user = user,
+            )
 
-        val article = Article(
-            id = 1,
-            content = "content",
-            title = "title",
-            user = user
-        )
-
-        val comment = Comment(
-            id = 1,
-            content = "content",
-            user = user,
-            article = article
-        )
+        val comment =
+            Comment(
+                id = 1,
+                content = "content",
+                user = user,
+                article = article,
+            )
 
         userRepository.save(user)
         articleRepository.save(article)
         commentRepository.save(comment)
 
-        existenceChecker = ExistenceChecker(
-            userRepository = userRepository,
-            articleRepository = articleRepository,
-            commentRepository = commentRepository
-        )
-        commentService = CommentService(
-            commentRepository = commentRepository,
-            articleRepository = articleRepository,
-            userRepository = userRepository
-        )
+        existenceChecker =
+            ExistenceChecker(
+                userRepository = userRepository,
+                articleRepository = articleRepository,
+                commentRepository = commentRepository,
+            )
+        commentService =
+            CommentService(
+                commentRepository = commentRepository,
+                articleRepository = articleRepository,
+                userRepository = userRepository,
+            )
 
         commentController = CommentController(commentService)
     }
@@ -131,23 +137,25 @@ internal class CommentControllerTest {
     @DisplayName("write 테스트")
     fun write() {
         // given
-        val requestDto = CommentRequestDto(
-            content = "content"
-        )
+        val requestDto =
+            CommentRequestDto(
+                content = "content",
+            )
 
         // when
-        val result = commentController.write(
-            requestDto = requestDto,
-            articleId = 1,
-            authInfo = AuthInfo("yourssu@gmail.com")
-        )
-
+        val result =
+            commentController.write(
+                requestDto = requestDto,
+                articleId = 1,
+                authInfo = AuthInfo("yourssu@gmail.com"),
+            )
 
         // then
-        val expectedResult = CommentResponseDto(
-            email = user.email,
-            content = "content"
-        )
+        val expectedResult =
+            CommentResponseDto(
+                email = user.email,
+                content = "content",
+            )
         assertEquals(expectedResult, result)
     }
 
@@ -155,24 +163,27 @@ internal class CommentControllerTest {
     @DisplayName("edit 테스트")
     fun edit() {
         // given
-        val requestDto = CommentRequestDto(
-            content = "content"
-        )
+        val requestDto =
+            CommentRequestDto(
+                content = "content",
+            )
 
         // when
-        val result = commentController.edit(
-            requestDto = requestDto,
-            articleId = 1,
-            commentId = 1,
-            authInfo = AuthInfo("yourssu@gmail.com")
-        )
+        val result =
+            commentController.edit(
+                requestDto = requestDto,
+                articleId = 1,
+                commentId = 1,
+                authInfo = AuthInfo("yourssu@gmail.com"),
+            )
 
         // then
-        val expectedResult = CommentResponseDto(
-            commentId = 1,
-            email = user.email,
-            content = "content"
-        )
+        val expectedResult =
+            CommentResponseDto(
+                commentId = 1,
+                email = user.email,
+                content = "content",
+            )
         assertEquals(expectedResult, result)
     }
 
@@ -185,7 +196,7 @@ internal class CommentControllerTest {
         commentController.delete(
             articleId = 1,
             commentId = 1,
-            authInfo = AuthInfo("yourssu@gmail.com")
+            authInfo = AuthInfo("yourssu@gmail.com"),
         )
     }
 }

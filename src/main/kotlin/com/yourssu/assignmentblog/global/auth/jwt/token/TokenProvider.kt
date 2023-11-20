@@ -10,7 +10,7 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
-import java.util.*
+import java.util.Date
 import javax.persistence.EntityNotFoundException
 import javax.transaction.Transactional
 
@@ -18,16 +18,12 @@ import javax.transaction.Transactional
 class TokenProvider(
     @Value("\${jwt.secretKey}")
     private val secretKey: String,
-
     @Value("\${jwt.access.expiration}")
     private val accessTokenExpiration: Long,
-
     @Value("\${jwt.refresh.expiration}")
     private val refreshTokenExpiration: Long,
-
     private val localDateTime: ICustomLocalDateTime,
-
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     companion object {
         const val ACCESS_TOKEN_SUBJECT = "AccessToken"
@@ -44,8 +40,8 @@ class TokenProvider(
             .setExpiration(
                 Date.from(
                     localDateTime
-                        .plusHour(accessTokenExpiration)
-                )
+                        .plusHour(accessTokenExpiration),
+                ),
             )
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()!!
@@ -59,8 +55,8 @@ class TokenProvider(
             .setExpiration(
                 Date.from(
                     localDateTime
-                        .plusHour(refreshTokenExpiration)
-                )
+                        .plusHour(refreshTokenExpiration),
+                ),
             )
             .signWith(key, SignatureAlgorithm.HS256)
             .compact()
@@ -71,8 +67,11 @@ class TokenProvider(
         val user = userRepository.findByRefreshToken(refreshToken)
 
         val newAccessToken: String =
-            if (user != null) createAccessToken(user)
-            else throw EntityNotFoundException("토큰 재발급 실패: 해당 refresh token을 가진 User가 없습니다. 일반적으로 일어나기 힘든 상황입니다.")
+            if (user != null) {
+                createAccessToken(user)
+            } else {
+                throw EntityNotFoundException("토큰 재발급 실패: 해당 refresh token을 가진 User가 없습니다. 일반적으로 일어나기 힘든 상황입니다.")
+            }
         val newRefreshToken: String = createRefreshToken()
 
         user.refreshToken = refreshToken

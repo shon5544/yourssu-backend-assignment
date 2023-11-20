@@ -6,9 +6,9 @@ data class ArticleResponseDto(
     var articleId: Long? = null,
     var email: String = "",
     var title: String = "",
-    var content: String = ""
+    var content: String = "",
 ) {
-    constructor(article: Article, email: String): this() {
+    constructor(article: Article, email: String) : this() {
         this.articleId = article.id
         this.email = email
         this.title = article.title

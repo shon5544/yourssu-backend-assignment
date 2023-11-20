@@ -6,5 +6,5 @@ data class GetUsersRequestDto(
     val username: String?,
     val email: String?,
     val createdAtStart: LocalDate?,
-    val createdAtEnd: LocalDate?
+    val createdAtEnd: LocalDate?,
 )

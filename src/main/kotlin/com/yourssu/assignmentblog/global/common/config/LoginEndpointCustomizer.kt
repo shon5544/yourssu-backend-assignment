@@ -21,10 +21,11 @@ import kotlin.jvm.Throws
 
 inline fun <reified T> T.logger() = LoggerFactory.getLogger(T::class.java)!!
 
-class LoginEndpointCustomizer<JSON_FILTER: AbstractAuthenticationProcessingFilter> {
-
-    fun loginEndpointCustomizer(filter: JSON_FILTER, tagName: String): OpenApiCustomiser {
-        
+class LoginEndpointCustomizer<JSON_FILTER : AbstractAuthenticationProcessingFilter> {
+    fun loginEndpointCustomizer(
+        filter: JSON_FILTER,
+        tagName: String,
+    ): OpenApiCustomiser {
         return OpenApiCustomiser { openAPI ->
             val operation = Operation()
 
@@ -49,22 +50,24 @@ class LoginEndpointCustomizer<JSON_FILTER: AbstractAuthenticationProcessingFilte
         schema.addProperty("email", StringSchema()._default("string"))
         schema.addProperty("password", StringSchema()._default("string"))
 
-        return RequestBody().content(Content().addMediaType(
-            MediaType.APPLICATION_JSON_VALUE,
-            io.swagger.v3.oas.models.media.MediaType().schema(schema)
-        ))
+        return RequestBody().content(
+            Content().addMediaType(
+                MediaType.APPLICATION_JSON_VALUE,
+                io.swagger.v3.oas.models.media.MediaType().schema(schema),
+            ),
+        )
     }
 
     private fun getLoginApiResponses(): ApiResponses {
         val apiResponses = ApiResponses()
         apiResponses.addApiResponse(
             "${HttpStatus.OK.value()}",
-            ApiResponse().description(HttpStatus.OK.reasonPhrase)
+            ApiResponse().description(HttpStatus.OK.reasonPhrase),
         )
 
         apiResponses.addApiResponse(
             "${HttpStatus.FORBIDDEN.value()}",
-            ApiResponse().description(HttpStatus.FORBIDDEN.reasonPhrase)
+            ApiResponse().description(HttpStatus.FORBIDDEN.reasonPhrase),
         )
 
         return apiResponses
@@ -72,8 +75,9 @@ class LoginEndpointCustomizer<JSON_FILTER: AbstractAuthenticationProcessingFilte
 
     @Throws(Exception::class)
     private fun getLoginPath(filter: JSON_FILTER): String {
-        val requestMatcherField: Field = AbstractAuthenticationProcessingFilter::class.java
-            .getDeclaredField("requiresAuthenticationRequestMatcher")
+        val requestMatcherField: Field =
+            AbstractAuthenticationProcessingFilter::class.java
+                .getDeclaredField("requiresAuthenticationRequestMatcher")
 
         requestMatcherField.isAccessible = true
 

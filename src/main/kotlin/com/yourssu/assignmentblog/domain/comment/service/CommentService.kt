@@ -19,82 +19,80 @@ import org.springframework.transaction.annotation.Transactional
 class CommentService(
     private val commentRepository: CommentRepository,
     private val articleRepository: ArticleRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
-
     @Transactional
     fun write(
         articleId: Long,
         requestDto: CommentRequestDto,
-        email: String
-    ): CommentResponseDto = ExistenceCheckAdvice.checkUserAccount(
-        currentURI = requestDto.currentURI,
-        email = email,
-        failedTargetText = requestDto.failedTargetText,
-        userRepository = userRepository
-    ) {
-
-        return@checkUserAccount ExistenceCheckAdvice.checkArticleExistence(
-            articleId = articleId,
+        email: String,
+    ): CommentResponseDto =
+        ExistenceCheckAdvice.checkUserAccount(
             currentURI = requestDto.currentURI,
+            email = email,
             failedTargetText = requestDto.failedTargetText,
-            articleRepository = articleRepository
+            userRepository = userRepository,
         ) {
-            val article: Article = articleRepository.findById(articleId)!!
-            val user: User = userRepository.findByEmail(email)!!
+            return@checkUserAccount ExistenceCheckAdvice.checkArticleExistence(
+                articleId = articleId,
+                currentURI = requestDto.currentURI,
+                failedTargetText = requestDto.failedTargetText,
+                articleRepository = articleRepository,
+            ) {
+                val article: Article = articleRepository.findById(articleId)!!
+                val user: User = userRepository.findByEmail(email)!!
 
-            val comment = Comment(
-                content = requestDto.content,
-                user = user,
-                article = article
-            )
+                val comment =
+                    Comment(
+                        content = requestDto.content,
+                        user = user,
+                        article = article,
+                    )
 
-            return@checkArticleExistence CommentResponseDto(
-                comment = commentRepository.save(comment),
-                email = user.email
-            )
+                return@checkArticleExistence CommentResponseDto(
+                    comment = commentRepository.save(comment),
+                    email = user.email,
+                )
+            }
         }
-    }
 
     @Transactional
     fun edit(
         articleId: Long,
         commentId: Long,
         requestDto: CommentRequestDto,
-        email: String
-    ): CommentResponseDto = ExistenceCheckAdvice.checkUserAccount(
-        currentURI = requestDto.currentURI,
-        email = email,
-        failedTargetText = requestDto.failedTargetText,
-        userRepository = userRepository
-    ) {
-
-        return@checkUserAccount ExistenceCheckAdvice.checkArticleExistence(
-            articleId = articleId,
+        email: String,
+    ): CommentResponseDto =
+        ExistenceCheckAdvice.checkUserAccount(
             currentURI = requestDto.currentURI,
+            email = email,
             failedTargetText = requestDto.failedTargetText,
-            articleRepository = articleRepository
+            userRepository = userRepository,
         ) {
-
-            return@checkArticleExistence ExistenceCheckAdvice.checkCommentExistence(
-                commentId = commentId,
+            return@checkUserAccount ExistenceCheckAdvice.checkArticleExistence(
+                articleId = articleId,
                 currentURI = requestDto.currentURI,
                 failedTargetText = requestDto.failedTargetText,
-                commentRepository = commentRepository
+                articleRepository = articleRepository,
             ) {
-                val comment: Comment = commentRepository.findById(commentId)!!
-                val user: User = userRepository.findByEmail(email)!!
+                return@checkArticleExistence ExistenceCheckAdvice.checkCommentExistence(
+                    commentId = commentId,
+                    currentURI = requestDto.currentURI,
+                    failedTargetText = requestDto.failedTargetText,
+                    commentRepository = commentRepository,
+                ) {
+                    val comment: Comment = commentRepository.findById(commentId)!!
+                    val user: User = userRepository.findByEmail(email)!!
 
-                comment.update(requestDto, user)
+                    comment.update(requestDto, user)
 
-                return@checkCommentExistence CommentResponseDto(
-                    comment = comment,
-                    email = user.email
-                )
+                    return@checkCommentExistence CommentResponseDto(
+                        comment = comment,
+                        email = user.email,
+                    )
+                }
             }
-
         }
-    }
 
     @Transactional
     fun delete(
@@ -102,28 +100,25 @@ class CommentService(
         commentId: Long,
         currentURI: String,
         email: String,
-        failedTargetText: String = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}"
+        failedTargetText: String = "${FailedTargetType.COMMENT} ${FailedMethod.DELETE}",
     ) = ExistenceCheckAdvice.checkUserAccount(
         currentURI = currentURI,
         email = email,
         failedTargetText = failedTargetText,
-        userRepository = userRepository
+        userRepository = userRepository,
     ) {
-
         return@checkUserAccount ExistenceCheckAdvice.checkArticleExistence(
             articleId = articleId,
             currentURI = currentURI,
             failedTargetText = failedTargetText,
-            articleRepository = articleRepository
+            articleRepository = articleRepository,
         ) {
-
             return@checkArticleExistence ExistenceCheckAdvice.checkCommentExistence(
                 commentId = commentId,
                 currentURI = currentURI,
                 failedTargetText = failedTargetText,
-                commentRepository = commentRepository
+                commentRepository = commentRepository,
             ) {
-
                 val comment: Comment = commentRepository.findById(commentId)!!
                 val user: User = userRepository.findByEmail(email)!!
 
@@ -131,7 +126,7 @@ class CommentService(
                     target = comment,
                     currentURI = currentURI,
                     user = user,
-                    failedTargetText = failedTargetText
+                    failedTargetText = failedTargetText,
                 ) {
                     commentRepository.delete(comment)
                 }

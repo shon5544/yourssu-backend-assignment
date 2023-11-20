@@ -22,46 +22,49 @@ class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: BCryptPasswordEncoder,
 ) {
-
     @Transactional
-    fun signup(
-        requestDto: SignupRequestDto
-    ): SignupResponseDto = ExistenceCheckAdvice.checkUserEmailNotExist(
-        email = requestDto.email,
-        currentURI = requestDto.currentURI,
-        userRepository = userRepository
-    ) {
-        requestDto.password = passwordEncoder.encode(requestDto.password)
+    fun signup(requestDto: SignupRequestDto): SignupResponseDto =
+        ExistenceCheckAdvice.checkUserEmailNotExist(
+            email = requestDto.email,
+            currentURI = requestDto.currentURI,
+            userRepository = userRepository,
+        ) {
+            requestDto.password = passwordEncoder.encode(requestDto.password)
 
-        val user = User(requestDto)
+            val user = User(requestDto)
 
-        return@checkUserEmailNotExist SignupResponseDto(userRepository.save(user))
-    }
+            return@checkUserEmailNotExist SignupResponseDto(userRepository.save(user))
+        }
 
     @Transactional
     fun withdraw(
         email: String,
         currentURI: String,
-        failedTargetText: String = "${FailedTargetType.USER} ${FailedMethod.WITHDRAW}"
+        failedTargetText: String = "${FailedTargetType.USER} ${FailedMethod.WITHDRAW}",
     ) = ExistenceCheckAdvice.checkUserAccount(
         currentURI = currentURI,
         email = email,
         failedTargetText = failedTargetText,
-        userRepository = userRepository
+        userRepository = userRepository,
     ) {
         val user: User = userRepository.findByEmail(email)!!
         userRepository.delete(user)
     }
 
-    fun getUsers(requestDto: GetUsersRequestDto, authInfo: AuthInfo): GetUsersResponseDto {
+    fun getUsers(
+        requestDto: GetUsersRequestDto,
+        authInfo: AuthInfo,
+    ): GetUsersResponseDto {
         userRepository.findByEmail(authInfo.email) ?: throw IllegalArgumentException("유저 정보 조회 실패: 유저 정보를 조회할 권한이 없습니다.")
 
-        val users: List<User> = userRepository.findUsers(requestDto)
-            ?: throw IllegalArgumentException("유저 정보 조회 실패: 요청 정보가 잘못되었습니다. 쿼리 조건을 다시 한번 확인하십시오.")
+        val users: List<User> =
+            userRepository.findUsers(requestDto)
+                ?: throw IllegalArgumentException("유저 정보 조회 실패: 요청 정보가 잘못되었습니다. 쿼리 조건을 다시 한번 확인하십시오.")
 
-        val userVOList: List<UserVO> = users.map { user: User ->
-            user.toUserVO()
-        }
+        val userVOList: List<UserVO> =
+            users.map { user: User ->
+                user.toUserVO()
+            }
 
         return GetUsersResponseDto(userVOList)
     }

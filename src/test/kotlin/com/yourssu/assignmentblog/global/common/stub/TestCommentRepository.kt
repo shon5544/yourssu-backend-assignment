@@ -3,8 +3,7 @@ package com.yourssu.assignmentblog.global.common.stub
 import com.yourssu.assignmentblog.domain.comment.domain.Comment
 import com.yourssu.assignmentblog.domain.comment.repository.CommentRepository
 
-class TestCommentRepository: CommentRepository {
-
+class TestCommentRepository : CommentRepository {
     private var comment: Comment? = null
 
     override fun findById(id: Long): Comment? {

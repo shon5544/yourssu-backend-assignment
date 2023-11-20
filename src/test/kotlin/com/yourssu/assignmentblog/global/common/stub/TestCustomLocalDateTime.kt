@@ -5,7 +5,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-class TestCustomLocalDateTime: ICustomLocalDateTime {
+class TestCustomLocalDateTime : ICustomLocalDateTime {
     override fun plusHour(hour: Long): Instant {
         return LocalDateTime.of(
             2023,
@@ -14,9 +14,9 @@ class TestCustomLocalDateTime: ICustomLocalDateTime {
             21,
             5,
             0,
-            0)
+            0,
+        )
             .atZone(ZoneId.of("Asia/Seoul"))
             .toInstant()
     }
-
 }

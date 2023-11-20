@@ -27,17 +27,14 @@ import org.springframework.security.web.authentication.logout.LogoutFilter
 class SecurityConfig(
     @Value("\${jwt.access.header}")
     private val accessTokenHeader: String,
-
     @Value("\${jwt.refresh.header}")
     private val refreshTokenHeader: String,
-
     private val customUserDetailsService: CustomUserDetailsService,
     private val loginSuccessHandler: LoginSuccessHandler,
     private val loginFailureHandler: LoginFailureHandler,
     private val tokenProvider: TokenProvider,
     private val userRepository: UserRepository,
 ) {
-
     companion object {
         val objectMapper = ObjectMapper()
     }
@@ -47,22 +44,17 @@ class SecurityConfig(
         http
             .formLogin()
             .disable()
-
             .httpBasic()
             .disable()
-
             .csrf()
             .disable()
-
             .headers()
             .frameOptions()
             .disable()
             .and()
-
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-
             .authorizeHttpRequests()
             .anyRequest().permitAll()
 
@@ -103,7 +95,7 @@ class SecurityConfig(
             accessTokenHeader = this.accessTokenHeader,
             refreshTokenHeader = this.refreshTokenHeader,
             tokenProvider = this.tokenProvider,
-            userRepository = this.userRepository
+            userRepository = this.userRepository,
         )
     }
 }
